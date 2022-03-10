@@ -28,7 +28,7 @@ Follow our handy guides to get started on the basics as quickly as possible:
 **Good to know:** your product docs aren't just a reference of all your features! use them to encourage folks to perform certain actions and discover the value in your product.
 {% endhint %}
 
-### SDK references
+### SDK reference
 
 If you're ready to get Rownd up and running on your own sites and apps, dive into our SDKs.
 
