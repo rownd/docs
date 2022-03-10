@@ -214,3 +214,33 @@ Set a specific field in the user profile
 ```javascript
 rownd.user.setValue('first_name', 'Alice');
 ```
+
+#### Events
+
+The Rownd Hub emits various events when state changes occur. For example, initial authentication, updates to user data, etc. You can listen for these event changes and react to them.
+
+**Authentication**\
+The `auth` event fires any time the user moves from an unauthenticated state to an authenticated state. It will also fire any time the access token is refreshed.
+
+```javascript
+rownd.events.addEventListener('auth', (evt) => {
+    const { access_token, user_id, app_id } = evt.detail;
+});
+```
+
+Sign out
+
+```javascript
+rownd.events.addEventListener('sign_out', () => {
+    // do something now that the user has signed out
+});
+```
+
+**User profile changes**
+
+```javascript
+rownd.events.addEventListener('user_data', (evt) => {
+    const { data } = evt.detail;
+    console.log('first_name:', data.first_name);
+});
+```
