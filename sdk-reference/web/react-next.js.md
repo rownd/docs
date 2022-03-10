@@ -63,6 +63,228 @@ export default function MyProtectedComponent(props) {
 }
 ```
 
+### Usage with redux, etc
+
+Often, sending and receiving data from your server will rely on the Rownd access token as a means of authenticating the user within your back-end (see our [Node.js SDK](node.js.md) as an example of this). Many React apps leverage Redux or similar technologies to manage an app's global state.
+
+The key here is to call Rownd's `getAccessToken({ waitForToken: true })` method when calling your own authenticated APIs. For example, if you're using [axios](https://npmjs.com/package/axios), you'd likely set up an interceptor that looks something like this:
+
+```javascript
+// api-client.js
+
+import axios from 'axios';
+
+let getAccessToken;
+
+axios.interceptors.request.use(async (config) => {
+	if (!getAccessToken) {
+		return config;
+	}
+
+	if (config.skipAuth || !config.url.startsWith('/api')) {
+		return config;
+	}
+
+	const accessToken = await getAccessToken({ waitForToken: true });
+
+	config.headers.common.Authorization = `Bearer ${accessToken}`;
+	return config;
+});
+
+export function setAccessTokenHelper(fn) {
+	getAccessToken = fn;
+}
+
+export default axios;
+```
+
+Here's another example, this time using [ky](https://npmjs.com/package/ky):
+
+```javascript
+// api-client.js
+
+import ky from 'ky';
+
+let getAccessToken;
+
+ky.extend({
+    hooks: {
+        beforeRequest: [
+            // Auto-refresh tokens
+            async (request) => {
+                if (!getAccessToken) {
+    		    return;
+    	        }
+    
+                if (request.skipAuth || !request.url.startsWith('/api')) {
+            	    return;
+                }
+                
+            	const accessToken = await getAccessToken({ waitForToken: true });
+
+                request.headers.set('Authorization', `Bearer ${tokenResp.access_token}`);
+            }
+        ]
+    }
+});
+
+function setAccessTokenHelper(fn) {
+	getAccessToken = fn;
+}
+
+export {
+    api,
+    setAccessTokenHelper,
+}
+```
+
+In both of the cases above, our async actions would use these instances of axios or ky to make requests back to the server, but before any of those fire, we need to set the access token helper from our React app like this:
+
+```javascript
+// AppWrapper.jsx
+
+import { useRownd } from '@rownd/react';
+import { setAccessTokenHelper } from './api-client';
+import App from './app';
+
+export default function MyReactAppWrapper() {
+    const { getAccessToken } = useRownd();
+    
+    useEffect(() => {
+        setAccessTokenHelper(getAccessToken);
+    }, [getAccessToken]);
+    
+    return <App />;
+}
+```
+
+That's one way to solve this problem. Another might be to wrap the redux provider in your own component and simply pass the `getAccessToken` function down into the store during initialization. If you come up with a better mousetrap here, let us know!
+
 ## API reference
 
-Coming soon...
+Most API methods are made available via the Rownd Provider and its associated `useRownd` React hook. Unless otherwise noted, we're assuming that you're using hooks.
+
+#### requestSignIn()
+
+Trigger the Rownd sign in dialog
+
+```javascript
+const { requestSignIn } = useRownd();
+
+requestSignIn({
+    auto_sign_in: false,                           // optional
+    identifier: 'me@company.com' || '+19105551212' // optional
+});
+```
+
+* `auto_sign_in: boolean` - when `true`, automatically trigger a sign-in attempt _if_ `identifier` is included or an email address or phone number has already been set in the user data.
+* `identifier: string` - an email address or phone number (in E164 format) to which a verification message may be sent. If the Rownd app is configured to allow unverified users, then sign-in will complete without verification if the user has not signed in previously.
+
+#### signOut()
+
+Sign out the user and clear their profile, returning them to a completely unauthenticated state.
+
+```javascript
+const { signOut } = useRownd();
+signOut();
+```
+
+#### **getAccessToken()**
+
+Retrieves the active, valid access token for the current user.&#x20;
+
+```javascript
+const { getAccessToken } = useRownd();
+
+let accessToken = await getAccessToken({
+    waitForToken: false
+});
+```
+
+* `waitForToken: boolean` - when `true`, if no access token is present or if it's expired, the promise will not resolve until a valid token is available. While unlikely, this could result in waiting forever.
+
+**is\_initializing**
+
+`is_initializing` will be `true` until the Hub has fully loaded, recalled its state, and resolved the current user's authentication status. This usually takes only a few milliseconds, but if you make decisions that depend on the `is_authenticated` flag while `is_initializing` is still `true`, your code/logic may not work as you expect.
+
+```javascript
+const { is_initializing } = useRownd();
+
+if (is_initializing) {
+    // return loading state or null
+}
+```
+
+#### is\_authenticated
+
+Indicates whether the current user is signed in or not.
+
+```javascript
+const { is_authenticated } = useRownd();
+
+return (
+  <>
+    {is_authenticated && <ProtectedRoute />}
+    {!is_authenticated && <PublicRoute />}
+  </>
+);
+```
+
+#### access\_token
+
+Represents the current access token for the user.
+
+```javascript
+const { access_token } = useRownd();
+
+useEffect(() => {
+    axios({
+        method: 'post',
+        url: '/api/sessions'
+        headers: {
+            authorization: `Bearer ${access_token}`
+        }
+    }).then(console.log);
+}, [access_token]);
+```
+
+#### user
+
+Represents information about the current user, specifically their profile information. In the example below, we use the existing data to display the current value of `first_name` in a form field, update a local copy of that data as the user changes it, and then save the changes to Rownd once the user submits the form.
+
+```javascript
+const { user } = useRownd();
+
+const [profile, setProfile] = useState(user.data);
+
+return (
+    <form onSubmit={() => user.set(profile)}>
+        <label htmlFor="first_name">
+            <input 
+                id="first_name" 
+                type="text" 
+                value={profile?.first_name} 
+                onInput={(evt) => setProfile({ ...profile, first_name: evt.target.value })}
+            />
+        </label>
+        <button type="submit">Save</button>
+    </form>
+);
+```
+
+**Merge data into the user profile**
+
+```javascript
+const { user } = useRownd();
+user.set({
+    first_name: 'Alice',
+    last_name: 'Ranier'
+});
+```
+
+Set a specific field in the user profile
+
+```javascript
+const { user } = useRownd();
+user.setValue('first_name', 'Alice');
+```
