@@ -34,12 +34,12 @@ Follow our handy guides to get started on the basics as quickly as possible:
 [getting-started.md](guides/getting-started.md)
 {% endcontent-ref %}
 
-{% content-ref url="guides/authentication-methods.md" %}
-[authentication-methods.md](guides/authentication-methods.md)
+{% content-ref url="broken-reference" %}
+[Broken link](broken-reference)
 {% endcontent-ref %}
 
-{% content-ref url="guides/integrations.md" %}
-[integrations.md](guides/integrations.md)
+{% content-ref url="guides/integrations/" %}
+[integrations](guides/integrations/)
 {% endcontent-ref %}
 
 {% hint style="info" %}
