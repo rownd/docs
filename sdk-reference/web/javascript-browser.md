@@ -18,6 +18,14 @@ The Rownd SDK Javascript provides browser-based access to the Rownd platform. In
 
 At this point, if you load your site in a browser after saving or publishing, you should see the Rownd Hub appear in the lower left-hand corner of the site.
 
+{% hint style="warning" %}
+If you're building a single-page app in React, Vue, etc, then use our framework-specific SDKs instead of these instructions.
+
+If your single-page app is separate from your website, then you'll want to use the instructions on this page for the website and the framework SDK instructions for the single-page app.
+
+If you find any of this unclear, get in touch with us and we can help you figure out which pieces you'll need.
+{% endhint %}
+
 ## Customizing the Rownd Hub
 
 The Rownd Hub is a customizable widget that can be adjusted to fit your needs. The following options can be added as additional Javascript code.

@@ -19,4 +19,13 @@ By deploying Rownd to your main website, blog, docs, etc, you can begin onboardi
 
 ### Deploy the Rownd snippet to your websites
 
-After copying the code snippet, you'll need to add it to your websites.&#x20;
+After copying the code snippet, you'll need to add it to your website(s). Most website builder software or content management systems (CMS) have an option to embed "custom HTML" or "custom code" in your site's pages. We usually recommend placing the snippet just before the closing `</body>` tag.
+
+Here are links to instructions for a few popular hosting providers. See our [Javascript SDK reference ](../sdk-reference/web/javascript-browser.md)for more details.
+
+* Wix
+* Webflow
+* Squarespace
+* Shopify
+* Netlify
+* Vercel
