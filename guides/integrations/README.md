@@ -1,4 +1,4 @@
-# Integrations
+# 🔌 Integrations
 
 Rownd offers a growing list of integrations with other cloud services, CRMs, databases, and more. Here's a list of the integrations we currently support.
 
