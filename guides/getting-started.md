@@ -23,9 +23,8 @@ After copying the code snippet, you'll need to add it to your website(s). Most w
 
 Here are links to instructions for a few popular hosting providers. See our [Javascript SDK reference ](../sdk-reference/web/javascript-browser.md)for more details.
 
-* Wix
-* Webflow
-* Squarespace
-* Shopify
-* Netlify
-* Vercel
+* [Netlify](https://docs.netlify.com/site-deploys/post-processing/snippet-injection/)
+* [Webflow](https://university.webflow.com/lesson/custom-code-in-the-head-and-body-tags)
+* [Weebly](https://www.weebly.com/app/help/us/en/topics/descriptions-and-keywords) (see the section on "footer code")
+* [Wix](https://support.wix.com/en/article/wix-editor-adding-code-to-your-site#embed-custom-code)
+* [Squarespace](https://support.squarespace.com/hc/en-us/articles/205815908)
