@@ -4,7 +4,7 @@ Deploying Rownd should be a relatively straightforward process. It typically inv
 
 * Select the initial user profile fields in the Rownd dashboard
 * Deploy the Rownd snippet to your websites
-* (optional) Add the Rownd SDK to front-end and back end servers
+* (optional) Add the Rownd SDK to front-end and back end apps/servers
 
 {% hint style="info" %}
 By deploying Rownd to your main website, blog, docs, etc, you can begin onboarding users even before having an app. For example, if you're creating a waitlist for your product, Rownd can manage the sign-up process. You can even leverage Rownd to gradually on-ramp users to your app once it's ready for beta testers.
@@ -28,3 +28,13 @@ Here are links to instructions for a few popular hosting providers. See our [Jav
 * [Weebly](https://www.weebly.com/app/help/us/en/topics/descriptions-and-keywords) (see the section on "footer code")
 * [Wix](https://support.wix.com/en/article/wix-editor-adding-code-to-your-site#embed-custom-code)
 * [Squarespace](https://support.squarespace.com/hc/en-us/articles/205815908)
+
+### Add the Rownd SDK to front-end and back-end apps/servers
+
+If you have front-end web apps built using common frameworks like React, Vue, Angular, etc, you'll want to use our specific [web SDKs](broken-reference) for those codebases. Our SDKs provide tight integrations to your user experience so users can seamlessly transition from one part of your product to the next—personalization included.
+
+Additionally, if you're deploying back-end code to servers or are using a serverless platform like Lambda or Vercel to implement custom logic, you'll likely need to accept and validate Rownd authentication tokens. Leverage our selection of [back-end SDKs](broken-reference) to easily handle this use case.
+
+### Getting help
+
+The Rownd team is on call to answer questions, provide guidance, and help you every step of the way! [Get in touch](https://rownd.io/contact) if you need assistance for any reason.
