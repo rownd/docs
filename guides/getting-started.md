@@ -1,13 +1,13 @@
-# Getting started
+# 🚀 Getting started
+
+Deploying Rownd should be a relatively straightforward process. It typically involves a few steps:
+
+* Access the Rownd dashboard
+* Select the initial user profile fields
+* Deploy the Rownd snippet to static websites
+* (optional) Add the Rownd SDK to front-end and back end servers
 
 {% hint style="info" %}
-**Good to know:** your product docs aren't just a reference of all your features! use them to encourage folks to perform certain actions and discover the value in your product.
+By deploying Rownd to your main website, blog, docs, etc, you can begin onboarding users even before having an app. For example, if you're creating a waitlist for your product, Rownd can manage the sign-up process. You can even leverage Rownd to gradually on-ramp users to your app once it's ready for beta testers.
 {% endhint %}
 
-## The basics
-
-Projects are containers for task lists. Think of them as a library for everything your team needs to get done to complete or ship a project.
-
-## Creating a project
-
-Hit the big '+' button in your sidebar and select 'New Project' from the menu that pops up. Give your project a name, and you're good to go!
