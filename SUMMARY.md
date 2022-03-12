@@ -18,6 +18,6 @@
   * [React / Next.js](sdk-reference/web/react-next.js.md)
   * [Node.js](sdk-reference/web/node.js.md)
 
-## API reference
+***
 
-* [REST API](api-reference/rest-api.md)
+* [REST API](api.md)
