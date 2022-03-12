@@ -1,5 +1,3 @@
 # Web
 
-{% hint style="info" %}
-**Good to know:** Splitting your product into fundamental concepts, objects, or areas can be a great way to let readers deep dive into the concepts that matter most to them.
-{% endhint %}
+Rownd provides SDKs for a growing number of languages and frameworks. Use the navigation menu to open documentation relating to your desired usage.
