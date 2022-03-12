@@ -25,7 +25,7 @@ Follow our handy guides to get started on the basics as quickly as possible:
 {% endcontent-ref %}
 
 {% hint style="info" %}
-**Good to know:** your product docs aren't just a reference of all your features! use them to encourage folks to perform certain actions and discover the value in your product.
+**Good to know:** Rownd isn't just for authentication! We can help you manage the lifecycle of all of your users' account data. This helps your account and support teams stay in sync with your customers so they have the most accurate information for every interaction.
 {% endhint %}
 
 ### SDK reference
