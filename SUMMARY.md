@@ -17,6 +17,7 @@
   * [Javascript (browser)](sdk-reference/web/javascript-browser.md)
   * [React / Next.js](sdk-reference/web/react-next.js.md)
   * [Node.js](sdk-reference/web/node.js.md)
+  * [.NET Core](sdk-reference/web/.net-core.md)
 
 ***
 
