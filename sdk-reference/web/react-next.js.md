@@ -6,7 +6,7 @@ Simply run `npm install @rownd/react` or `yarn add @rownd/react`.
 
 ## Usage
 
-The library providers a React provider and hook for the Rownd browser API.
+The library provides a React provider and hook for the Rownd browser API.
 
 In your app's main entrypoint, add the Rownd provider, likely before other providers:
 
