@@ -143,6 +143,13 @@ Result:
 </p>
 ```
 
+Rownd can also render images when this attribute is applied to an `img` element and the field name corresponds to a field of type "image". Example:
+
+```markup
+<h3>Profile Picture</h3>
+<img data-rownd-field-mapping="profile_picture" />
+```
+
 ## Programmatic API
 
 In addition to the declarative markup described above, you can use the Rownd Hub's programmatic API to create more advanced functionality.
@@ -221,6 +228,14 @@ Set a specific field in the user profile
 
 ```javascript
 rownd.user.setValue('first_name', 'Alice');
+```
+
+Upload a file for a specific field
+
+_The file parameter must be a javascript_ [_File_](https://developer.mozilla.org/en-US/docs/Web/API/File)_. If the field name corresponds to an image field, the mime type of the file must have an "image/" prefix (e.g. "image/png")_
+
+```javascript
+rownd.user.uploadFile('profile_picture', file);
 ```
 
 #### Events
