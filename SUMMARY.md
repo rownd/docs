@@ -17,6 +17,7 @@
   * [Javascript (browser)](sdk-reference/web/javascript-browser.md)
   * [React / Next.js](sdk-reference/web/react-next.js.md)
   * [Vue](sdk-reference/web/vue.md)
+  * [Django (Python)](sdk-reference/web/django.md)
   * [Node.js](sdk-reference/web/node.js.md)
   * [.NET Core](sdk-reference/web/.net-core.md)
 
