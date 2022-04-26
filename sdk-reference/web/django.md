@@ -8,10 +8,16 @@ description: >-
 
 ## Installation
 
-Begin by adding the `rownd_django` package to your dependencies. In `requirements.txt`, this would look like:
+Install via pip:
+
+```bash
+pip install rownd-django
+```
+
+Or, add the `rownd-django` package to your dependencies. In `requirements.txt`, this would look like:
 
 ```
-rownd_django>=1.0.0
+rownd-django>=1.0.0
 ```
 
 > NOTE: This plugin only works with Django v3 and above. We strongly recommend upgrading if you're using something older. If you can't for some reason, please [get in touch](mailto:support@rownd.io?subject=Django%soSDK:%20Request%20for%20older%20version%20support).
