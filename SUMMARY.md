@@ -20,6 +20,7 @@
   * [Django (Python)](sdk-reference/web/django.md)
   * [Node.js](sdk-reference/web/node.js.md)
   * [.NET Core](sdk-reference/web/.net-core.md)
+  * [WordPress / WooCommerce](sdk-reference/web/wordpress-woocommerce.md)
 
 ***
 

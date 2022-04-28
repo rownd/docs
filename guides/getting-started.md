@@ -14,7 +14,7 @@ By deploying Rownd to your main website, blog, docs, etc, you can begin onboardi
 
 1. Open the Rownd dashboard
 2. Create your first application if prompted and select or create the desired profile fields:\
-   ![](../.gitbook/assets/image.png)
+   ![](<../.gitbook/assets/image (2).png>)
 3. After the app is created, a Javascript code snippet will be generated. Click the copy button to store it in your clipboard.
 
 ### Deploy the Rownd snippet to your websites
