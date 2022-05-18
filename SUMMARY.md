@@ -10,6 +10,7 @@
   * [Firebase - Realtime Database](guides/integrations/firebase-realtime-database/README.md)
     * [Google Cloud Platform requirements](guides/integrations/firebase-realtime-database/google-cloud-platform-requirements.md)
     * [Examples: Defining user data locations](guides/integrations/firebase-realtime-database/examples-defining-user-data-locations.md)
+  * [Webhooks](guides/integrations/webhooks.md)
 
 ## 📘 SDK reference
 
