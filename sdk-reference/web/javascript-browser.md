@@ -98,7 +98,7 @@ Example:
 
 #### `data-rownd-authenticated-redirect-url="<url>"`
 
-When the user is authenticated, the clicking the element will navigate the browser to the specified absolute or relative URL. If not specified in the case of an `<a>` tag, the `href` attribute from an `<a>` tag will be used instead.
+When the user is authenticated, the clicked element will navigate the browser to the specified absolute or relative URL. If not specified in the case of an `<a>` tag, the `href` attribute from the tag will be used instead.
 
 Example:
 
@@ -106,6 +106,25 @@ Example:
 <button data-rownd-sign-in-trigger
         data-rownd-authenticated-text="Sign out"
         data-rownd-authenticated-redirect-url="/dashboard">Sign in</button>
+```
+
+**`data-rownd-request-sign-in`** / **`data-rownd-require-sign-in`**
+
+When one of these attributes is present on any DOM element, the Rownd sign-in modal will automatically display if the user is not currently signed in.
+
+The only difference between the two is that `data-rownd-request-sign-in` will display a closable sign-in modal (i.e., with a close icon showing) whereas `data-rownd-require-sign-in` will display a persistent, non-closable modal until the user successfully completes the sign-in process.
+
+**Pre-set the user's email address or phone number**
+
+If you already know the current visitor's sign-in identifier (i.e., email or phone), Rownd can pre-populate that into the sign-in modal. Simply add the following additional attribute to the same element where the request/require sign-in attribute is present: `data-rownd-default-user-identifier="REPLACE_WITH_EMAIL_OR_PHONE"`
+
+Here's a complete example:
+
+```html
+<div 
+  data-rownd-require-sign-in="auto-submit"
+  data-rownd-default-user-identifier="jrose@rownd.io"
+/>
 ```
 
 ### Display user profile information for site customization
