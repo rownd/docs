@@ -1,4 +1,8 @@
-# Rownd SDK for iOS
+---
+description: Rownd bindings for native iOS apps
+---
+
+# iOS
 
 The Rownd SDK for iOS provides authentication, account and user profile management, deep linking, encryption and more for native iPhone, iPad, and even macOS applications.
 
@@ -82,35 +86,40 @@ public struct AuthState {
 
 #### .user
 
-```
+```swift
 public struct UserState {
     public var id: String?                      // The user's ID as known to Rownd
     public var data: Dictionary<String, Any>    // Contains key/value pairs for the current user
     public var redacted: [String]               // An array of field keys that the current user has disabled your app from accessing
 }
+```
 
 ## API reference
 
 In addition to the state observable APIs, Rownd provides imperative APIs that you can call to get and retrieve user profile information, retrieve a current access token, or encrypt user data with the user's local key.
 
 ### Rownd.user.get() -> UserState
+
 Returns the entire `UserState` object
 
 ### Rownd.user.get(field: String) -> Any
+
 Returns the value of a specific field in the user's data dictionary. `"id"` is a special case that will return the user's ID, even though it's technically not in the dictionary itself.
 
-### Rownd.user.set(data: Dictionary<String, Any>) -> void
+### Rownd.user.set(data: Dictionary\<String, Any>) -> void
+
 Replaces the user's data with that contained in the dictionary. This may overwrite existing values, but must match the schema you defined within your Rownd application dashboard. Any fields that are flagged as `encrypted` will be encrypted on-device prior to storing in Rownd's platform.
 
 If something goes wrong during the operation (e.g., schema mismatch, network failure, etc), the method will throw.
 
-### Rownd.user.set(field: String, value: Any) -> void 
+### Rownd.user.set(field: String, value: Any) -> void
+
 Sets a specific user profile field to the provided value, overwriting if a value already exists. If the field is flagged as `encrypted`, it will be encrypted on-device prior to storing in Rownd's platform.
 
 If something goes wrong during the operation (e.g., schema mismatch, network failure, etc), the method will throw.
 
-
 ## Data encryption
+
 As indicated previously, Rownd can automatically assist you in protecting sensitive user data by encrypting it on-device with a user's unique encryption key prior to saving it in Rownd's own platform storage.
 
 When you configure your app within the Rownd platform, you can indicate that it supports on-device encryption. When this flag is set, Rownd will automatically generate a cryptographically secure, unrecoverable encryption key on the user's device after they sign in. The key is stored in the device Keychain and all encryption is handled on the device. The key is never transmitted to Rownd's servers.
@@ -119,13 +128,14 @@ Only fields that you designate `encrypted` is encrypted on-device prior to sendi
 
 Of course, all data within the Rownd platform is encrypted at rest on disk and in transit, but this does not afford the same privacy guarantees as data encrypted on a user's local device. For especially sensitive data, we recommend enabling field-level encryption.
 
-> NOTE: Data encrypted on-device will not be accessible by you, the app developer outside of the context of your app. In other words, your app can use encrypted data in its plaintext (decrypted) form while the user is signed in, but you won't be able to retrieve that data from the Rownd servers in a decrypted form. 
+> NOTE: Data encrypted on-device will not be accessible by you, the app developer outside of the context of your app. In other words, your app can use encrypted data in its plaintext (decrypted) form while the user is signed in, but you won't be able to retrieve that data from the Rownd servers in a decrypted form.
 
 In some cases, you may want to encrypt data on-device that you'll send to your own servers for storage. Rownd provides convenience methods to encrypt and decrypt that data with the same user-owned key.
 
 ### Rownd.user.encrypt(data: String) -> String
+
 Encrypts the provided String `data` using the user's symmetric encryption key and returns the ciphertext as a string. You can encrypt anything that can be represented as a string (e.g., Int, Dictionary, Array, etc), but it's currently up to you to get it into a string format first.
 
 ### Rownd.user.decrypt(data: String) -> String
+
 Attempts to decrypt the provided String `data`, returning the plaintext as a string. If the data originated as some other type (e.g., Dictionary), you'll need to decode the data back into its original type.
-```

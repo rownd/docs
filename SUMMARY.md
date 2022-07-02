@@ -23,10 +23,9 @@
   * [.NET Core](sdk-reference/web/.net-core.md)
   * [WordPress / WooCommerce](sdk-reference/web/wordpress-woocommerce.md)
 * [Mobile](sdk-reference/mobile/README.md)
+  * [iOS](sdk-reference/mobile/ios.md)
   * [React Native](sdk-reference/mobile/react-native.md)
 
 ***
 
 * [REST API](api.md)
-* [Import](import/README.md)
-  * [Rownd SDK for iOS](import/rownd-sdk-for-ios.md)

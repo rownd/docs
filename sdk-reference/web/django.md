@@ -71,7 +71,7 @@ The Rownd Django SDK provides support for both "traditional" Django apps where y
 
 When using an SPA framework like React, Vue, or similar, you'll likely want to leverage the specific Rownd SDK for those frameworks. You can find a list of supported frameworks in [our documentation](https://docs.rownd.io/rownd/sdk-reference/web).
 
-Typically, an SPA will use an API-driven request/response flow which makes typical sessions unnecessary (though Rownd supports them if you need them). We highly recommend the [Django REST framework](https://www.django-rest-framework.org) for this purpose. Rownd provides plug-and-play support for the REST framework's authentication API.
+Typically, an SPA will use an API-driven request/response flow which makes typical sessions unnecessary (though Rownd supports them if you need them). We highly recommend the [Django REST framework](https://www.django-rest-framework.org/) for this purpose. Rownd provides plug-and-play support for the REST framework's authentication API.
 
 Here's an example of how you might configure an API to leverage Rownd's authenticator, given the installation instructions above:
 
