@@ -1,4 +1,4 @@
-# Add Data Types
+# Add data types
 
 ### Add Data Type
 
