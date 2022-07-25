@@ -1,6 +1,6 @@
 ---
 description: >-
-  The Rownd Platform gives everything you need to add customizable
+  The Rownd platform gives everything you need to add customizable
   authentication to your product
 ---
 

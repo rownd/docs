@@ -1,5 +1,5 @@
 ---
-description: Build a user's profile with selected data types in the Platform
+description: Build a user's profile with selected data types in the platform
 ---
 
 # Data Types
