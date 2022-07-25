@@ -5,6 +5,10 @@
 ## Guides
 
 * [🚀 Getting started](guides/getting-started.md)
+* [🎛 Configuration](guides/configuration/README.md)
+  * [Data Types](guides/configuration/data-types/README.md)
+    * [Add Data Types](guides/configuration/data-types/add-data-types.md)
+    * [Edit Data Types](guides/configuration/data-types/edit-data-types.md)
 * [🔌 Integrations](guides/integrations/README.md)
   * [Airtable](guides/integrations/airtable.md)
   * [Firebase - Realtime Database](guides/integrations/firebase-realtime-database/README.md)
