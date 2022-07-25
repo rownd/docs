@@ -6,9 +6,9 @@
 
 * [🚀 Getting started](guides/getting-started.md)
 * [🎛 Configuration](guides/configuration/README.md)
-  * [Data Types](guides/configuration/data-types/README.md)
-    * [Add data types](guides/configuration/data-types/add-data-types.md)
-    * [Edit data types](guides/configuration/data-types/edit-data-types.md)
+  * [User profile structure](guides/configuration/user-profile-structure/README.md)
+    * [Add data types](guides/configuration/user-profile-structure/add-data-types.md)
+    * [Edit data types](guides/configuration/user-profile-structure/edit-data-types.md)
 * [🔌 Integrations](guides/integrations/README.md)
   * [Airtable](guides/integrations/airtable.md)
   * [Firebase - Realtime Database](guides/integrations/firebase-realtime-database/README.md)

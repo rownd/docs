@@ -2,7 +2,7 @@
 description: Build a user's profile with selected data types in the platform
 ---
 
-# Data Types
+# User profile structure
 
 Rownd collects and stores user profile data in its secure backend. Since every application is different, the data type editor provides a mechanism to define which information you need.
 
