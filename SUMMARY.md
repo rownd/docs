@@ -6,9 +6,10 @@
 
 * [🚀 Getting started](guides/getting-started.md)
 * [🎛 Configuration](guides/configuration/README.md)
-  * [User profiles](guides/configuration/user-profiles/README.md)
-    * [Add data types](guides/configuration/user-profiles/add-data-types.md)
-    * [Edit data types](guides/configuration/user-profiles/edit-data-types.md)
+  * [App credentials](guides/configuration/app-credentials.md)
+  * [User profiles](guides/configuration/user-profile-structure/README.md)
+    * [Add data types](guides/configuration/user-profile-structure/add-data-types.md)
+    * [Edit data types](guides/configuration/user-profile-structure/edit-data-types.md)
 * [🏛 Administration](guides/administration/README.md)
   * [Teams](guides/administration/teams.md)
 * [🔌 Integrations](guides/integrations/README.md)
