@@ -32,7 +32,7 @@ Once the invitation is sent, the new team member will show as **pending** until 
 
 Once they've accepted the invitation, the pending status will be removed.
 
-![](<../../.gitbook/assets/image (1).png>)
+![](<../../.gitbook/assets/image (1) (2).png>)
 
 ### Editing a team member's access
 

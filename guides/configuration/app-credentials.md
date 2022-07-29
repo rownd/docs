@@ -28,7 +28,7 @@ From the Rownd dashboard, select the application for which you want to generate 
 
 Click on the "Add app key" button on the right side of the screen. A new app key and secret are generated, then the **Edit app key** dialog is displayed, which contains the name of the app key, the key itself, and its associated secret.
 
-![The edit app key dialog](../../.gitbook/assets/image.png)
+![The edit app key dialog](<../../.gitbook/assets/image (12).png>)
 
 {% hint style="warning" %}
 Be sure to copy and store the app secret in a safe location, since it will be shown only once! Opening the "edit app key" dialog again will show a masked version of the secret.
