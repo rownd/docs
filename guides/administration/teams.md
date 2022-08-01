@@ -42,7 +42,7 @@ Click **Edit** next to the team member whose access you want to modify.
 
 Choose an updated **permission** level for the team member. Then click **save** to update.
 
-![](<../../.gitbook/assets/image (2).png>)
+![](<../../.gitbook/assets/image (2) (2).png>)
 
 ### Removing a team member
 

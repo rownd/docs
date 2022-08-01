@@ -22,7 +22,7 @@ You can revoke an app key and its associated secret at any time through the Rown
 
 From the Rownd dashboard, select the application for which you want to generate an app key, then select **Overview** from the side nav and click on **App keys** from the sub nav.
 
-![App keys are located in the overview section](<../../.gitbook/assets/image (7).png>)
+![App keys are located in the overview section](<../../.gitbook/assets/image (7) (1).png>)
 
 ### Creating a new app key
 
