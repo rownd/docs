@@ -14,6 +14,7 @@
   * [User profiles](guides/configuration/user-profile-structure/README.md)
     * [Add data types](guides/configuration/user-profile-structure/add-data-types.md)
     * [Edit data types](guides/configuration/user-profile-structure/edit-data-types.md)
+  * [Code Snippet](guides/configuration/code-snippet.md)
 * [🏛 Administration](guides/administration/README.md)
   * [Account](guides/administration/account.md)
   * [Teams](guides/administration/teams.md)
