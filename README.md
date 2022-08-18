@@ -20,8 +20,8 @@ Follow our handy guides to get started on the basics as quickly as possible:
 [getting-started.md](guides/getting-started.md)
 {% endcontent-ref %}
 
-{% content-ref url="guides/integrations/" %}
-[integrations](guides/integrations/)
+{% content-ref url="guides/configuration/integrations/" %}
+[integrations](guides/configuration/integrations/)
 {% endcontent-ref %}
 
 {% hint style="info" %}

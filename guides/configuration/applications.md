@@ -36,7 +36,7 @@ To create a new application:
 2. In the next screen, give your new application a name, description (optional), and logo (optional), and select "Create."
 3. Your newly created app will open to its Overview page&#x20;
 
-![Use the left application dropdown to start making a new Rownd application](../../.gitbook/assets/image.png)
+![Use the left application dropdown to start making a new Rownd application](<../../.gitbook/assets/image (29).png>)
 
 ![Give your application a name, description (optional), and logo (optional), and click "Create"](<../../.gitbook/assets/Create an application.png>)
 
@@ -47,7 +47,7 @@ If you have multiple Rownd applications, you can switch between them
 1. Use the application dropdown in the top left corner
 2. Navigate to a different application from the list of applications you have access to
 
-![Use the application switcher dropdown to switch between your apps ](<../../.gitbook/assets/image (4).png>)
+![Use the application switcher dropdown to switch between your apps ](<../../.gitbook/assets/image (4) (2).png>)
 
 Not seeing the application you're looking for?&#x20;
 
