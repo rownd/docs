@@ -33,6 +33,7 @@
 ## 📘 SDK reference
 
 * [Web](sdk-reference/web/README.md)
+  * [Angular](sdk-reference/web/angular.md)
   * [Javascript (browser)](sdk-reference/web/javascript-browser.md)
   * [React / Next.js](sdk-reference/web/react-next.js.md)
   * [Vue](sdk-reference/web/vue.md)
