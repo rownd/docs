@@ -8,7 +8,7 @@ iPhones are incredibly popular and when speed is the goal, using Apple ID makes 
 
 Toggle Sign in with Apple to "Allow for Authentication." &#x20;
 
-![](../../../.gitbook/assets/image.png)
+![](<../../../.gitbook/assets/image (30).png>)
 
 ### Configuration
 

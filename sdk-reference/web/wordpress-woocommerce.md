@@ -32,4 +32,4 @@ Once you install this plugin, drop your app key and secret into our settings and
 2. Click **Download** to grab the latest plugin `.zip` file.
 3. Extract the contents of the file into a folder called `rownd-accounts-and-authentication` within your `wp-content/plugins` folder. The naming here is important!
 4. Open your site's WordPress Admin dashboard, navigate to the plugin list, and click the **Activate** link in the row entitled "Rownd Accounts and Authentication."\
-   <img src="../../.gitbook/assets/image (26) (1).png" alt="" data-size="original">\
+   <img src="../../.gitbook/assets/image.png" alt="" data-size="original">\

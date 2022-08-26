@@ -13,7 +13,7 @@ Rownd email sign-in is one of the easiest ways to add authentication to a websit
 Toggle Email to "Allow for Authentication."  \
 
 
-![Sel](<../../../.gitbook/assets/image (3).png>)
+![Sel](<../../../.gitbook/assets/image (3) (2).png>)
 
 ### Configuration
 
