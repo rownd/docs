@@ -16,18 +16,57 @@ First, install the Rownd SDK for React Native.
 npm install @rownd/react-native
 ```
 
-Due to some native peer dependencies, you'll also need to run the following command to get modules with native code working properly.
+#### Android
+
+1. Ensure the Sdk versions match or are above provided versions. File: _android/build.gradle_
 
 ```bash
-npm install @gorhom/bottom-sheet @react-native-clipboard/clipboard \
-react-native-device-info react-native-gesture-handler react-native-mmkv \
-react-native-reanimated react-native-sha256 react-native-svg
+ext {
+  ...
+  minSdkVersion = 26
+  compileSdkVersion = 32
+  targetSdkVersion = 31
+  ...
+}
 ```
 
-Once those are installed, run this command to ensure the iOS build can find the native components.
+2\. Install the Rownd library and dependencies.
 
 ```bash
-npx pod-install
+cd android && ./gradlew build
+```
+
+#### iOS
+
+1. Ensure iOS version is at least 14. File: _ios/Podfile_
+
+```
+platform :ios, '14.0'
+```
+
+2\. Add the code below to install the Sodium pod dependency correctly. Place inside the target. File: _ios/Podfile_
+
+```
+dynamic_frameworks = ['Sodium']
+pre_install do |installer|
+  installer.pod_targets.each do |pod|
+    if dynamic_frameworks.include?(pod.name)
+      puts "Overriding the dynamic_framework? method for #{pod.name}"
+      def pod.dynamic_framework?;
+        true
+      end
+      def pod.build_type;
+        Pod::BuildType.dynamic_framework
+      end
+    end
+  end
+end
+```
+
+3\. Install the Rownd pod and it's dependencies
+
+```
+cd ios && pod install
 ```
 
 ### Setup
@@ -35,28 +74,6 @@ npx pod-install
 #### Enable deep linking
 
 Rownd supports automatically signing-in users when they initially install your app or when they click a sign-in link when the app is already installed.
-
-In order to enable the latter case, the Rownd SDK needs to know which URL triggered the app to launch, in case it was one of the special sign-in links.
-
-To enable this functionality, follow [the instructions for configuring a React Native app to receive deep links.](https://reactnative.dev/docs/linking)
-
-#### Add Gesture Handler
-
-Unless you already use `react-native-gesture-handler`, include it within your app's root, wrapping your component tree like this:
-
-```typescript
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
-// ...
-
-export default function Root() {
-  return (
-    <GestureHandlerRootView>
-      <App />
-    </GestureHandlerRootView>
-  );
-}
-```
 
 ### Usage
 
@@ -71,11 +88,9 @@ import { RowndProvider } from "@rownd/react-native";
 
 export default function Root() {
   return (
-    <GestureHandlerRootView>
       <RowndProvider appKey="<your app key>">
         <App />
       </RowndProvider>
-    </GestureHandlerRootView>
   );
 }
 ```
@@ -128,14 +143,8 @@ Trigger the Rownd sign in dialog
 ```typescript
 const { requestSignIn } = useRownd();
 
-requestSignIn({
-    auto_sign_in: false,                           // optional
-    identifier: 'me@company.com' || '+19105551212' // optional
-});
+requestSignIn();
 ```
-
-* `auto_sign_in: boolean` - when `true`, automatically trigger a sign-in attempt _if_ `identifier` is included or an email address or phone number has already been set in the user data.
-* `identifier: string` - an email address or phone number (in E164 format) to which a verification message may be sent. If the Rownd app is configured to allow unverified users, then sign-in will complete without verification if the user has not signed in previously.
 
 **signOut()**
 
@@ -153,12 +162,8 @@ Retrieves the active, valid access token for the current user.
 ```typescript
 const { getAccessToken } = useRownd();
 
-let accessToken = await getAccessToken({
-    waitForToken: false
-});
+let accessToken = await getAccessToken();
 ```
-
-* `waitForToken: boolean` - when `true`, if no access token is present or if it's expired, the promise will not resolve until a valid token is available. While unlikely, this could result in waiting forever.
 
 **is\_authenticated**
 
