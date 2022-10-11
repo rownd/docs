@@ -41,6 +41,7 @@
   * [Node.js](sdk-reference/web/node.js.md)
   * [.NET Core](sdk-reference/web/.net-core.md)
   * [WordPress / WooCommerce](sdk-reference/web/wordpress-woocommerce.md)
+  * [Ruby on Rails](sdk-reference/web/ruby-on-rails.md)
 * [Mobile](sdk-reference/mobile/README.md)
   * [iOS](sdk-reference/mobile/ios.md)
   * [React Native](sdk-reference/mobile/react-native.md)
