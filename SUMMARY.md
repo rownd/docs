@@ -12,6 +12,7 @@
     * [Mobile App Sign-in](guides/configuration/authentication-methods/mobile-app-sign-in.md)
     * [Phone Sign-in](guides/configuration/authentication-methods/phone-sign-in.md)
     * [Apple ID Sign-in](guides/configuration/authentication-methods/apple-id-sign-in.md)
+    * [Google Sign-in](guides/configuration/authentication-methods/google-sign-in.md)
   * [Code Snippet](guides/configuration/code-snippet.md)
   * [App credentials](guides/configuration/app-credentials.md)
   * [Customizations](guides/configuration/customizations/README.md)

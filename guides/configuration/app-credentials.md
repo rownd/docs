@@ -40,6 +40,6 @@ You can rename the app key to something that makes sense to you, then press **up
 
 If you want to delete or edit your app key, click on the three dots beneath the **action** column on the right side of the app keys table.
 
-![The app keys table showing edit and delete options](<../../.gitbook/assets/image (14).png>)
+![The app keys table showing edit and delete options](<../../.gitbook/assets/image (14) (1).png>)
 
 From the resulting menu, select **edit** to modify the name of the key (the key and secrets are immutable). Select **delete** to permanently revoke the key. It will no longer work.
