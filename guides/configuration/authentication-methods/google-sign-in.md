@@ -50,7 +50,8 @@ On the configuration screen, enter the following information
 
 * **Google Oauth Client ID** - Enter your OAuth web client ID that you created as the first prerequisite step
 * **Google OAuth Client Secret -** Enter the client secret associated with your OAuth web client ID
-* **Google iOS OAuth Client ID** - Enter your OAuth iOS client ID that you created as a prerequisite.&#x20;
+* **Google iOS OAuth Client ID** - Enter your OAuth iOS client ID that you created as a prerequisite
+* **Google OAuth Scopes** - (Optional) Enter additional OAuth scopes that you would like to request from the user during authentication. By default Rownd will request `email` and `profile`. Most of the time, you don't need to provide a value in this field.
 
 {% hint style="success" %}
 If you are using Rownd on an Android app, you do not need to configure anything in the Rownd platform. Google uses the package name and SHA-1 fingerprint that you provided when creating the OAuth client ID to authenticate your app.
