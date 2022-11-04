@@ -201,6 +201,7 @@ rownd.requestSignIn({
 
 * `auto_sign_in: boolean` - when `true`, automatically trigger a sign-in attempt _if_ `identifier` is included or an email address or phone number has already been set in the user data.
 * `identifier: string` - an email address or phone number (in E164 format) to which a verification message may be sent. If the Rownd app is configured to allow unverified users, then sign-in will complete without verification if the user has not signed in previously.
+* `post_login_redirect` - the location (URL or path on the current domain) to which a user will be redirected after successfully signing in.
 
 Sign out
 
