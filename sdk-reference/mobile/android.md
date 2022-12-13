@@ -1,3 +1,7 @@
+---
+description: Rownd bindings for native Android apps
+---
+
 # Android
 
 The Rownd SDK for Android provides authentication, account and user profile management, deep linking, encryption and more for native Android applications.
