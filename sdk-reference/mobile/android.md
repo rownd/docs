@@ -15,7 +15,7 @@ Once a user is authenticated, you can retrieve and update their profile informat
 In Android Studio, open your app's module-level `build.gradle` file and add the following dependency:
 
 ```groovy
-implementation 'io.rownd:android:1.6.0'
+implementation 'io.rownd:android:2.2.1'
 ```
 
 After adding, run a Gradle sync and the Rownd SDK/API should be available within your IDE.

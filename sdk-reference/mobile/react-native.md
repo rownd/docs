@@ -36,6 +36,15 @@ ext {
 cd android && ./gradlew build
 ```
 
+3\. Update your `proguard-rules.pro` file (if applicable) using these rules:
+
+```
+-dontwarn java.awt.*
+-keep class com.sun.jna.* { *; }
+-keepclassmembers class * extends com.sun.jna.* { public *; }
+-keep public class * extends androidx.lifecycle.ViewModel {*;}
+```
+
 #### iOS
 
 1. Ensure iOS version is at least 14. File: _ios/Podfile_
