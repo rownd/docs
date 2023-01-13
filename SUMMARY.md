@@ -45,6 +45,7 @@
   * [Ruby on Rails](sdk-reference/web/ruby-on-rails.md)
 * [Mobile](sdk-reference/mobile/README.md)
   * [Android](sdk-reference/mobile/android.md)
+  * [Flutter](sdk-reference/mobile/flutter.md)
   * [iOS](sdk-reference/mobile/ios.md)
   * [React Native](sdk-reference/mobile/react-native.md)
 

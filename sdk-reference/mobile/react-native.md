@@ -36,14 +36,7 @@ ext {
 cd android && ./gradlew build
 ```
 
-3\. Update your `proguard-rules.pro` file (if applicable) using these rules:
-
-```
--dontwarn java.awt.*
--keep class com.sun.jna.* { *; }
--keepclassmembers class * extends com.sun.jna.* { public *; }
--keep public class * extends androidx.lifecycle.ViewModel {*;}
-```
+3\. Check and update your ProGuard config using [the rules from our Android SDK](https://github.com/rownd/android/blob/main/README.md#proguard-config).
 
 #### iOS
 
