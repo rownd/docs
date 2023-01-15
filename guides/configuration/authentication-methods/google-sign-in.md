@@ -36,6 +36,10 @@ If you are adding Rownd to an Android app, you'll need one more OAuth client ID.
 
 For detailed instructions check out this [documentation](https://support.google.com/cloud/answer/6158849?hl=en#zippy=%2Cnative-applications%2Candroid)
 
+{% hint style="warning" %}
+When using React Native with Google Sign-in, the SHA-1 fingerprint will be the **debugAndroidTest** variant. The fingerprint can be found by running: `cd android && ./gradlew signingReport.`
+{% endhint %}
+
 ### Enabling Google Sign-in
 
 Once you have completed the prerequisites, you can configure Rownd to enable Google Sign-in.
