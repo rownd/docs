@@ -1,0 +1,219 @@
+---
+title: "Angular"
+---
+
+#### Installation
+
+Run `npm install @rownd/angular` or `yarn add @rownd/angular`
+
+### Usage
+
+The library provides an Angular Module and Service for dependency injection.
+
+In the main app.module.ts file, add the Rownd module. You'll also need to
+include the `@ngrx/store` module as well, as Rownd will drive state updates
+through it.
+
+```jsx
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { StoreModule } from '@ngrx/store';
+import { RowndModule, RowndService } from '@rownd/angular';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    StoreModule.forRoot({}),
+    RowndModule.forRoot({ appKey: '<your_app_key>' }),
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {
+  // Load the Rownd Service into your app
+  constructor(private rownd: RowndService) {}
+}
+```
+
+#### Module params
+
+```jsx
+import { Component } from '@angular/core';
+import { RowndService } from '@rownd/angular';
+
+@Component({
+  selector: 'protected-component',
+  templateUrl: 'protected.component.html',
+  styleUrls: ['protected.component.scss'],
+})
+export class ProtectedComponent {
+
+  constructor(private rownd: RowndService) {
+    // Subscribe to Rownd isAuthenticated observable
+    this.rownd.isAuthenticated$.subscribe({
+      next(auth) {
+        console.log("is Authenticated: ", auth)
+      }
+    });
+
+    // Subscribe to Rownd User Data observable
+    this.rownd.user$.subscribe({
+      next(user) {
+        console.log("user: ", user)
+      }
+    });
+  }
+
+  signIn() {
+    this.rownd.requestSignIn();
+  }
+
+  signOut() {
+    this.rownd.signOut();
+  }
+}
+```
+
+#### API Reference
+
+**requestSignIn()**
+
+Trigger the Rownd sign-in dialog. This accepts an optional parameter with
+options to control the behavior of the sign in. See our
+[SDK Docs](https://docs.rownd.io/rownd/sdk-reference/web/javascript-browser#authentication)
+for a full list of supported options.
+
+```jsx
+import { Component } from '@angular/core';
+import { RowndService } from '@rownd/angular';
+
+@Component({
+  selector: 'my-component',
+  template: `<ng-container *ngIf="(this.rownd.isAuthenticated$ | async) === false">
+      <button expand="block" (click)="requestSignIn()">Sign in</button>
+    </ng-container>`,
+})
+export class MyComponent {
+  constructor(private rownd: RowndService) {}
+
+  requestSignIn() {
+    this.rownd.requestSignIn({
+      auto_sign_in: true,
+      identifier: '+19199998181',
+      post_login_redirect: '/dashboard'
+    });
+  }
+}
+```
+
+- `auto_sign_in`: boolean - when true, automatically trigger a sign-in attempt
+  if identifier is included or an email address or phone number has already been
+  set in the user data.
+
+- `identifier`: string - an email address or phone number (in E164 format) to
+  which a verification message may be sent. If the Rownd app is configured to
+  allow unverified users, then sign-in will complete without verification if the
+  user has not signed in previously.
+
+- `post_login_redirect`: string - at the conclusion of a successful sign in,
+  Rownd will redirect the user here. This can be a path on the current domain or
+  a full URL.
+
+**signOut()**
+
+Signs out the current user and clears their profile, returning them to a
+completely unauthenticated state.
+
+```jsx
+import { Component } from '@angular/core';
+import { RowndService } from '@rownd/angular';
+
+@Component({
+  selector: 'my-component',
+  template: `<ng-container *ngIf="this.rownd.isAuthenticated$ | async">
+      <button expand="block" (click)="signOut()">Sign out</button>
+    </ng-container>`,
+})
+export class MyComponent {
+  constructor(private rownd: RowndService) {}
+
+  signOut() {
+    this.rownd.signOut()
+  }
+}
+```
+
+**getAccessToken()**
+
+Get the current user's access token.
+
+```jsx
+await this.rownd.getAccessToken({ waitForToken: true });
+```
+
+- `waitForToken`: boolean - when true, if no access token is present or if it's
+  expired, the promise will not be resolved until a valid token is available.
+  While unlikely, this could result in waiting forever.
+
+**isAuthenticated$**
+
+An observable boolean that indicates whether the user is currently signed in.
+
+```jsx
+import { Component } from '@angular/core';
+import { RowndService } from '@rownd/angular';
+
+@Component({
+  selector: 'my-component',
+  template: '<ng-container *ngIf="this.rownd.isAuthenticated$ | async">You're signed in!</ng-container>
+})
+export class MyComponent {
+  constructor(private rownd: RowndService) { }
+}
+```
+
+**user$**
+
+An observable object that represents information about the current user,
+specifically their profile information. The schema will match whatever you
+define in the Rownd Platform. See our
+[documentation](https://docs.rownd.io/rownd/guides/configuration/user-profiles)
+for more information on configuring this schema.
+
+```jsx
+import { Component } from '@angular/core';
+import { RowndService } from '@rownd/angular';
+
+Component({
+  selector: 'my-component',
+  template: '<div>Hello, {{(this.rownd.user$ | async)?.first_name}}</div>
+})
+export class MyComponent {
+  constructor(private rownd: RowndService) { }
+}
+```
+
+**isInitializing$**
+
+An observable boolean that will be `true` until Rownd has fully loaded and
+resolved the current user's authentication status. This usually takes only a few
+milliseconds, but if you make decisions that depend on the `isAuthenticated$`
+value while `isInitializing$` is still `true`, your code/logic may not work as
+you expect.
+
+```jsx
+import { Component } from '@angular/core';
+import { RowndService } from '@rownd/angular';
+
+Component({
+  selector: 'my-component'
+})
+export class MyComponent {
+  constructor(private rownd: RowndService) { }
+
+  // isInitializing$ is an observable
+  this.rownd.isInitializing$
+}
+```
