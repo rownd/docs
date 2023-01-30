@@ -1,0 +1,187 @@
+---
+title: "Examples: Defining user data locations"
+---
+
+User data can exist in various locations throughout a database. The following
+are some examples of various scenarios and how to define the user data locations
+appropriately.
+
+### User Data Stored in a Single Location
+
+If your user data is stored under a single database path, defining the user data
+locations is quite simple.
+
+#### Example Database
+
+```json
+{
+  "users": {
+    "user1": {
+      "email": "john@gmail.com",
+      "first_name": "John",
+      "last_name": "Doe"
+    },
+    "user2": {
+      "email": "jane@gmail.com",
+      "first_name": "Jane",
+      "last_name": "Doe"
+    }
+  },
+
+  "otherData": {}
+}
+```
+
+#### User Data Location
+
+- Path: `/users`
+
+- Foreign Key: _not required_
+
+- Reference: _not required_
+
+The `Foreign Key` and `Reference` are not required since the user data is stored
+in one location. There are no other locations in the database that reference
+this path or contain additional personal data.
+
+### User data stored in multiple locations
+
+When user data is stored in multiple locations in the database, you will use a
+combination of all three location fields `Path`, `Foreign Key`, and `Reference`.
+The following example will help you see how and when to use the two different
+types of `Foreign Key` values.
+
+#### Example Database
+
+```json
+{
+  "users": {
+    "user123": {
+      "first_name": "John",
+      "last_name": "Doe"
+    }
+  },
+  "addresses": {
+    "user123": {
+      "street": "1974 Wolfpack Ln",
+      "city": "Raleigh",
+      "state": "NC",
+      "zip": "27608"
+    }
+  },
+  "emailVerification": {
+    "ev123": {
+      "email": "john@gmail.com",
+      "userId": "user123",
+      "verified": true
+    }
+  }
+}
+```
+
+#### User Data Locations
+
+For this example, we'll need to define several user data locations.
+
+- Path: `/users`
+
+- Foreign Key: _not required_
+
+- Reference: _not required_
+
+This location captures the database users the same way that we did it in the
+first example.
+
+- Path: `/addresses/{userId}`
+
+- Foreign Key: `{userId}`
+
+- Reference: `/users/{userId}`
+
+This location will capture the database addresses and connect that data back to
+the user objects. Notice that curly braces `{}` surround the `Foreign Key`. By
+convention, the curly braces tell Rownd that the value of the foreign key comes
+a path variable named `userId`.
+
+Rownd will search the database for user data on the `/addresses` path. In this
+example, it will find data at `/addresses/user123`. This will be the resolved
+path, and the resolved foreign key value will be `user123`. Rownd will replace
+`{userId}` in the `Reference` with `user123` and grab additional user data from
+`/users/user123`.
+
+The `Reference` value must always include the `Foreign Key`.
+
+- Path: `/emailVerification`
+
+- Foreign Key: `userId`
+
+- Reference: `/users/{userId}`
+
+This location will capture the user data stored under the `/emailVerification`
+path. The lack of surrounding curly braces in the `Foreign Key` tells Rownd to
+look for a corresponding _field_ within the database object at the resolved
+path.
+
+Rownd will search the database for user data on the `/emailVerification` path.
+In this example, it will find data at `/emailVerification/ev123`. At that path,
+Rownd will look for a field in the object named `userId`. It will find this
+document:
+
+```json
+{
+  "email": "john@gmail.com",
+  "userId": "user123",
+  "verified": true
+}
+```
+
+In this case, the resolved foreign key value will be `user123`. Rownd will
+replace the `userId` field in the `Reference` with `user123` and look for
+additional user data on the `/users/user123` path.
+
+### Using a wildcard path
+
+There are cases where you may not know the exact path to user data because it is
+stored under an arbitrary or unique field like an ID. In such a case, you can
+use the `*` wildcard character in the `Path`. You can only use the wildcard
+character once in a path, but it can be a powerful tool. Here is an example.
+
+#### Example Database
+
+```json
+{
+  "users": {
+    "user123": {
+      "profile": {
+        "first_name": "John",
+        "last_name": "Doe"
+      }
+    },
+    "user456": {
+      "profile": {
+        "first_name": "Jane",
+        "last_name": "Doe"
+      }
+    }
+  }
+}
+```
+
+Notice that the actual user data is stored within the `profile` key of the users
+objects. To explicitly define paths for this user data, you would have to define
+two user data locations:
+
+- `/users/user123/profile`
+
+- `/users/user456/profile`
+
+That is unreasonable in a real-world scenario where you have thousands of users.
+To handle these use cases, you can define a path with the wildcard character
+like `/users/*/profile` to match all users and locate the data as existing in
+the `profile` child field.
+
+You can use the wildcard character `*` and a foreign key in the path. For
+example, you could define a `Path` as `/orgs/*/users/{userId}` where `{userId}`
+is the `Foreign Key.`
+
+You can also use wildcards in `Reference` values.

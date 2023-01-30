@@ -1,37 +1,17 @@
-# What is Rownd?
+# Rownd Documentation
 
-Rownd is a user authentication and account platform that helps you convert more visitors to your website into actual (paying) customers.
+The content and configuration powering the documentation available at [docs.dev.rownd.io](https://docs.dev.rownd.io)
 
-We're focused on passwordless sign-in that uses email and SMS as a means of distributing authentication links that allow users to verify their email/phone after they've had the opportunity to explore your product or service.
+### 👩‍💻 Development
 
-{% hint style="info" %}
-Many website visitors get close to trying out your product, but are deterred by a sign up or registration process that asks for too much information (e.g., name, email address, password, etc).
+Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
 
-While social login (e.g., Google or Facebook) is often seen as a solution to this problem, it can also be a deterrent to visitors that might not want their profile information transmitted to you before they trust your company.
+```
+npm i mintlify -g
+```
 
-Rownd helps you build lasting relationships with your users without extra work on your part.
-{% endhint %}
+Run the following command at the root of your documentation (where mint.json is)
 
-### Guides: Jump right in
-
-Follow our handy guides to get started on the basics as quickly as possible:
-
-{% content-ref url="guides/getting-started.md" %}
-[getting-started.md](guides/getting-started.md)
-{% endcontent-ref %}
-
-{% content-ref url="guides/configuration/integrations/" %}
-[integrations](guides/configuration/integrations/)
-{% endcontent-ref %}
-
-{% hint style="info" %}
-**Good to know:** Rownd isn't just for authentication! We can help you manage the lifecycle of all of your users' account data. This helps your account and support teams stay in sync with your customers so they have the most accurate information for every interaction.
-{% endhint %}
-
-### SDK reference
-
-If you're ready to get Rownd up and running on your own sites and apps, dive into our SDKs.
-
-{% content-ref url="sdk-reference/web/" %}
-[web](sdk-reference/web/)
-{% endcontent-ref %}
+```
+mintlify dev
+```
