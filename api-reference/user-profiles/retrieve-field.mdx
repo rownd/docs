@@ -1,0 +1,28 @@
+---
+title: "Retrieve one field from a user profile"
+api:
+  "GET
+  https://api.rownd.io/applications/{app}/users/{user}/data/fields/{field}?preview=string&fail_on_error=string"
+---
+
+### Query Parameters
+
+<ParamField query="preview" type="string">
+  Return an image thumbnail of the resource
+</ParamField>
+
+<ParamField query="fail_on_error" type="string">
+  Return a 403 status code if the field is unshared by the user
+</ParamField>
+
+### Path Parameters
+
+<ParamField path="app" type="string" />
+
+<ParamField path="user" type="string" />
+
+<ParamField path="field" type="string" />
+
+### Response attributes
+
+<ResponseField name="value" type="string" />

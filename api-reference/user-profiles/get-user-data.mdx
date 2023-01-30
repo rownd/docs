@@ -1,0 +1,27 @@
+---
+title: "Get user profile data"
+api:
+  "GET https://api.rownd.io/applications/{app}/users/{user}/data?fields=string"
+---
+
+### Query Parameters
+
+<ParamField query="fields" type="string" />
+
+### Path Parameters
+
+<ParamField path="app" type="string" />
+
+<ParamField path="user" type="string" />
+
+### Response attributes
+
+<ResponseField name="rownd_user" type="string" />
+
+<ResponseField name="data" type="object" />
+
+<ResponseField name="redacted" type="[string]" />
+
+<ResponseField name="revoke_after" type="object" />
+
+<ResponseField name="retain_until" type="object" />
