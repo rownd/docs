@@ -116,6 +116,7 @@
         {
           "group": "Mobile",
           "pages": [
+            "sdk-reference/mobile/android",
             "sdk-reference/mobile/ios",
             "sdk-reference/mobile/react-native"
           ]
