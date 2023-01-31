@@ -10,6 +10,11 @@
     "light": "#B4B4FF",
     "dark": "#1B025F"
   },
+  "analytics": {
+    "gtm": {
+      "tagId": "GTM-5VCR8GF"
+    }
+  },
   "topbarCtaButton": {
     "name": "Try it Now",
     "url": "https://app.rownd.io"
