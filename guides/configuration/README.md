@@ -6,4 +6,4 @@ description: >-
 
 # 🎛 Configuration
 
-![Screenshot of applications page on the Rownd Platform](<../../.gitbook/assets/Screen Shot 2022-07-22 at 4.26.13 PM (1).png>)
+![Screenshot of applications page on the Rownd Platform](<../../.gitbook/assets/Screen Shot 2022-07-22 at 4.26.13 PM (1) (2).png>)

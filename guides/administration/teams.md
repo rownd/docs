@@ -10,23 +10,23 @@ First, sign into your Rownd account, click on the dropdown menu on the top right
 
 ![](<../../.gitbook/assets/image (20).png>)
 
-On the **Team** page, click I**nvite team member**.&#x20;
+On the **Team** page, click I**nvite team member**.
 
-![](<../../.gitbook/assets/image (11).png>)
+![](<../../.gitbook/assets/image (11) (1).png>)
 
 Enter the new team member's **email** **address** and choose the **level of access** to grant. There are three different **permission** levels:
 
-* **Editor:** Can add and edit applications **** but cannot invite team members or modify account settings.
+* **Editor:** Can add and edit applications \*\*\*\* but cannot invite team members or modify account settings.
 * **Admin:** Full account control over apps, team members, billing, etc.
 * **View-only:** Can view most aspects of the platform but cannot make any changes.
 
-![](<../../.gitbook/assets/image (15).png>)
+![](<../../.gitbook/assets/image (15) (1).png>)
 
 Click **Save** to send the invitation. Your team member will receive an email containing a link that will automatically sign them into Rownd and prompt them to accept or decline the invitation to join your account.
 
 ![](<../../.gitbook/assets/image (25).png>)
 
-Once the invitation is sent, the new team member will show as **pending** until they've accepted the invitation.&#x20;
+Once the invitation is sent, the new team member will show as **pending** until they've accepted the invitation.
 
 ![](<../../.gitbook/assets/image (28).png>)
 
