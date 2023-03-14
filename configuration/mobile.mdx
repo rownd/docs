@@ -1,31 +1,45 @@
 ---
-title: "Mobile App Sign-in"
+title: "Mobile apps"
 ---
 
-#### Mobile App Sign-in overview
+Rownd makes it simple to add authentication to your mobile apps built natively or using multiplatform frameworks like React Native and Flutter.
 
-Mobile app sign-in creates a golden path for mobile app download. Instead of losing context when a user goes to download an app, in the Rownd-led flow, they sign-up, authenticate, download the app, and are automatically signed in. The user profile data is already configured and they can start interacting with the app. 
+Using Rownd, you can enable a golden path for mobile app download and user conversion. Instead of losing context when a user downloads your app, Rownd seamlessly guides them through registration, app install, and automagic authentication. The user profile data is already present so you can immediately start personalizing the user experience.
 
-Note: The [Rownd Mobile SDK](/rownd/sdk-reference/mobile) must be installed to use this method. 
+<Info>
+A [Rownd Mobile SDK](/sdk-reference/mobile) must be installed in your app to use this feature.
+</Info>
 
-![](/images/image.png)
+### Configuration
 
-#### Configuration 
+To enable mobile app authentication, you must first configure your mobile app details in the Rownd dashboard.
 
-##### Set up Mobile app and App Store details
+1. Select **Sign-in methods** from the left navigation menu.
+2. In the Sign-in preferences section, locate **Mobile app sign-in**
+3. Press **Enable**.
 
-iOS Mobile App
+If this is your first time configuring mobile app sign-in, you will be prompted to provide some details about your app.
 
-* App Store URL: Link to the App in the Apple App Store
+#### Set mobile subdomain
 
-* Bundle IDs:
+Rownd provides a customizable, unique subdomain for each mobile-enabled app. This subdomain is used to steer users to the correct app when they click on a link in an email or SMS message. If your app is already installed on the user's device, the subdomain will cause the app to open automatically when users click on the link.
 
-* Team ID:
+1. Enter a subdomain name in the **Subdomain** field. (e.g., `myapp` for `myapp.rownd.link` - the `.rownd.link` portion is added automatically).
 
-Android Mobile App
+#### Provide app details
 
-* Play Store URL: Link to the App in the Google play store
+Configuration information is needed for your app on a per-platform basis. Press the toggle next to the platforms your app supports (e.g., iOS and Android).
 
-* Package Name:
+For each platform, provide the requested information in the available fields.
 
-* Sha256\_cert Fingerprints:
+##### iOS apps
+
+- App store URL - The direct link to your app in the Apple App Store
+- Bundle IDs - A comma-separated list of bundle IDs for your app (e.g., `com.example.myapp`)
+- Team ID - The team ID for your app as shown in the Apple Developer Portal (e.g., `1234567890`)
+
+##### Android apps
+
+- Play store URL - The direct link to your app in the Google Play Store
+- Package name - The package name for your app as shown in the Google Play Console (e.g., `com.example.myapp`)
+- SHA256 certificate fingerprints - For dev/test apps signed locally or manually, obtain the SHA256 hash from your keystore. For apps distributed through the Google Play Store that use automatic signing, obtain the SHA256 hash from the Google Play Console.

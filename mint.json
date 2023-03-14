@@ -60,12 +60,12 @@
           "pages": [
             "configuration/authentication-methods/overview",
             "configuration/authentication-methods/email",
-            "configuration/authentication-methods/mobile",
             "configuration/authentication-methods/phone-sms",
             "configuration/authentication-methods/apple",
             "configuration/authentication-methods/google"
           ]
         },
+        "configuration/mobile",
 
         "configuration/code-snippet",
         "configuration/app-credentials",
