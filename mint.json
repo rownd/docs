@@ -45,7 +45,10 @@
   "navigation": [
     {
       "group": "Welcome",
-      "pages": ["getting-started"]
+      "pages": [
+        "welcome/overview",
+        "welcome/getting-started"
+      ]
     },
     {
       "group": "Configuration",
@@ -55,11 +58,12 @@
         {
           "group": "Authentication Methods",
           "pages": [
-            "configuration/authentication-methods/email-sign-in",
-            "configuration/authentication-methods/mobile-app-sign-in",
-            "configuration/authentication-methods/phone-sign-in",
-            "configuration/authentication-methods/apple-id-sign-in",
-            "configuration/authentication-methods/google-sign-in"
+            "configuration/authentication-methods/overview",
+            "configuration/authentication-methods/email",
+            "configuration/authentication-methods/mobile",
+            "configuration/authentication-methods/phone-sms",
+            "configuration/authentication-methods/apple",
+            "configuration/authentication-methods/google"
           ]
         },
 
@@ -107,6 +111,7 @@
         {
           "group": "Web",
           "pages": [
+            "sdk-reference/web/overview",
             "sdk-reference/web/angular",
             "sdk-reference/web/javascript--browser",
             "sdk-reference/web/react---next-js",
@@ -121,6 +126,7 @@
         {
           "group": "Mobile",
           "pages": [
+            "sdk-reference/mobile/overview",
             "sdk-reference/mobile/android",
             "sdk-reference/mobile/flutter",
             "sdk-reference/mobile/ios",
