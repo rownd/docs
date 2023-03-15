@@ -16,13 +16,13 @@
     }
   },
   "topbarCtaButton": {
-    "name": "Try it Now",
+    "name": "Dashboard",
     "url": "https://app.rownd.io"
   },
   "topbarLinks": [
     {
-      "name": "Sign in",
-      "url": "https://app.rownd.io/applications"
+      "name": "Website",
+      "url": "https://rownd.io"
     }
   ],
   "anchors": [
@@ -143,6 +143,15 @@
       ]
     },
     {
+      "group": "Authentication",
+      "pages": [
+        "api-reference/authentication/overview",
+        "api-reference/authentication/retrieve-jwk",
+        "api-reference/authentication/retrieve-oidc",
+        "api-reference/authentication/create-magic-link"
+      ]
+    },
+    {
       "group": "User Profiles",
       "pages": [
         "api-reference/user-profiles/list-user-profiles",
@@ -154,14 +163,6 @@
         "api-reference/user-profiles/retrieve-field",
         "api-reference/user-profiles/update-field",
         "api-reference/user-profiles/retrieve-data-policies"
-      ]
-    },
-    {
-      "group": "Authentication",
-      "pages": [
-        "api-reference/authentication/retrieve-jwk",
-        "api-reference/authentication/retrieve-oidc",
-        "api-reference/authentication/create-magic-link"
       ]
     }
   ],
