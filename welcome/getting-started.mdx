@@ -28,7 +28,20 @@ involves a few steps:
 3. After the app is created, a Javascript code snippet will be generated. Click
    the copy button to store it in your clipboard.
 
-### Deploy the Rownd snippet to your websites
+### Installing Rownd on your websites
+
+The Rownd code snippet is a short block of javascript that you can embed into your site to enable Rownd contextual authentication. Once embedded, the snippet allows Rownd to handle user authentication, fetch user data, enforce [automations](/configuration/automations), and much more. 
+
+Embedding the snippet will also display the Rownd Hub in the bottom left-hand corner of your website by default. Users can click on the Hub to view their profile information, sign out, and perform other account management actions. If you provide access to these actions through other elements of your UX, the Hub can be hidden.
+
+#### Finding your snippet
+
+You can find the snippet in the [Rownd Platform](https://app.rownd.io).
+
+1. Select the **Code** item from the left navigation menu.
+2. Press the **Copy** icon in the top right corner of the code box beneath **HTML snippet**.
+
+#### Deploying the snippet
 
 After copying the code snippet, you'll need to add it to your website(s). Most
 website builder software or content management systems (CMS) have an option to
@@ -36,7 +49,7 @@ embed "custom HTML" or "custom code" in your site's pages. We usually recommend
 placing the snippet just before the closing `</body>` tag.
 
 Here are links to instructions for a few popular hosting providers. See our
-[JavaScript SDK reference](/web/javascript) for more details. ​​
+[JavaScript SDK reference](/sdk-reference/web/javascript--browser) for more details.
 
 - [Netlify](https://docs.netlify.com/site-deploys/post-processing/snippet-injection/)
 - [Squarespace](https://support.squarespace.com/hc/en-us/articles/205815908)
@@ -55,8 +68,14 @@ next—personalization included.
 
 Additionally, if you're deploying back-end code to servers or are using a serverless platform like [Cloudflare Workers](https://workers.cloudflare.com/), [AWS Lambda](https://aws.amazon.com/lambda/), or [Vercel](https://vercel.com) to implement custom logic, you'll likely need to accept and validate Rownd authentication tokens. Leverage our selection of [back-end SDKs](/web) to easily handle this use case.
 
+#### Further configuration and customization
+
+See the [configuration guide](/configuration) for information on customizing authentication flows and behaviors to fit your needs.
+
+Consult the [JavaScript SDK reference](/sdk-reference/web/javascript--browser) to learn how Rownd can help personalize your website's user experience.
+
+We care about design! [Learn how you can customize the look and feel](/configuration/customizations/global-style) of Rownd's embedded components.
+
 ### Getting help
 
-The Rownd team is on call to answer questions, provide guidance, and help you
-every step of the way! [Get in touch](https://rownd.io/contact) if you need
-assistance for any reason.
+The Rownd team is on call to answer questions, provide guidance, and help you every step of the way! [Get in touch](https://rownd.io/contact) if you need assistance for any reason.

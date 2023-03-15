@@ -56,7 +56,7 @@
         "configuration/overview",
         "configuration/applications",
         {
-          "group": "Authentication Methods",
+          "group": "Authentication methods",
           "pages": [
             "configuration/authentication-methods/overview",
             "configuration/authentication-methods/email",
@@ -67,7 +67,6 @@
         },
         "configuration/mobile",
 
-        "configuration/code-snippet",
         "configuration/app-credentials",
         {
           "group": "Customizations",
@@ -76,20 +75,14 @@
             "configuration/customizations/email-customization"
           ]
         },
-        {
-          "group": "User profiles",
-          "pages": [
-            "configuration/user-profiles/add-data-types",
-            "configuration/user-profiles/edit-data-types"
-          ]
-        },
+        "configuration/user-profiles",
         {
           "group": "Integrations",
           "pages": [
             "configuration/integrations/overview",
             "configuration/integrations/airtable",
             {
-              "group": "Integrations",
+              "group": "Firebase (Realtime Database)",
               "pages": [
                 "configuration/integrations/firebase---realtime-database",
                 "configuration/integrations/google-cloud-platform-requirements",
@@ -104,6 +97,20 @@
     {
       "group": "Administration",
       "pages": ["administration/account", "administration/teams"]
+    },
+    {
+      "group": "Security",
+      "pages": [
+        "security/overview",
+        {
+          "group": "Attack mitigation",
+          "pages": [
+            "security/attack-mitigation/overview",
+            "security/attack-mitigation/bot-detection",
+            "security/attack-mitigation/suspicious-ip-throttling"
+          ]
+        }
+      ]
     },
     {
       "group": "SDK Reference",
