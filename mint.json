@@ -106,7 +106,6 @@
           "group": "Attack mitigation",
           "pages": [
             "security/attack-mitigation/overview",
-            "security/attack-mitigation/bot-detection",
             "security/attack-mitigation/suspicious-ip-throttling"
           ]
         }
