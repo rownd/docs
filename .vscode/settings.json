@@ -1,0 +1,16 @@
+{
+    "[markdown]": {
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 120,
+        "editor.rulers": [
+          120
+        ],
+      },
+      "[mdx]": {
+        "editor.wordWrap": "bounded",
+        "editor.wordWrapColumn": 120,
+        "editor.rulers": [
+          120
+        ],
+      }
+}
