@@ -62,7 +62,8 @@
             "configuration/authentication-methods/email",
             "configuration/authentication-methods/phone-sms",
             "configuration/authentication-methods/apple",
-            "configuration/authentication-methods/google"
+            "configuration/authentication-methods/google",
+            "configuration/authentication-methods/passkeys"
           ]
         },
         "configuration/mobile",
