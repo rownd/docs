@@ -1,23 +1,37 @@
-Rownd can detect attacks and stop malicious attempts to access your application by blocking traffic from offending IPs, preventing SMS abuse attacks, and utilizing advanced (and invisible) human-verification technology.  
+---
+title: "Rownd Security"
+sidebarTitle: "Overview"
+description:
+  "How Rownd protects your users. "
+---
+
+Rownd can detect attacks and stop malicious attempts to access your application by blocking traffic from offending IPs, preventing SMS abuse attacks, and utilizing advanced (and invisible) human-verification technology.
 
 We provide the following services automatically, since protecting user data and ensuring your app is always ready for new and returning users is part of our core platform.
 
-- Bot Detection
+- 100% Passwordless
 - Suspicious IP Throttling
 - Brute Force Protection
-- Breached Password Detection
-
-### How it works
-
-Rownd advocates for a multi-layered approach to combat abuse, using various signals to detect and prevent attacks. We deliver this automatically for all customers. There's no need to pay extra for peace of mind.
-
-| Feature | Attack signal | How it works |
-| --- | --- | --- |
-| [Bot Detection](/security/attack-mitigation/bot-detection) | Failure to invisibly detect a legitimate human actor. | Uses multiple signals and invisible cryptographic challenges from end-user clients to determine whether they are legitimate. |
-| [Suspicious IP Throttling](/security/attack-mitigation/suspicious-ip-throttling) | Rate of sign in attempts from a client. | Automatically throttles clients that try to sign up or sign in too quickly. Also automatically de-duplicates emails and text messages from similar sign-in attempts to reduce costs. |
-| Brute Force Protection | N/A | Passwordless means reduced risk brute-force attacks. |
-| Breached Password Detection | N/A | Passwordless means no breached passwords. |
+- Domain Allow-listing
+- Data Encryption
 
 ### Why passwordless matters
 
-Rownd is 100% passwordless.  Most users re-use passwords.  You can set complex password rules and encourage the use of unique passwords, but a vast majority ignore those recommendations.  Passwordless user-expereicnes are better and more secure.  Apps and companies that use passwords as a primary factor of authentication should strongly reconsider as they are putting themselves and their customers at risk.  
+Rownd is 100% passwordless. Most users re-use passwords, which increases the risk of data breaches and exposes users to various threats. Complex password rules and recommendations for unique passwords are often ignored, making it even more crucial to consider a passwordless solution.
+
+Passwordless authentication reduces the risks associated with traditional password-based authentication, such as brute force attacks, phishing attacks, and breached password databases. This approach not only enhances security but also provides a better user experience.
+
+Apps and companies that still rely on passwords as a primary factor of authentication should strongly reconsider their approach, as they put themselves and their customers at risk. By adopting Rownd's passwordless solution, you can ensure a secure and user-friendly authentication experience.
+
+
+### Preventing fake users, phishing, and breaches
+
+Rownd advocates for a multi-layered approach to combat abuse, using various signals to detect and prevent attacks. We deliver this automatically for all customers. There's no need to pay extra for peace of mind.  
+
+| Feature | Attack signal/vector | How it works |
+| --- | --- | --- |
+| [Suspicious IP Throttling](/security/attack-mitigation/suspicious-ip-throttling) | Rate of sign in attempts from a client. | Automatically throttles clients that try to sign up or sign in too quickly. Also automatically de-duplicates emails and text messages from similar sign-in attempts to reduce costs. |
+| Brute Force Protection | N/A | Passwordless means reduced risk of brute-force attacks. |
+| Passwordless Sign-in | Breached passwords | Passwordless means no breached passwords. |
+| [Domain Allow-listing](/security/attack-mitigation/domain-allow-list) | Credential hijacking | Rownd provides a domain allow-list option, creating a critical extra layer of security. Every customer should use this in production. |
+| Data Encryption | In-transit data capture | Rownd uses encryption in databases and adheres to state-of-the-industry best practices, such as SSL, database encryption, and other techniques to secure user data. |

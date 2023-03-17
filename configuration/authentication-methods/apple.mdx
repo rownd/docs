@@ -3,15 +3,33 @@ title: "Sign in with Apple"
 sidebarTitle: "Apple ID"
 ---
 
+Sign in with Apple offers a fast, secure, and privacy-focused method for users to sign in to their accounts on your website and mobile apps. By leveraging the Apple ecosystem, this feature enables users to authenticate using their existing Apple ID without having to create a new account or remember an additional password.
+
+When enabled, users can take advantage of the strong security and privacy features provided by the Apple platform, including two-factor authentication and email private relay. By offering this sign-in method, you can streamline the authentication process for your users and reduce barriers to entry, resulting in an improved user experience.
+
+In addition to its ease of use and enhanced security, Sign in with Apple complies with various privacy regulations, helping you maintain compliance and protect your users' data. By providing a trustworthy and user-friendly authentication option, you can attract more users to your platform and foster trust in your services.
+
+
+## Configuring Sign in with Apple
+
 Using Rownd to add "Sign in with Apple" to your app is quick and easy, usually requiring no code changes. Our implementation supports iOS, Android, and web clients so no matter how your users are accessing your app or service, they can always sign in with their method of choice.
 
 To enable Sign-in with Apple, complete the following steps.
 
+#### Configuring Xcode and an Apple Services ID
+
 1. If you're developing an iOS or macOS app, enable the **Sign in with Apple** capability in Xcode. [See Apple's documentation for more information.](https://developer.apple.com/documentation/xcode/adding-capabilities-to-your-app)
 2. Create an [Apple Services ID](https://developer.apple.com/account/resources/identifiers/list/serviceId) for your app. Note the identifier for use in the next step. Ensure that this Callback URL is set within the Services ID: `https://api.rownd.io/hub/auth/apple/callback`
-3. On the [Rownd dashboard](https://app.rownd.io), navigate to the **Sign in with Apple** authentication method and press **Configure**.
-4. Enter the Services ID that you created in Step 1
-5. Ensure the **Allow for authentication** switch is turned on.
-6. Press **save.**
+
+#### Configuring Rownd
+
+Now, open your app in the [Rownd platform](https://app.rownd.io/applications). Then click on the **Sign-in methods** tab on the left to adjust your flow.
+
+![Finding authentication methods is easy; just select "Sign-in methods" from the nav pane.](/images/sign-in-methods-1.png)
+
+1. Locate the **Sign in with Apple** authentication method and press **Enable**.
+2. Enter the Services ID that you created in the previous section.
+3. Ensure the **Allow for authentication** switch is turned on.
+4. Press **Save.**
 
 That's it! Your app and/or website is now ready to handle sign-in requests for users with an Apple ID.

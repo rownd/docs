@@ -62,7 +62,8 @@
             "configuration/authentication-methods/email",
             "configuration/authentication-methods/phone-sms",
             "configuration/authentication-methods/apple",
-            "configuration/authentication-methods/google"
+            "configuration/authentication-methods/google",
+            "configuration/authentication-methods/passkeys"
           ]
         },
         "configuration/mobile",
@@ -106,7 +107,7 @@
           "group": "Attack mitigation",
           "pages": [
             "security/attack-mitigation/overview",
-            "security/attack-mitigation/bot-detection",
+            "security/attack-mitigation/domain-allow-list",
             "security/attack-mitigation/suspicious-ip-throttling"
           ]
         }
