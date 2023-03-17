@@ -1,33 +1,31 @@
 ---
 title: "Mobile app configuration in the platform"
-sidebarTitle: "Mobile Apps"
-description: "Configure mobile apps in Rownd with ease.  "
+sidebarTitle: "Mobile apps"
+description: "Configure mobile apps in Rownd with ease."
 ---
 
-## Introduction to Mobile Apps in Rownd
+Rownd supports React-native, Flutter, and native iOS and Android apps. After integrating Rownd's simple SDKs, you just need a few pieces of information to create powerful, universal sign-in links.  
 
-Rownd supports React-native, Flutter, and native iOS and Android apps.  After integrating Rownd's simple SDKs, you just need a few pieces of information to create powerful universal sign-in links.  
+Rownd's universal Sign-in Links provide a seamless and user-friendly authentication solution for mobile apps by allowing users to be directed to the app and signed in automatically. This innovative feature streamlines the authentication process, eliminating the need for users to remember passwords or manually enter credentials within the app.
 
-Rownd's Universal Sign-in Links provide a seamless and user-friendly authentication solution for mobile apps by allowing users to be directed to the app and signed in automatically. This innovative feature streamlines the authentication process, eliminating the need for users to remember passwords or manually enter credentials within the app.
+By utilizing universal Sign-in Links, users receive a unique, one-time-use link via their preferred communication method, such as email or SMS. Upon clicking the link, users are automatically directed to the mobile app and are signed into their account, providing a frictionless user experience.
 
-By utilizing Universal Sign-in Links, users receive a unique, one-time-use link via their preferred communication method, such as email or SMS. Upon clicking the link, users are automatically directed to the mobile app and signed into their account, providing a frictionless user experience.
-
-Integrating Rownd's Universal Sign-in Links into your mobile app simplifies the authentication process for your users, reduces the barriers to entry, and promotes higher user engagement. By offering an efficient and secure authentication method, you can foster trust in your app, enhance user satisfaction, and ultimately, achieve greater success with your mobile app.
+Integrating Rownd's universal Sign-in Links into your mobile app simplifies the authentication process for your users, reduces the barriers to entry, and promotes higher user engagement. By offering an efficient and secure authentication method, you can foster trust in your app, enhance user satisfaction, and ultimately, achieve greater success with your mobile app.
 
 <Info>
 A [Rownd Mobile SDK](/sdk-reference/mobile) must be installed in your app to use this feature.
 </Info>
 
-### What are Universal Links
-Universal Links are a powerful technology that enables deep linking to specific content within a mobile app or, if the app is not installed, directs the user to their mobile device's specific app store. This versatile feature provides a seamless user experience by bridging the gap between web content and native apps.
+### What are universal links?
+Universal links are a powerful technology that enables deep linking to specific content within a mobile app or, if the app is not installed, directs the user to their mobile device's specific app store. This versatile feature provides a seamless user experience by bridging the gap between web content and native app content.
 
-When a user clicks on a Universal Link, the operating system checks whether the app associated with the link is installed on the device. If the app is installed, the user is directed to the specified content within the app. If the app is not installed, the user is redirected to the appropriate app store (Apple App Store for iOS devices or Google Play Store for Android devices) to download the app.
+When a user clicks on a universal link, the operating system checks whether the app associated with the link is installed on the device. If the app is installed, the user is directed to the specified content within the app. If the app is not installed, the user is redirected to the appropriate app store (the Apple App Store for iOS devices or the Google Play Store for Android devices) to download the app.
 
-Universal Links offer several benefits for both users and developers:
+Universal links offer several benefits for both users and developers:
 
-Simplified user experience: By directing users to the relevant content or app store, Universal Links create a more streamlined and intuitive user journey, which can lead to increased user engagement and retention.
-Improved conversion rates: By reducing friction in the user experience and lowering the barriers to entry, Universal Links can help boost conversion rates for app installations and user sign-ups.
-Enhanced security: Universal Links are more secure than traditional custom URL schemes, as they rely on the app's domain and can only be used by the associated app, reducing the risk of phishing attacks or unauthorized access.
+- **Simplified user experience** - By directing users to the relevant content or app store, universal links create a more streamlined and intuitive user journey, which can lead to increased user engagement and retention.
+- Improved conversion rates** - By reducing friction in the user experience and lowering the barriers to entry, universal links can help boost conversion rates for app installations that lead to user sign-ups.
+- **Enhanced security** - Universal links are more secure than legacy custom URL schemes, as they rely on the app's domain and can only be used by the associated app, thus reducing the risk of phishing attacks or unauthorized access.
 
 ### Configuration
 
@@ -64,4 +62,3 @@ For each platform, provide the requested information in the available fields.
 - Play store URL - The direct link to your app in the Google Play Store
 - Package name - The package name for your app as shown in the Google Play Console (e.g., `com.example.myapp`)
 - SHA256 certificate fingerprints - For dev/test apps signed locally or manually, obtain the SHA256 hash from your keystore. For apps distributed through the Google Play Store that use automatic signing, obtain the SHA256 hash from the Google Play Console.
-

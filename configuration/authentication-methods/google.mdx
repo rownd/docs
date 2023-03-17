@@ -4,10 +4,10 @@ sidebarTitle: "Google"
 description: "Turn on the Google authentication method to allow users to sign in with their
 Google accounts on your website and mobile apps."
 ---
-## Introduction to sign-in with Google
-Sign in with Google is a widely-used and secure authentication method that allows users to quickly sign in to their accounts on your website and mobile apps using their existing Google accounts. By offering this option, you can simplify the authentication process for your users, eliminating the need for them to create a new account or remember an additional password.
 
-Integrating Sign in with Google streamlines the user experience, as millions of people worldwide already have Google accounts for services like Gmail, Google Drive, and YouTube. By leveraging the familiar Google ecosystem, you can lower the barriers to entry for your platform and potentially increase user engagement.
+Sign in with Google is a widely-used, secure authentication method that allows users to quickly sign in to their accounts on your website and mobile apps using their existing Google accounts. By offering this option, you can simplify the authentication process for your users, eliminating the need for them to create a new account or remember an additional password.
+
+Integrating Sign in with Google streamlines the user experience, as millions of people worldwide already have Google accounts for services like Gmail, Google Drive, and YouTube. By leveraging the familiar Google ecosystem, you can lower the barrier to entry for your platform and potentially increase user engagement.
 
 In terms of security, Google provides robust measures such as two-factor authentication, helping protect users' accounts from unauthorized access. Furthermore, integrating Sign in with Google can help you comply with various privacy regulations and safeguard your users' data.
 
@@ -65,40 +65,31 @@ For detailed instructions check out this
 Once you have completed the prerequisites, you can configure Rownd to enable
 Google Sign-in.
 
-Navigate to the [Rownd Platform](https://app.rownd.io), and make sure your
-desired application is chosen in the application switcher.
+1. Navigate to the [Rownd Platform](https://app.rownd.io), and select your
+desired application is from the application switcher.
+2. Select the **Sign-in methods** option on the left to adjust your flow.
 
-## Navigate to Authentication Methods
+   ![Finding authentication methods is easy; just select "Sign-in methods" from the nav pane.](/images/sign-in-methods-1.png)
 
-Open your app in the [Rownd platform](https://app.rownd.io/applications). Then click on the **Sign-in methods** tab on the left to adjust your flow.
+3. Scroll down to view the authentication methods, and click **Enable** next to
+**Google**.
 
-![Finding authentication methods is easy; just select "Sign-in methods" from the nav pane.](/images/sign-in-methods-1.png)
+4. On the configuration screen, enter the following information:
 
-Scroll down to view the authentication methods, and click **Configure** next to
-**Google**
+   - **Google OAuth Client ID** \- Enter your OAuth web client ID that you created as the first prerequisite step
 
-![Google sign in method in the Rownd Platform](/images/Screen20Shot202022-10-1120at201.26.4020PM.png)
+   - **Google OAuth Client Secret -** Enter the client secret associated with your OAuth web client ID
 
-On the configuration screen, enter the following information
+   - **Google iOS OAuth Client ID** \- Enter your OAuth iOS client ID that you created as a prerequisite
 
-- **Google OAuth Client ID** \- Enter your OAuth web client ID that you created
-  as the first prerequisite step
+   - **Google OAuth Scopes** \- (Optional) Enter additional OAuth scopes that you would like to request from the user during authentication. By default Rownd will request `email` and `profile`. Most of the time, you don't need to provide a value in this field.
 
-- **Google OAuth Client Secret -** Enter the client secret associated with your
-  OAuth web client ID
-
-- **Google iOS OAuth Client ID** \- Enter your OAuth iOS client ID that you
-  created as a prerequisite
-
-- **Google OAuth Scopes** \- (Optional) Enter additional OAuth scopes that you
-  would like to request from the user during authentication. By default Rownd
-  will request `email` and `profile`. Most of the time, you don't need to
-  provide a value in this field.
-
+<Note>
 If you are using Rownd on an Android app, you do not need to configure your
 Android Client ID in the Rownd platform. Google uses the package name and SHA-1
 fingerprint that you provided when creating the OAuth client ID to authenticate
 your app.
+</Note>
 
 #### One Last thing for iOS Apps
 
@@ -117,19 +108,20 @@ URL scheme. You'll need to define this inside your XCode project settings.
    this value will look something like:
    `com.googleusercontent.apps.422565757208-05dqvvigck1qgqg9b58piodfhqb55h90`
 
-That's it! In the end, it should look like this:
+That's it!
 
-![](/images/image.png)
 
-You'll need to publish this new version of your app before turning on Google
-Sign-in in the Rownd Platform.
+<Warning>
+Your iOS app with the above changes needs to be published to the App Store _before_ enabling Sign in with Google in the Rownd platform. If you want to enable Sign in with Google on Android and web before your app update has been reviewed by Apple, remove the **iOS Client ID** from the Rownd platform configuration. When your app update goes live, restore the **iOS Client ID** in the Rownd platform.
+</Warning>
+
 
 ### Finishing up
 
 At this point, you're all done! Make sure you save the Google configuration
 inside of the Rownd Platform. When you are ready to turn it on, click the toggle
 to enable Google Sign-in. Your users will then see a new option in the Rownd
-sign in dialog to continue with Google.
+sign-in dialog to continue with Google.
 
 ![](/images/image.png)
 
