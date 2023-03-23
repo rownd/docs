@@ -67,8 +67,14 @@
           ]
         },
         "configuration/mobile",
-
         "configuration/app-credentials",
+        {
+          "group": "Web3",
+          "pages": [
+            "configuration/web3/near-overview",
+            "configuration/web3/near-examples"
+          ]
+        },
         {
           "group": "Customizations",
           "pages": [

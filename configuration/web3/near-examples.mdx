@@ -1,0 +1,55 @@
+---
+title: "Examples"
+sidebarTitle: "Examples"
+description: "Integrate Rownd with NEAR blockchain to provide secure wallet management and user-friendly wallet interactions for your users."
+---
+
+<Note>
+This is a limited beta feature. Please [contact us](mailto:support@rownd.io?subject=Please%20enable%20NEAR) if you're interested in using it.
+</Note>
+
+The Rownd NEAR integration ensures that all of your users have a NEAR account either automatically or on-dmand. 
+
+### Trigger an implicit account creation
+
+If you wish to control when NEAR implicit accounts are created for your users, you can opt for the "on-demand" creation 
+strategy. This improves sign-up time since Rownd does not have to wait for the execution of on-chain contract calls to
+complete. You will need to manually ensure that an implicit account exists for a user.
+
+You can execute the following SDK call to ensure an implicit account exists
+
+<CodeGroup>
+```javascript Javascript
+// accountId = "12a734486c485767d02a4747487573e69889a92618c4890328b0a18c6320898cd2"
+const accountId = await window.rownd.near.ensureImplicitAccount();
+```
+
+```sh cURL
+# Invoke the 'near.ensure-implicit-account` with the user's Rownd access token
+curl 'https://api.rownd.io/hub/connection_action' \
+  -H 'authorization: Bearer <USERS_BEARER_TOKEN>' \
+  -H 'content-type: application/json' \
+  --data-raw '{"action_type":"near.ensure-implicit-account"}'
+
+# Result:
+# {
+#     "action_type": "ensure-implicit-account",
+#     "result": "success",
+#     "data": {
+#         "near_implicit_account_id": "3df96ef4be51736d4d76f23c801954f72e8421a7751d4e2c44bc7cee35576a70"
+#     }
+# }
+```
+</CodeGroup>
+
+### Prompt a user for named account creation
+
+This call will open a dialog prompting the user to enter a name prior to creating the NEAR account. This name will end
+with `.rownd.near` by default. For instance, if a user specifies `my-account-1`, the full account name will be
+`my-account-1.rownd.near`. Work with the Rownd support team if you would like to change this account name suffix to
+another value.
+
+```javascript Javascript
+window.rownd.enear.createNamedAccount();
+```
+

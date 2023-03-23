@@ -1,6 +1,6 @@
 ---
 title: "Rownd Integration with NEAR"
-sidebarTitle: "NEAR"
+sidebarTitle: "Overview"
 description: "Integrate Rownd with NEAR blockchain to provide secure wallet management and user-friendly wallet interactions for your users."
 ---
 
@@ -18,6 +18,12 @@ The integration offers the following features:
    When the integration is configured, Rownd will automatically create a NEAR wallet for each user. This eliminates the need for users to manually create a wallet, streamlining the onboarding process and making it more user-friendly.  
 
    ![Automatic wallet creation placeholder](/images/automatic-wallet-creation-placeholder.png)
+
+- **On-Demand wallet creation**<br />
+   The integration can be configured so that a NEAR wallet is not created automatically upon user sign-in. In this
+   configuration, you can manually trigger the creation of the NEAR wallet at any point. See our [examples page](/configuration/web3/near-examples).
+
+   ![Automatic wallet creation placeholder](/images/on-demand-wallet-creation-placeholder.png)
 
 - **Secure private key storage**<br />
    Rownd securely stores the private key associated with each user's NEAR wallet using double encryption. This ensures that the private key remains safe from unauthorized access, providing a high level of security for users' assets.
@@ -62,3 +68,26 @@ To set up the Rownd NEAR integration, follow these steps:
 
 Now, your Rownd NEAR integration is set up and ready to be used by your users.
 
+## Data Type Updates
+
+After attachhing the NEAR integration to your application, Rownd will add the following fields to your application
+data types. Fields marked "Encrypted" are stored encrypted in the Rownd database and only visible to the users.
+
+<ParamField path="near_implicit_account_id" type="string">
+  The implicit NEAR account ID
+</ParamField>
+<ParamField path="near_implicit_private_key" type="string (Encrypted)">
+  The implicit private key
+</ParamField>
+<ParamField path="near_implicit_seed_phrase" type="string (Encrypted)">
+  The implicit seed phrase
+</ParamField>
+<ParamField path="near_named_account_id" type="string">
+  The named NEAR account ID
+</ParamField>
+<ParamField path="near_named_private_key" type="string (Encrypted)">
+  The named NEAR private key
+</ParamField>
+<ParamField path="near_named_seed_phrase" type="string (Encrypted)">
+  The named NEAR seed phrase
+</ParamField>
