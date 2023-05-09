@@ -13,6 +13,8 @@ In terms of security, Google provides robust measures such as two-factor authent
 
 By incorporating Sign in with Google into your authentication options, you can enhance user convenience, improve security, and foster trust in your platform.
 
+**New Feature: Google One-Tap**  Like the name implies, Google One-tap is a streamlined authentication system that allows users to sign in to websites and apps with just one tap on their device. With One-tap, users can sign in quickly and easily, without having to remember a password or manually enter any credentials.  Our users see an instant increase in sign-ups with Google One-Tap
+
 ## Prerequisites
 
 Before you turn on Google Sign-in, you'll need to do a few things in the Google
@@ -90,6 +92,21 @@ Android Client ID in the Rownd platform. Google uses the package name and SHA-1
 fingerprint that you provided when creating the OAuth client ID to authenticate
 your app.
 </Note>
+
+## Enabling Google One-Tap
+Google One-tap is a streamlined authentication system that allows users to sign in to websites and apps with just one tap on their device. With One-tap, users can sign in quickly and easily, without having to remember a password or manually enter any credentials. One-tap is designed to simplify the login process and improve the user experience, while also providing strong security features such as two-factor authentication and anti-phishing protections.
+
+### Set up:
+1. Pre-requisit: Ensure Google is set up as described above. 
+2. Click the Google oen-tap checkbox
+3. Set the prompt timer for when the one-tap to show up. This may require some experimentationm, since too early can be a bother and too late may seem out of place.  We default it to 7 seconds, but your particular website or app may require different settings. 
+4. Update changes. 
+
+![Configuring Google One Tap is easy image.](/images/google-one-tap.png)
+<Note>
+Google one-tap has a cool down period that is enforced by Google. If the end-user clicks the x button, the modal will not pop up again for between 7-60 minutes.  When testing this feature, be aware that if you do not login and exit the Google one-tap modal, the popup will not automatically be triggered again. 
+</Note>
+
 
 #### One Last thing for iOS Apps
 
