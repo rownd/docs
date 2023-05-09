@@ -1,0 +1,53 @@
+---
+title: "JWT Token Validator"
+sidebarTitle: "Existing JWT Token"
+---
+
+## JWT Token Validator
+
+Rownd's JWT token validator allows you to authenticate a JSON Web Token (JWT) issued by another authentication provider and exchange it with a Rownd JWT token. This feature is useful when transitioning to Rownd and you have users that you don't want to log out or when moving between contexts, such as when your app is embedded in a customer's app.
+
+
+## Why it's important
+
+### Keep users logged in
+
+When transitioning to Rownd's adaptive authenitcation, it may be important to keep your existing users logged-in when Rownd goes live. The Rownd's JWT token validator allows you to take your users' tokens or refresh tokens and validate them, so you don't have to force your users to log in due to an upgrade in your authentication providor.  
+
+### Moving between apps
+
+If your app is embedded in one of your customers' app, the customer's app may already have authenticated the user and issued a JWT token. Rownd's JWT token validator allows you to validate the existing JWT token and extract a user ID so that the user can continue using your app without any friction.
+
+
+## How to set it up
+
+To set up the JWT token validator, you'll need to configure your authentication provider to issue a JWT token that Rownd can validate. 
+
+**Note:** If you do not see "intergrations", please contact the Rownd support team at support@rownd.io and we will enable access. 
+
+### Generic setup
+
+To set up the JWT token validator with a generic authentication provider, follow these steps:
+
+1. Go to integrations
+2. Enter the API endpoint for token validation and API specifics. 
+![JWT Token Validator Setup Image](/images/token-validation-setup.png)
+3. Attach it to an application
+
+Coming soon:
+   
+1. Obtain the public key of the authentication provider. This key is used to sign the JWT token.
+2. Rownd will trust the public key of the authentication provider.
+
+
+### Firebase setup
+
+If you're using Firebase as your authentication provider, Rownd provides a separate integration. Follow these steps:
+
+1. Navigate to Integrations
+2. Click on the Firebase Authenticaiton integration
+3. Login to your firebase account and give Rownd scoped access to JWT validation. 
+
+When Rownd is fully implemented, your users will not have to "relogin" and Rownd will automatically create users inside of Rownd for them.  
+
+For more information on setting up the JWT token validator, please reach out to support@rownd.io. 
