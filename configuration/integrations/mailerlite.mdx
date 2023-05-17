@@ -2,11 +2,11 @@
 title: "MailerLite"
 ---
 
-The Rownd integration for MailerLite makes it easy create a new subscriber or update an existing one.
+The Rownd integration for MailerLite makes it easy to keep your subscriber list in sync. The integration will automatically create a new subscriber or update an existing one in your MailerLite account.
 
 #### Setup
 
-[Rownd dashboard.](https://app.rownd.io)
+[The MailerLite integration can be enabled from the Rownd dashboard.](https://app.rownd.io)
 
 1. From the menu, select **Integrations.**
 
@@ -41,6 +41,29 @@ The dialog should indicate that the integration was created successfully. Now th
 
 #### Attach to an application
 
+1. From the Integrations table, click the overflow icon on your new Integration
+   and select **Attach to application**
 
+2. Choose the application from the selector and click **Next**
 
+![Attaching your connection to an application](/images/integration_mailerlite_attach.png)
+
+3. Map data between the Rownd application and your new Integration
+
+![Mapping your data fields](/images/integration_mailerlite_fields.png)
+
+<note>
+A mapping for the `email` field is required. Rownd uses this field to identify
+and search for existing subscribers in your MailerLite account.
+
+Rownd can only manage fields for which you have provided a mapping.
+</note>
+
+4. Click **Save.**
+
+After a moment, the attached application should appear in the row next to the
+connection. Once this occurs, data updates should begin flowing through the
+integration.
+
+![Mailerlite connection attached to an application](/images/integration_mailerlite_done.png)
 
