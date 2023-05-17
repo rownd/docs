@@ -96,6 +96,7 @@
                 "configuration/integrations/examples--defining-user-data-locations"
               ]
             },
+            "configuration/integrations/mailerlite",
             "configuration/integrations/webhooks"
           ]
         }
