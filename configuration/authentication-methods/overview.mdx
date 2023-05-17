@@ -11,12 +11,33 @@ Rownd offers a range of authentication options to maximize both product flexibil
 
 Open your app in the [Rownd platform](https://app.rownd.io/applications). Then click on the **Sign-in methods** tab on the left to adjust your flow.
 
-![Finding authentication methods is easy; just select "Sign-in methods" from the nav pane.](/images/sign-in-methods-1.png)
+![Finding authentication methods is easy; just select "Sign-in methods" from the nav pane.](/images/Sign-in-methods-page.png)
 
 ## Available authentication methods
 You can use any combination of the following authentication methods:
 
-- [Passkeys](./passkeys) - Passwordless sign-in with a passkey
+<CardGroup cols={4}>
+  <Card title="[Passkeys](./passkeys)" icon="fingerprint" color="#cbaaff">
+    Passwordless sign-in with a passkey
+  </Card>
+  <Card title="[Email](./email)" icon="email" color="#0285c7">
+    Passwordless email sign-in
+  </Card>
+  <Card title="[Phone / SMS](./phone-sms)" icon="cell-phone" color="#cbaaff">
+    Passwordless SMS-based sign-in
+  </Card>
+  <Card title="[Apple ID](./apple)" icon="square-4" color="#cbaaff">
+    Fast sign-in with Apple ID
+  </Card>
+   <Card title="[Google account](./google)" icon="square-4" color="#cbaaff">
+    Fast sign-in with a Google account
+  </Card>
+    <Card title="Crypto / wallet sign in" icon="square-4" color="#cbaaff">
+    [Get in touch with us](https://rownd.io/contact) to enable wallet sign-in for your app.
+  </Card>
+</CardGroup>
+
+<!-- - [Passkeys](./passkeys) - Passwordless sign-in with a passkey
 - [Email](./email) - Passwordless email sign-in
 - [Phone / SMS](./phone-sms) - Passwordless SMS-based sign-in
 - [Apple ID](./apple) - Fast sign-in with Apple ID
@@ -24,15 +45,11 @@ You can use any combination of the following authentication methods:
 - **Crypto / wallet sign-in** - When detected, sign-in using Metamask, Coinbase, etc.
   <Info>
     [Get in touch with us](https://rownd.io/contact) to enable wallet sign-in for your app.
-  </Info>
+  </Info> -->
 
 ## Adaptive sign-in with Rownd
 
 Rownd's adaptive sign-in feature offers a tailored authentication experience for users by adapting the sign-in method depending on the user's device. This versatile approach ensures the most convenient and secure authentication option is presented, enhancing the user experience and promoting increased user engagement.
-
-<video src="/images/dynamic-demo.mp4" autoPlay muted loop>
-  Your browser does not support the video tag.
-</video>
 
 ### Device-specific sign-in methods
 
@@ -41,6 +58,22 @@ Rownd's adaptive sign-in can detect the user's device and adjust the available a
 - **Biometric authentication:** Rownd utilizes passkey technology to automatically utilize whatever biometric featuers a device has.  For devices with biometric capabilities, such as fingerprint or facial recognition, Rownd can offer these secure and convenient methods as authentication options.
 - **Device-based authentication:** For users with device-specific accounts (e.g., Apple ID or Google accounts), Rownd can present the option to sign in using these platform-specific accounts.
 - **SMS or email authentication:** For devices without biometric or device-based options, Rownd can provide authentication via SMS or email, sending a unique, one-time-use login link to the user's mobile device or email address.
+
+### Customizing Sign in methods by device on the Rownd platform 
+- **Navigate to the Sign in methods tab:** After installing Rownd with a code snippet or SDK, navigate to the sign in methods tab in the Rownd Platform.
+![Check out the sign in methods tab.](/images/Sign-in-methods-page.png)
+- **Configure [mobile app settings](configuration/mobile.mdx):** If you have a mobile app, configure your Google, Apple and mobile settings to get started. This will ensure proper deep linking to your mobile apps with your new customizations.
+![Configure mobile app settings](/images/Mobile-app-settings2.png)
+- **Customize sign in method orders by device:** Select the device type at the top (Desktop, iOS, Android), drag, drop, prioritize, and hide methods until you’re liking your customizations for each device type. We recommend prioritizing Apple sign in on iOS devices and prioritizing Google sign in on Android devices.
+![Customize the order and visability by device.](/images/iOS-customize-sign-in-method.png)
+- **Test it out:** Save and try out your new customizations in your app! Continue to iterate based on on the way your users are signing in.
+
+<!-- <video src="/images/Sign-in-method-order-by-device.mp4" autoPlay muted loop>
+  Your browser does not support the video tag.
+</video> -->
+
+<div style="position: relative; padding-bottom: 54.60060667340748%; height: 0;"><iframe src="https://www.loom.com/embed/3bd720b73a3443e9ad9fdfa6269f3914" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+
 
 ### Benefits of adaptive sign-in
 
