@@ -104,7 +104,7 @@
     {
       "group": "Administration",
       "pages": ["administration/account", "administration/teams"]
-    },
+    }, 
     {
       "group": "Security",
       "pages": [
