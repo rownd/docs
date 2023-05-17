@@ -13,6 +13,11 @@ In terms of security, Google provides robust measures such as two-factor authent
 
 By incorporating Sign in with Google into your authentication options, you can enhance user convenience, improve security, and foster trust in your platform.
 
+<Tip>
+  **New Feature: Google One Tap**
+  As the name implies, Google One Tap is a streamlined authentication option that allows users to sign in to websites and apps with just one tap on their device if they're already signed-in to a Google account. With One Tap, users can sign in quickly and easily, without having to remember a password, manually enter any credentials, or leave your product. Our customers typically see an instant increase in sign-ups when Google One Tap is enabled.
+</Tip>
+
 ## Prerequisites
 
 Before you turn on Google Sign-in, you'll need to do a few things in the Google
@@ -91,12 +96,27 @@ fingerprint that you provided when creating the OAuth client ID to authenticate
 your app.
 </Note>
 
-#### One Last thing for iOS Apps
+## Enabling Google One Tap
+Google One Tap is a streamlined authentication system that allows users to sign in to websites and apps with just one tap on their device. With One Tap, users can sign in quickly and easily, without having to remember a password or manually enter any credentials. One Tap is designed to simplify the sign-in process and improve the user experience, while also providing strong security features such as two-factor authentication and anti-phishing protections.
+
+### Set up:
+1. Pre-requisite: Ensure Google is configured as described above. 
+2. Click the Google One Tap checkbox
+3. If desired, adjust the **Prompt after** field to indicate how long the user should be on the page before being prompted to sign in. This may require some experimentation, since prompting too quickly might be bothersome, while delaying too long might cause the prompt to seem random or out of place. The default of seven seconds works well for many use cases, but your particular website or app may require different settings. 
+4. Presss **Update**, then press **Save** in the top left corner.
+
+![Configuring Google One Tap is easy.](/images/google-one-tap.png)
+<Note>
+Google One Tap has a cooldown period that is enforced by Google. If the end-user clicks the close button, the dialog will not appear for between 7 and 60 minutes.  When testing this feature, be aware that if intentionally close the Google One Tap dialog, the popup will not appear again until the cooldown period ends. 
+</Note>
+
+
+#### One last thing for iOS Apps
 
 When Google finishes signing in a user, it calls back into your app on a custom
 URL scheme. You'll need to define this inside your XCode project settings.
 
-1. Click on your project in XCode, and then select your app under **TARGETS**
+1. Click on your project in Xcode, and then select your app under **TARGETS**
 
 2. Next, go to the **Info** tab and scroll down to the bottom of the view where
    you see **URL Types**
