@@ -67,7 +67,14 @@
             "configuration/authentication-methods/existing-authentication"
           ]
         },
-        "configuration/mobile",
+        {
+          "group": "Mobile",
+          "pages": [
+            "configuration/mobile/overview",
+            "configuration/mobile/ios",
+            "configuration/mobile/android"
+          ]
+        },
         "configuration/app-credentials",
         {
           "group": "Web3",
