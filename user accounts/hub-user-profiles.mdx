@@ -1,0 +1,58 @@
+---
+title: "User profiles (STUB PLEASE EDIT!)"
+---
+
+Unlike other authentication platforms, Rownd provides an intelligent, customizable user profile system. This allows you to collect information about your users, and use it to personalize their experience. It also enables Rownd to handle more of the personalization for you, integrate with other tools you might use, and enforce rules about who can access or update profile data.
+
+We provide a number of built-in fields, but you can also create your own custom fields. You can also customize whether fields are "owned" by the end-user or by your app, which limits who can modify data in the field.
+
+### Managing the profile schema
+
+Rownd configures the most commonly used profile fields when an app is first created, but you can add to them, modify them, or remove them as needed.
+
+To manage the profile schema, open the [Rownd dashboard](https://app.rownd.io) and select **Data types** from the side navigation.
+
+#### Schema field options
+
+When adding or editing a field, the following options are available:
+
+- **Data type** - This is the name for the field that will be returned in programmatic operations (e.g., REST API responses). This is also used as the display name if one is not explicitly specified.
+- **Display name** - This is the name that will be displayed to end-users. If not specified, the data type will be used.
+- **Type** - This is the data type for the field. The following types are available:
+  - **String** - Accepts any text.
+  - **Number** - A numeric value.
+  - **Boolean** - A `true/false` value.
+  - **Image** - A binary blob representing an image. Represented as a URL in API responses.
+  - **Document** - A binary blob representing a document (e.g., PDF, DOC, etc). Represented as a URL in API responses.
+  - **Date** - A date value.
+  - **Object** - A flexible, schema-less JSON object (e.g., `{ "foo": "bar" }`).
+  - **Any** - Makes no assumptions about the data stored--could be anything.
+- **Required retention** - Sets the amount of time that data in the field must be retained. This is useful for fields that are required by law (e.g., GDPR requires that data be retained for 6 years). If not specified, data can be removed by the user at any time. _(Note: It is recommended to use this field only when absolutely necessary.)
+- **Data owner** - Specifies who owns the data in the field. If set to **User**, the end-user can modify the data in the field. If set to **Application**, the end-user can only view the data in the field, and the app is responsible for updating it.
+- **Visibility** (only applicable when "Data owner" is set to "Application") - Specifies who can view the data in the field. **Visible to users** indicates that the data is visible to the end-user in their profile. **Hidden from users** indicates that the data is only visible to the app when making server-to-server API requests (i.e., the app secret is present).
+
+
+#### Adding a new field
+
+1. On the data types page, press **Add data type**.
+2. From the **Data type** dropdown, select a built-in field or begin typing. If the field you want isn't in the list, you can create a custom field by typing in the desired name.
+3. Complete the rest of the form as desired (see [schema field options](#schema-field-options) for details).
+4. Press **Add** to save the new field.
+
+
+#### Editing an existing field
+
+1. On the data types page, locate the field you want to edit and click the three-dots icon on the right side of the table. Select **Edit** from the menu.
+2. Make any desired changes to the field (see [schema field options](#schema-field-options) for details) on the available options.
+3. Press **Save** to persist the changes and close the dialog.
+
+
+#### Deleting a field
+
+1. On the data types page, locate the field you want to edit and click the three-dots icon on the right side of the table. Select **Delete** from the menu.
+2. In the resulting dialog, verify that you are deleting the correct field, then press **Delete** to confirm.
+<Warning>
+Deleting a field from the schema does not automatically remove data for that field in each user's profile; however, it will be missing from any API responses.
+
+Regardless, be careful that you don't have code that depends on the presence of this field.
+</Warning>
