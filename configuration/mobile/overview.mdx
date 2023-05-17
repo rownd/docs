@@ -27,38 +27,15 @@ Universal links offer several benefits for both users and developers:
 - **Improved conversion rates** - By reducing friction in the user experience and lowering the barriers to entry, universal links can help boost conversion rates for app installations that lead to user sign-ups.
 - **Enhanced security** - Universal links are more secure than legacy custom URL schemes, as they rely on the app's domain and can only be used by the associated app, thus reducing the risk of phishing attacks or unauthorized access.
 
-### Configuration
+#### Configure by platform
 
-To enable mobile app authentication, you must first configure your mobile app details in the Rownd dashboard.
+See our step-by-step configuration guides for [iOS](/configuration/mobile/ios) and [Android](/configuration/mobile/android) for assistance in filling out this section.
 
-1. Select **Sign-in methods** from the left navigation menu.
-2. In the Sign-in preferences section, locate **Mobile app settings**
-3. Press **Enable**.
-
-![Configuring mobile apps only takes a few minutes.](/images/mobile-app-settings2.png)
-
-If this is your first time configuring mobile app sign-in, you will be prompted to provide some details about your app.
-
-#### Set mobile subdomain
-
-Rownd provides a customizable, unique subdomain for each mobile-enabled app. This subdomain is used to steer users to the correct app when they click on a link in an email or SMS message. If your app is already installed on the user's device, the subdomain will cause the app to open automatically when users click on the link.
-
-1. Enter a subdomain name in the **Subdomain** field. (e.g., `myapp` for `myapp.rownd.link` - the `.rownd.link` portion is added automatically).
-
-#### Provide app details
-
-Configuration information is needed for your app on a per-platform basis. Press the toggle next to the platforms your app supports (e.g., iOS and Android).
-
-For each platform, provide the requested information in the available fields.
-
-##### **iOS apps**
-
-- App store URL - The direct link to your app in the Apple App Store
-- Bundle IDs - A comma-separated list of bundle IDs for your app (e.g., `com.example.myapp`)
-- Team ID - The team ID for your app as shown in the [Apple Developer Portal](https://developer.apple.com/account) (e.g., `15GKOXA3H6`)
-
-##### **Android apps**
-
-- Play store URL - The direct link to your app in the Google Play Store
-- Package name - The package name for your app as shown in the Google Play Console (e.g., `com.example.myapp`)
-- SHA256 certificate fingerprints - For dev/test apps signed locally or manually, obtain the SHA256 hash from your keystore. For apps distributed through the Google Play Store that use automatic signing, obtain the SHA256 hash from the Google Play Console.
+<CardGroup cols={2}>
+  <Card title="iOS Configuration" icon="apple" href="/configuration/mobile/ios">
+    Configure mobile for iOS including React Native and Flutter
+  </Card>
+  <Card title="Android Configuration" icon="android" href="/configuration/mobile/android">
+    Configure mobile for Android including React Native and Flutter
+  </Card>
+</CardGroup>
