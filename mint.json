@@ -113,7 +113,7 @@
     {
       "group": "Administration",
       "pages": ["administration/account", "administration/teams"]
-    },
+    }, 
     {
       "group": "Security",
       "pages": [
@@ -132,21 +132,7 @@
     {
       "group": "SDK Reference",
       "pages": [
-        {
-          "group": "Web",
-          "pages": [
-            "sdk-reference/web/overview",
-            "sdk-reference/web/angular",
-            "sdk-reference/web/javascript--browser",
-            "sdk-reference/web/react---next-js",
-            "sdk-reference/web/vue",
-            "sdk-reference/web/django--python",
-            "sdk-reference/web/node-js",
-            "sdk-reference/web/net-core",
-            "sdk-reference/web/wordpress---woocommerce",
-            "sdk-reference/web/ruby-on-rails"
-          ]
-        },
+        "SDK-reference/overview",
         {
           "group": "Mobile",
           "pages": [
@@ -155,6 +141,30 @@
             "sdk-reference/mobile/flutter",
             "sdk-reference/mobile/ios",
             "sdk-reference/mobile/react-native"
+          ]
+        },
+        {
+          "group": "Web",
+          "pages": [
+            "sdk-reference/web/overview",
+            "sdk-reference/web/angular",
+            "sdk-reference/web/javascript--browser",
+            "sdk-reference/web/react---next-js",
+            "sdk-reference/web/vue",
+            "sdk-reference/web/wordpress---woocommerce",
+            "sdk-reference/web/ruby-on-rails"
+          ]
+        },
+        {
+          "group": "Backend / Server",
+          "pages": [
+            "sdk-reference/backend/overview",
+            "sdk-reference/web/node-js",
+            "sdk-reference/web/wordpress---woocommerce",
+            "sdk-reference/web/ruby-on-rails",
+            "sdk-reference/web/django--python",
+            "sdk-reference/web/net-core"
+
           ]
         }
       ]

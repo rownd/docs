@@ -2,80 +2,22 @@
 title: "Getting started"
 ---
 
-Deploying Rownd should be a relatively straightforward process. It typically
-involves a few steps:
+## 1. Sign up for the Rownd platform
+The Rownd platform is a self-service authentication center where you can configure the sign-up flow, authentication methods, the sign-up modals, app branding, and take care of user management all in one spot.
 
-- Select the initial user profile fields in the Rownd dashboard
-- Deploy the Rownd snippet to your websites
-- (optional) Add the Rownd SDK to front-end and back end apps/servers
+Open https://app.rownd.io to get started.  You'll have to sign in with Google or email. A starter app will be created for you.
 
-<Info>
-  By deploying Rownd to your main website, blog, docs, etc, you can begin
-  onboarding users even before having an app. For example, if you're creating a
-  waitlist for your product, Rownd can manage the sign-up process. You can even
-  leverage Rownd to gradually on-ramp users to your app once it's ready for beta
-  testers.
-</Info>
+## 2. Add your team
+Getting users to sign up and stay engaged is a cross-domain task. [Add your teammates](/administration/teams): developers, product managers, security specialists, and growth teams. As you add Rownd to more sites, configuring automations and sub-brands will become more important. 
 
-### Select initial user profile fields
+## 3. Get your app key
+[Create](/configuration/app-credentials) your app key and secret. 
 
-1. Open the Rownd dashboard
-2. Create your first application if prompted and select or create the desired
-   profile fields: ​
+## 4. Install Rownd
+[Rownd has a over a dozen SDKs](/sdk-reference/overview) and can be installed in static websites (e.g., Netlify), dynamic websites (e.g. WordPress), web apps, and mobile apps. 
 
-![](/images/getting-started.png)
+## 5. Customize, configure, and iterate--all from the Rownd platform!
+One of the most powerful parts of Rownd is that the authentication methods and branding are all customizable through the platform. This server-side control plane enables instant iterations and testing, moving and changing how authentication happens. There are many ways to make Rownd your own. [Jump to customizations](/configuration/overview)
 
-3. After the app is created, a Javascript code snippet will be generated. Click
-   the copy button to store it in your clipboard.
-
-### Installing Rownd on your websites
-
-The Rownd code snippet is a short block of javascript that you can embed into your site to enable Rownd contextual authentication. Once embedded, the snippet allows Rownd to handle user authentication, fetch user data, enforce [automations](/configuration/automations), and much more. 
-
-Embedding the snippet will also display the Rownd Hub in the bottom left-hand corner of your website by default. Users can click on the Hub to view their profile information, sign out, and perform other account management actions. If you provide access to these actions through other elements of your UX, the Hub can be hidden.
-
-#### Finding your snippet
-
-You can find the snippet in the [Rownd Platform](https://app.rownd.io).
-
-1. Select the **Code** item from the left navigation menu.
-2. Press the **Copy** icon in the top right corner of the code box beneath **HTML snippet**.
-
-#### Deploying the snippet
-
-After copying the code snippet, you'll need to add it to your website(s). Most
-website builder software or content management systems (CMS) have an option to
-embed "custom HTML" or "custom code" in your site's pages. We usually recommend
-placing the snippet just before the closing `</body>` tag.
-
-Here are links to instructions for a few popular hosting providers. See our
-[JavaScript SDK reference](/sdk-reference/web/javascript--browser) for more details.
-
-- [Netlify](https://docs.netlify.com/site-deploys/post-processing/snippet-injection/)
-- [Squarespace](https://support.squarespace.com/hc/en-us/articles/205815908)
-- [Webflow](https://university.webflow.com/lesson/custom-code-in-the-head-and-body-tags)
-- [Weebly](https://www.weebly.com/app/help/us/en/topics/descriptions-and-keywords)​ (see the section on "footer code")
-- [Wix](https://support.wix.com/en/article/wix-editor-about-embeds-and-codes-on-your-site#embed-custom-code)
-- [WordPress](sdk-reference/web/wordpress---woocommerce)
-
-### Add the Rownd SDK to front-end and back-end apps/servers
-
-If you have front-end web apps built using common frameworks like React, Vue,
-Angular, etc, you'll want to use our specific [Web SDKs](/web) for
-those codebases. Our SDKs provide tight integrations to your user experience so
-users can seamlessly transition from one part of your product to the
-next—personalization included.
-
-Additionally, if you're deploying back-end code to servers or are using a serverless platform like [Cloudflare Workers](https://workers.cloudflare.com/), [AWS Lambda](https://aws.amazon.com/lambda/), or [Vercel](https://vercel.com) to implement custom logic, you'll likely need to accept and validate Rownd authentication tokens. Leverage our selection of [back-end SDKs](/web) to easily handle this use case.
-
-#### Further configuration and customization
-
-See the [configuration guide](/configuration) for information on customizing authentication flows and behaviors to fit your needs.
-
-Consult the [JavaScript SDK reference](/sdk-reference/web/javascript--browser) to learn how Rownd can help personalize your website's user experience.
-
-We care about design! [Learn how you can customize the look and feel](/configuration/customizations/global-style) of Rownd's embedded components.
-
-### Getting help
-
-The Rownd team is on call to answer questions, provide guidance, and help you every step of the way! [Get in touch](https://rownd.io/contact) if you need assistance for any reason.
+## Get help
+The Rownd team is on call to answer questions, provide guidance, and help you every step of the way! Reach out to support@rownd.io if you need assistance for any reason.
