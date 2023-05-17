@@ -63,7 +63,8 @@
             "configuration/authentication-methods/phone-sms",
             "configuration/authentication-methods/apple",
             "configuration/authentication-methods/google",
-            "configuration/authentication-methods/passkeys"
+            "configuration/authentication-methods/passkeys",
+            "configuration/authentication-methods/existing-authentication"
           ]
         },
         "configuration/mobile",
@@ -97,6 +98,7 @@
               ]
             },
             "configuration/integrations/mailerlite",
+            "configuration/integrations/token-validator",
             "configuration/integrations/webhooks"
           ]
         }
