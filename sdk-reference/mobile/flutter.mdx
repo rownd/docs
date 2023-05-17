@@ -169,7 +169,8 @@ Requests that the user sign in. The `options` parameter is optional and can be u
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `postSignInRedirect` | `String` | The URL to redirect to after the user has signed in. This can be used for deep-linking within the app or to ensure that the user is redirected back into the app after completing a sign-in from email or text message. |
+| `postSignInRedirect` (not recommended) | `String` | If you've followed the steps to enable Android App Links, the redirect will be handled automatically. When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for postSignInRedirect. If this is an [Android App Link](https://developer.android.com/training/app-links), it will redirect the user back to your app. |
+| `intent` | `String` | This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are `.SignIn` or `.SignUp`. If you don’t set this value, the user will be presented with the unified sign-in/sign-up flow. Please reach out to [support@rownd.io](mailto:support@rownd.io) to enable. |
 
 ### `signOut()`
 

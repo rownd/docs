@@ -266,7 +266,7 @@ class MyApplication: Application() {
 
 In addition to the StateFlow APIs, Rownd provides imperative APIs that you can call to request sign in, get and retrieve user profile information, retrieve a current access token, or encrypt user data with the user's local key.
 
-### Rownd.requestSignIn(): Void
+### Rownd.requestSignIn(): Unit
 Opens the Rownd sign-in dialog for authentication.
 
 ### Rownd.requestSignIn(with = RowndSignInHint)
@@ -276,6 +276,7 @@ Supported options:
 - `RowndSignInHint.Google` - Prompt user to sign in with their Google account
 - `RowndSignInHint.OneTap` - Prompt user to sign into their account with Google One Tap
 - `RowndSignInHint.Passkey` - Prompt user to sign in with a passkey if they've previously set one up
+- `RowndSignInHint.Guest` - Sign in the user anonymously as a guest.
 
 Example:
 
@@ -288,7 +289,7 @@ Opens the Rownd sign-in dialog for authentication, as before, but allows passing
 
 - `intent: RowndSignInIntent` - This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are `.SignIn` or `.SignUp`. If you don’t set this value, the user will be presented with the unified sign-in/sign-up flow. Please reach out to [support@rownd.io](mailto:support@rownd.io) to enable.
 
-- `postSignInRedirect (Not recommended): String` - If a subdomain is provided in the Rownd dashboard, this behavior will work by default. When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for postSignInRedirect. If this is an [Android App Link](https://developer.android.com/training/app-links), it will redirect the user back to your app.
+- `postSignInRedirect: String` (Not recommended) - If you've followed the steps to enable Android App Links, the redirect will be handled automatically. When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for postSignInRedirect. If this is an [Android App Link](https://developer.android.com/training/app-links), it will redirect the user back to your app.
 
 Example:
 
