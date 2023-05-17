@@ -269,24 +269,13 @@ In addition to the StateFlow APIs, Rownd provides imperative APIs that you can c
 ### Rownd.requestSignIn(): Void
 Opens the Rownd sign-in dialog for authentication.
 
-### Rownd.requestSignIn(RowndSignInOpts(...)): Void
-Opens the Rownd sign-in dialog for authentication, as before, but allows passing additional context options as shown below.
-
-- `postSignInRedirect: String` - When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for postSignInRedirect. If this is an [Android App Link](https://developer.android.com/training/app-links), it will redirect the user back to your app.
-
-Example:
-
-```kotlin
-Rownd.requestSignIn(RowndSignInOpts(
-    postSignInRedirect = "https://my-domain.com"
-))
-```
-
 ### Rownd.requestSignIn(with = RowndSignInHint)
 Initiates a sign-in using the method specified by the `with` argument, bypassing the authentication method selector. For example, this could be used to steer a new user toward a specific sign-in method.
 
 Supported options:
-- `RowndSignInHint.Google`
+- `RowndSignInHint.Google` - Prompt user to sign in with their Google
+- `RowndSignInHint.OneTap` - Prompt user to sign into their account with Google One Tap
+- `RowndSignInHint.Passkey` - Prompt user to sign in with a passkey if they've previously set one up
 
 Example:
 
@@ -294,6 +283,22 @@ Example:
 Rownd.requestSignIn(with = RowndSignInHint.Google)
 ```
 
+### Rownd.requestSignIn(RowndSignInOpts(...)): Void
+Opens the Rownd sign-in dialog for authentication, as before, but allows passing additional context options as shown below.
+
+- `postSignInRedirect: String` - When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for postSignInRedirect. If this is an [Android App Link](https://developer.android.com/training/app-links), it will redirect the user back to your app.
+
+- `intent: RowndSignInIntent` - This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are `.SignIn` or `.SignUp`. If you don’t set this value, the user will be presented with the unified sign-in/sign-up flow. Please reach out to [support@rownd.io](mailto:support@rownd.io) to enable.
+
+Example:
+
+```kotlin
+Rownd.requestSignIn(RowndSignInOpts(
+    postSignInRedirect = "https://my-domain.com"
+    intent = RowndSignInIntent.SignUp
+))
+```
+<br />
 <Note>
 The following user profile APIs technically accept `Any` as the value of a field. However, that value **must** be serializable using [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html) library. If the value is not serializable out of the box, you'll need to provide your own serializer implementation as described in the Kotlin documentation.
 </Note>
