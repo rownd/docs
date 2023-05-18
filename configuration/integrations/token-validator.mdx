@@ -1,0 +1,60 @@
+---
+title: "Token validator"
+description: Validating third-party tokens
+sidebarTitle: Token validator
+---
+
+Rownd's token validator allows you to authenticate a token issued by another authentication provider and exchange it for a Rownd token. This feature is useful when migrating to Rownd from another authentication provider and you want to prevent existing users from being signed-out during the transition. It can also be used when moving between contexts, such as when your code is embedded in an implementation that you don't directly control (e.g., a webview inside someone else's mobile app).
+
+
+## Why it's important
+
+### Keeping users signed-in
+
+When transitioning to Rownd's adaptive authenitcation, it's often important to keep your existing users signed-in once you deploy Rownd. The token validator enables Rownd to accept and validate your users' existing tokens. That way, users won't be forced to sign in again due to the authentication provider upgrade.
+
+### Moving between apps or contexts
+
+If your app is embedded in one of your customers' apps, the "parent" app may have previously created its own user session. If the customer can pass you a token or similar data that can be validated either via a JWKset or a REST API, Rownd's token validator will validate the existing token and extract a user ID from the response so that a user can continue using your app without any friction.
+
+
+## How to set it up
+
+To set up the token validator, you'll need to configure your authentication provider to issue a token that Rownd can validate. 
+
+**Note:** If you do not see **Integrations** in the Rownd left-hand sidebar, please contact the Rownd support team at support@rownd.io for assistance.
+
+### Configuring the token validator
+
+To set up the token validator with a generic authentication provider, follow these steps:
+
+1. Navigate to **Integrations** in the Rownd platform sidebar.
+2. Enter the API endpoint to be used for token validation.
+3. Provide information enabling Rownd to extract a user ID
+![Token Validator Setup screenshot](/images/token-validation-setup.png)
+3. Attach it to an application
+
+#### Coming soon:
+
+In the near future, we'll also support the following configurations:
+1. Adding an OpenID Configuration endpoint or a direct URL to a JWK endpoint that Rownd can use to verify an asymmetrically-signed JWT.
+2. Adding an HMAC secret that can be used to verify a symmetrically-signed JWT.
+
+If none of the above configurations match your specific use case, please let us know.
+
+
+### Firebase setup
+
+If you're using Firebase as your authentication provider, Rownd provides a separate integration. Follow these steps:
+
+1. Navigate to **Integrations**
+2. Click on the **Firebase - Authenticaiton** card from the **Connector catalog** tab.
+3. Authenticate with Firebase, providing Rownd scoped access for validation.
+4. Select the desired **Project** and **App** (if applicable).
+5. Save the integration, then attach it to your Rownd application to enable it.
+
+When existing users sign in via Rownd, we'll automatically preserve their Firebase ID and basic user information, which is especially useful if you're referencing users in a separate datastore via this ID.
+
+Once Rownd is fully implemented, your users will not have to "re-sign in" and Rownd will automatically create users inside of Rownd for them.  
+
+For additional assistance setting up the token validator, please reach out to support@rownd.io. 
