@@ -8,18 +8,20 @@ We provide a number of built-in fields, but you can also create your own custom 
 
 ### Managing the profile schema
 
-Rownd configures the most commonly used profile fields when an app is first created, but you can add to them, modify them, or remove them as needed.
+Rownd configures some commonly used profile fields when an app is first created, but you can add to them, modify them, or remove them as needed.
 
 To manage the profile schema, open the [Rownd dashboard](https://app.rownd.io) and select **Data types** from the side navigation.
 
+<Frame>
 ![Manage and edit the profile schema from the data types tab.](/images/data-types-tab.png) 
+</Frame>
 
 #### Schema field options
 
 When adding or editing a field, the following options are available:
 
-- **Data type** - This is the name for the field that will be returned in programmatic operations (e.g., REST API responses). This is also used as the display name if one is not explicitly specified.
-- **Display name** - This is the name that will be displayed to end-users. If not specified, the data type will be used.
+- **Data type** - This is the name for the field that will be returned in programmatic operations (e.g., REST API responses). This is also used as the display name if one is not explicitly specified. This should be primarily machine-friendly (e.g., `first_name`)
+- **Display name** - This is the name that will be displayed to end-users. If not specified, the "data type" will be used.
 - **Type** - This is the data type for the field. The following types are available:
   - **String** - Accepts any text.
   - **Number** - A numeric value.
@@ -41,7 +43,17 @@ When adding or editing a field, the following options are available:
 3. Complete the rest of the form as desired (see [schema field options](#schema-field-options) for details).
 4. Press **Add** to save the new field.
 
-<div style="position: relative; padding-bottom: 71.14624505928853%; height: 0;"><iframe src="https://www.loom.com/embed/9998580bda2844a3a80d267bd2a8d7a2" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+<div style={{
+    "height": "0px",
+    "paddingBottom": "71.1462%",
+    "position": "relative"
+}}><iframe src="https://www.loom.com/embed/9998580bda2844a3a80d267bd2a8d7a2" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style={{
+    "height": "100%",
+    "left": "0px",
+    "position": "absolute",
+    "top": "0px",
+    "width": "100%"
+}}></iframe></div>
 
 #### Editing an existing field
 
@@ -63,6 +75,8 @@ Regardless, be careful that you don't have code that depends on the presence of 
 
 #### Managing users 
 
-In the "Users" tab of the platform, you have complete control over managing your users and their profile information. Each time a user signs in, they are listed in the Users table. This table allows you to easily locate users, provide support, and manually edit their accounts. It provides information about the sign-in methods they have used and the profile information they have added. Additionally, you can utilize the filtering and sorting tools, located in the top right icons of the table, to efficiently navigate and organize the table.
+In the **Users** area of the platform, you have complete control over your users' profile information. Each time a user signs in, they are listed in the Users table. This table allows you to easily locate users, provide support, and manually edit their accounts. It provides information about the sign-in methods they have used and the profile information they have added. Additionally, you can utilize the filtering and sorting tools--located in the top right icons of the table--to efficiently navigate and organize the table.
 
+<Frame>
 ![Manage users from the users table in the Rownd platform](/images/Users-table.png) 
+</Frame>

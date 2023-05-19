@@ -140,7 +140,7 @@
     {
       "group": "SDK Reference",
       "pages": [
-        "SDK-reference/overview",
+        "sdk-reference/overview",
         {
           "group": "Mobile",
           "pages": [
