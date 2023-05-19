@@ -30,7 +30,7 @@ ext {
 }
 ```
 
-2\. Install the Rownd library and dependencies.
+2. Install the Rownd library and dependencies.
 
 ```bash
 cd android && ./gradlew build
@@ -147,10 +147,18 @@ hooks.
 
 Trigger the Rownd sign in dialog
 
-```jsx
+| Property | Type | Description |
+| --- | --- | --- |
+| `method` | `email` `phone` `apple` `google` `passkey` | Requests a sign-in, but with a specific authentication provider (e.g., Sign in with Apple). Rownd treats this information as a method. If the specified authentication provider is enabled within your Rownd app configuration, it will be honored. If not, Rownd will fall back to the default flow. |
+| `intent` | `sign_in` `sign_up` | This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are `sign_in` or `Sign_up`. If you don’t set this value, the user will be presented with the unified sign-in/sign-up flow. Please reach out to [support@rownd.io](mailto:support@rownd.io) to enable. |
+| `postSignInRedirect (Not recommended)` | `String` |  If a subdomain is provided in the Rownd dashboard, this behavior will work by default. The URL to redirect to after the user has signed in. This can be used for deep-linking within the app or to ensure that the user is redirected back into the app after completing a sign-in from email or text message. |
+
+```tsx
 const { requestSignIn } = useRownd();
 
-requestSignIn();
+requestSignIn({
+  method: 'apple'
+});
 ```
 
 **signOut()**

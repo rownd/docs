@@ -161,9 +161,20 @@ class MainActivity: FlutterFragmentActivity() {}
 
 Configures the Rownd plugin with your app key. This must be called before any other methods.
 
-### `requestSignIn(RowndSignInOptions options)`
+### `requestSignIn(RowndSignInHint hint, RowndSignInOptions options)`
 
-Requests that the user sign in. The `options` parameter is optional and can be used to customize the sign-in process.
+Requests that the user sign in. Both `options` and `hint` parameters are optional.
+
+#### `RowndSignInHint`
+
+Requests a sign-in, but with a specific authentication provider (e.g., Sign in with Apple). Rownd treats this information as a hint. If the specified authentication provider is enabled within your Rownd app configuration, it will be honored. If not, Rownd will fall back to the default flow.
+
+Supported values:
+
+- `RowndSignInHint.appleId` - Prompt user to sign in with their Apple ID
+- `RowndSignInHint.google` - Prompt user to sign in with their Google account
+- `RowndSignInHint.passkey` - Prompt user to sign in with a passkey if they've previously set one up
+
 
 #### `RowndSignInOptions`
 

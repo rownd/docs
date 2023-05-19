@@ -1,0 +1,45 @@
+---
+title: "Migration to Rownd"
+sidebarTitle: "Migrating to Rownd"
+description: "Flee static sign-in and move to Rownd with ease"
+---
+Whether you use Auth0, Stytch, or you built your own auth, moving can seem like an overwhelming task. We are here to say it is not only possible, but straight-forward. 
+
+A few things to consider when leaving one auth provider:
+
+1. The easy part is moving the data. User profiles, emails, phone numbers, even Google IDs can be imported into Rownd.  
+2. Consider keeping users signed-in through the migration--your users will love you for it. This means you'll temporarily run two auth providers in parallel.  
+
+Let's dig in.
+
+## Get Rownd set up
+The first step is to get Rownd configured in your dev enviornment. We have a plethora of SDKs and code snippets to make this straight-forward.  
+
+### Considerations when setting up Rownd
+1. **No sign-in page:**  Rownd is different. You won't need a sign-in page. Simply trigger the Rownd sign-in flow from existing buttons or trigger sign-in dynamically. It's your choice.
+
+2. **No difficult coding:** Rownd renders its sign-in dialogs on for you, so that branding, authenticaton options, and more can be configured dynamically through the Rownd platform.
+
+3. **Move auth where you need it:** Although some customers simply replace their sign-in button with Rownd, we recommend moving it deeper into your product. Let your customers experience your product prior to requesting registration. 
+
+## Keeping users signed-in
+
+Rownd provides a [token validator](/configuration/integrations/token-validator) integration that can take an existing authentication token and validate it against another provider's API or JWK endpoint. This allows users that are already signed-in to stay signed-in while Rownd issues them a new token.
+
+### Considerations for token validaiton 
+1. The API or JWK endpoint needs to be public so Rownd can validate the token.
+2. Each auth provider has their own methods for validating tokens. Reach out to support@rownd.io and we'll help you configure the provider to validate tokens to keep your users signed-in.
+
+## Setting up Google and/or Apple sign-in
+If you already had [Google](/configuration/authentication-methods/google) or [Apple](/configuration/authentication-methods/apple) sign-in options, you can set them up quickly in Rownd as well.
+
+### Considerations for setting up Google and/or Apple sign-in
+1. Use the same Google Client ID that you used to set up the authentication prior to migration. This ensures the Google ID remains the same. If that's not possible for some reason, Rownd can still automatically link their email address to a new Google ID.
+2. Use the same Apple App ID for both. 
+
+## Migrating data
+Migrating existing user data is the easiest part. A few days before deploying to production, contact the migration team at Rownd (migration@rownd.io) and we'll help you through every step of the journey.
+
+### Considerations for migrating data
+1. Consider what data you want to transfer to Rownd. Most sign-in methods should be migrated. Rownd can also manage other profile information (names, addresses, etc).
+2. You may choose to migrate data from two or more sources. For example, you may move profile data from Auth0 and personal information (PII) from your own database. Let us know!
