@@ -90,7 +90,15 @@
             "configuration/customizations/email-customization"
           ]
         },
-        "configuration/user-profiles",
+        {
+          "group": "User accounts",
+          "pages": [
+            "configuration/user-accounts/overview",
+            "configuration/user-accounts/hub-user-profiles",
+            "configuration/user-accounts/platform-user-table",
+            "configuration/user-accounts/progressive-profiles"
+          ]
+        },
         {
           "group": "Integrations",
           "pages": [
@@ -133,7 +141,7 @@
     {
       "group": "SDK Reference",
       "pages": [
-        "SDK-reference/overview",
+        "sdk-reference/overview",
         {
           "group": "Mobile",
           "pages": [
@@ -165,7 +173,6 @@
             "sdk-reference/web/ruby-on-rails",
             "sdk-reference/web/django--python",
             "sdk-reference/web/net-core"
-
           ]
         }
       ]
