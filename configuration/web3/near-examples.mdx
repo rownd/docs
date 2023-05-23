@@ -10,6 +10,7 @@ This is a limited beta feature. Please [contact us](mailto:support@rownd.io?subj
 
 The Rownd NEAR integration ensures that all of your users have a NEAR account either automatically or on-dmand. 
 
+## NEAR Examples
 ### Trigger an implicit account creation
 
 If you wish to control when NEAR implicit accounts are created for your users, you can opt for the "on-demand" creation 
@@ -42,7 +43,7 @@ curl 'https://api.rownd.io/hub/connection_action' \
 ```
 </CodeGroup>
 
-### Prompt a user for named account creation
+## Prompt a user for named account creation
 
 This call will open a dialog prompting the user to enter a name prior to creating the NEAR account. This name will end
 with `.rownd.near` by default. For instance, if a user specifies `my-account-1`, the full account name will be
@@ -53,3 +54,6 @@ another value.
 window.rownd.near.createNamedAccount();
 ```
 
+## NEAR API Refrence
+
+<Snippet file="javascript--api--near.mdx" />
