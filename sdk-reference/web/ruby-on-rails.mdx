@@ -9,7 +9,7 @@ tandem with the Rownd Hub, a javascript snippet embedded in your website. With
 this gem installed, Rownd handles all aspects of user authentication and gives
 you the tools to customize the user experience on your site.
 
-### Installation
+## Installation
 
 Add this line to your application's `Gemfile`:
 
@@ -29,7 +29,7 @@ Or install it yourself as:
 $ gem install devise-rownd
 ```
 
-#### Mount the Engine
+### Mount the Engine
 
 Add this to your `config/routes.rb` file
 
@@ -37,10 +37,9 @@ Add this to your `config/routes.rb` file
 mount Devise::Rownd::Engine, at: '/api/auth/rownd'
 ```
 
-#### Rownd Hub
+### Rownd Hub
 
-Follow
-[these instructions](https://docs.rownd.io/rownd/sdk-reference/web/javascript-browser)
+Follow [these instructions](/sdk-reference/web/javascript--browser)
 to install the Rownd Hub. You'll want to ensure it runs on every page of your
 application, so be sure to add it as a common in your Rails JS packs. Here's the
 easiest way to do that:
@@ -101,11 +100,9 @@ controller
 Rails to include the `rownd` Javascript pack. We also tell Turbolinks to include
 the script on page reloads
 
-#### Usage
+## Usage
 
 For this to work, you need to define these key environment variables:
-
-- `ROWND_APP_ID` \- This is the ID of your Rownd application
 
 - `ROWND_APP_KEY` \- Your Rownd application key
 
@@ -113,7 +110,7 @@ For this to work, you need to define these key environment variables:
 
 You can get all of these values from the [Rownd Platform](https://app.rownd.io)
 
-#### Users
+### Users
 
 This gem provides a new Devise module named `:rownd_authenticatable`. In your
 `user` model, you can tell Devise to use it like this:
@@ -138,7 +135,7 @@ end
 ...
 ```
 
-#### Require Authentication
+### Require Authentication
 
 You can require authentication on a controller's actions the same way you would
 for any Devise strategies.
@@ -154,7 +151,7 @@ end
 Now, when a user navigates to a route that requires authentication, Devise will
 prompt the user to sign into Rownd if a user is not already signed in.
 
-#### Customizing the page using the `current_user`
+### Customizing the page using the `current_user`
 
 In any of your controllers, views, or helpers, you have access to the currently
 authenticated user via the `current_user` variable. You can use it to customize
@@ -168,7 +165,7 @@ The `current_user` object has all of the fields specified in your Rownd
 application's schema. If the user doesn't have a value for a particular field,
 it will be `nil`
 
-#### Extending the `current_user` model
+### Extending the `current_user` model
 
 You can extend the `current_user` object by modifying the `Devise::Rownd::User`
 class. This can be very helpful if you want to have additional functions that
@@ -198,7 +195,7 @@ end
 Now, you can call things like `current_user.admin?` and
 `current_user.display_name`
 
-#### Further customization
+### Further customization
 
 All of the other Rownd HTML attributes work as well. You can see a full list of
 them [here](/rownd/sdk-reference/web/javascript-browser#hooks). This means you
