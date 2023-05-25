@@ -21,6 +21,29 @@
     </Accordion>
   </ResponseField>
 
+  <ResponseField name="connectAccount()" type="function">
+    Prompts the user to connect a NEAR account
+
+    <Accordion title="Example">
+      ```javascript
+      const accountId = rownd.near.connectAccount()
+      ```
+    </Accordion>
+
+    <Tabs>
+      <Tab title="Mobile">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/mobile/near-connect-account.png" />
+        </Frame>
+      </Tab>
+      <Tab title="Desktop">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/desktop/near-connect-account.png" />
+        </Frame>
+      </Tab>
+   </Tabs>
+  </ResponseField>
+
   <ResponseField name="walletDetails()" type="function">
     Opens a dialog showing the details of the user's implicit NEAR account
 
