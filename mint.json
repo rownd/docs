@@ -64,7 +64,8 @@
             "configuration/authentication-methods/apple",
             "configuration/authentication-methods/google",
             "configuration/authentication-methods/passkeys",
-            "configuration/authentication-methods/existing-authentication"
+            "configuration/authentication-methods/existing-authentication",
+            "configuration/authentication-methods/unverified"
           ]
         },
         {
