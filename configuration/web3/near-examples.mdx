@@ -10,6 +10,10 @@ This is a limited beta feature. Please [contact us](mailto:support@rownd.io?subj
 
 The Rownd NEAR integration ensures that all of your users have a NEAR account either automatically or on-dmand. 
 
+## NEAR Examples
+
+Here are some basic examples of using the Rownd SDK and APIs to interact with NEAR. See the [JavaScript API Reference](/sdk-reference/web/javascript--api-reference#near) for more details
+
 ### Trigger an implicit account creation
 
 If you wish to control when NEAR implicit accounts are created for your users, you can opt for the "on-demand" creation 
@@ -21,7 +25,7 @@ You can execute the following SDK call to ensure an implicit account exists
 <CodeGroup>
 ```javascript Javascript
 // accountId = "12a734486c485767d02a4747487573e69889a92618c4890328b0a18c6320898cd2"
-const accountId = await window.rownd.near.ensureImplicitAccount();
+const accountId = await rownd.near.ensureImplicitAccount();
 ```
 
 ```sh cURL
@@ -42,7 +46,7 @@ curl 'https://api.rownd.io/hub/connection_action' \
 ```
 </CodeGroup>
 
-### Prompt a user for named account creation
+## Prompt a user for named account creation
 
 This call will open a dialog prompting the user to enter a name prior to creating the NEAR account. This name will end
 with `.rownd.near` by default. For instance, if a user specifies `my-account-1`, the full account name will be
@@ -50,6 +54,13 @@ with `.rownd.near` by default. For instance, if a user specifies `my-account-1`,
 another value.
 
 ```javascript Javascript
-window.rownd.near.createNamedAccount();
+rownd.near.createNamedAccount();
 ```
 
+## Prompt a user to connect an account
+
+This call will open a dialog prompting the user to connect a NEAR account. They will be presented with a list of supported wallet providers. Clicking on one of the providers will initiate a NEAR wallet sign-in, after which the NEAR account and wallet ID will be added to the Rownd user's profile data.
+
+```javascript Javascript
+rownd.near.createNamedAccount();
+```

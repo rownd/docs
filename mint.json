@@ -65,6 +65,7 @@
             "configuration/authentication-methods/google",
             "configuration/authentication-methods/passkeys",
             "configuration/authentication-methods/guests",
+            "configuration/authentication-methods/unverified",
             "configuration/authentication-methods/existing-authentication"
           ]
         },
@@ -157,9 +158,11 @@
           "group": "Web",
           "pages": [
             "sdk-reference/web/overview",
-            "sdk-reference/web/angular",
+            "sdk-reference/web/javascript--api-reference",
             "sdk-reference/web/javascript--browser",
+            "sdk-reference/web/html",
             "sdk-reference/web/react---next-js",
+            "sdk-reference/web/angular",
             "sdk-reference/web/vue",
             "sdk-reference/web/wordpress---woocommerce",
             "sdk-reference/web/ruby-on-rails"
