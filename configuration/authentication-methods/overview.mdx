@@ -49,9 +49,28 @@ You can use any combination of the following authentication methods:
     Passwordless SMS-based sign-in
   </Card>
   <Card
+    title="Guests"
+    icon={<svg
+      class="h-6 w-6 bg-primary dark:bg-primary-light"
+      style={{
+          "-webkit-mask-image": "url('/images/guest-user.svg')",
+          "-webkit-mask-repeat": "no-repeat",
+          "-webkit-mask-position": "center center",
+          "-webkit-mask-size": "contain"
+      }}
+  />}
+    href="./guests">
+    Anonymous sign-in for unidentified users
+  </Card>
+  <Card
     title="Crypto-wallet"
     icon="wallet">
     When detected, sign in using Metamask, Coinbase, etc.
+  </Card>
+  <Card
+    title="Something missing?"
+    icon="question">
+    Get in touch to discuss your needs!
   </Card>
 </CardGroup>
 

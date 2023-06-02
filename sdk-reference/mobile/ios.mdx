@@ -169,12 +169,13 @@ Supported values:
 - `.appleId` - Prompt user to sign in with their Apple ID
 - `.google` - Prompt user to sign in with their Google account
 - `.passkey` - Prompt user to sign in with a passkey if they've previously set one up
+- `.guest` - Sign in the user anonymously as a guest.
 
 #### RowndSignInOptions
 
 Some of the `requestSignIn()` methods accept an optional `RowndSignInOptions` parameter. This class contains the following properties:
 
-- `postSignInRedirect: String?` - When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for `postSignInRedirect`. If this is a [Universal Link](https://developer.apple.com/ios/universal-links/), it will redirect the user back to your app. If you don't set this value, the user will be redirected to your app's subdomain as configured in the Rownd dashboard.
+- `postSignInRedirect: String?` (not recommended) - When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for `postSignInRedirect`. If this is a [Universal Link](https://developer.apple.com/ios/universal-links/), it will redirect the user back to your app. If you don't set this value, the user will be redirected to your app's subdomain as configured in the Rownd dashboard.
 - `intent: RowndSignInIntent?` - This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are `.signIn` or `.signUp`. If you don't set this value, the user will be presented with the unified sign-in/sign-up flow.
 
 #### Rownd.getAccessToken() async throws -> String?
