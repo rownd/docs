@@ -36,6 +36,23 @@ ext {
 cd android && ./gradlew build
 ```
 
+3. Check and update your ProGuard config using [the rules from our Android SDK](https://github.com/rownd/android/blob/main/README.md#proguard-config).
+
+4. Only required for Google Sign-in: Add a Rownd plugin initializer to your MainActivity file. File: *android/app/src/main/java/.../MainActivity.java
+
+```java
+import android.os.Bundle;
+import com.reactnativerowndplugin.RowndPluginPackage;
+
+public class MainActivity extends ReactActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    RowndPluginPackage.preInit(this);
+  }
+}
+```
+
 #### iOS
 
 1.  Ensure iOS version is at least 14\. File: _ios/Podfile_
