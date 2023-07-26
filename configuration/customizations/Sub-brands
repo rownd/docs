@@ -1,0 +1,55 @@
+---
+title: "Sub-brands"
+description: "Sub-brands allow you to manage users across all your varying apps, websites and products"
+---
+
+Introducing sub-brands, one of Rownd’s latest and greatest features focused on allowing you to expand your portfolio without partitioning where you manage your users. Sub-brands are extremely unique, easy to use, and can save you and your development team so much time.
+
+
+#### What are sub brands?
+
+A sub-brand is a variation of your Rownd application. Sub-brands can have their own key, theme, customizations, and even associated automations. Sub-brands allow you to see which apps and brands your users are interacting with, without having to switch between apps. Users maintain their account and profile information across the sub-brands they are signing into.
+
+
+#### Why might you enable sub-brands?
+
+Sub-brands are most often used when customers have a multitude of brands or apps that they want users to stay signed in across. Here are a few examples and use cases:
+
+- League or collection of apps: For example, a sports league wants sign-ins for their rewards program, but each team has its own application and requirements. In this scenario, the larger Rownd app would represent the league, and each team would be its own sub-brand. This way, each team could still have its logo and branding colors, as well as its sign-in method configuration, while at the larger app level, the league can see which users are interacting with which teams (sub-brands), and users can easily sign in across team apps.
+
+- Parent brand scenario: When one company owns multiple brands (Example: Walt Disney Company owning ESPN, Hulu, Disney +, ABC, etc.), they’d want to know which customers are interacting with which apps, without those users having a separate account for each app. By using sub-brands, the parent brand can better understand their users in seeing where they are visiting.
+
+- Testing scenario: You can also use sub-brands as a way of testing your Rownd flow without creating a new app.
+
+
+
+#### How to enable and use sub-brands:
+
+1. From the Rownd platform, navigate to the design tab.
+
+2. In the design tab, you’ll see a sub-brands tab (with “Beta” tag).
+
+![Customize Rownd with your branding and style on the "Design" tab.](/images/welcome-to-sub-brands.png)
+
+3. From that tab, you can add your first sub-brand. Give it a name and an optional description, and press create!
+
+![Customize the details of your first sub-brand.](/images/create-new-sub-brand.png)
+
+4. From here, you can use the drop-down and change the design theme.
+
+5. To install in your app, grab the app key either from the app key tab or from the sub-brands tab to bring your sub-brand to life.
+
+![Install sub-brands in your apps with their brand specific keys.](/images/sub-brand-app-key.png)
+
+6. Once users start signing into your apps, you’ll be able to see the sub-brands they interact with from the users' table. The really cool thing here too is that their profile and account information will persist across apps!
+
+
+<div style={{ position: 'relative', paddingBottom: '63.829787234042556%', height: '0' }}><iframe src="https://www.loom.com/share/0d6865e81423495a938e1904e9c3b098?sid=3dd1371f-f31d-47d3-827a-a59ebab0f28c" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%'}}></iframe></div>
+
+#### Base brands vs. Sub-brands
+
+Your base brand is the original branding and style you configured for your Rownd app. When you add a sub-brand, the sub-brand will initially take on the same styling as your base brand (colors, logos, styles, etc.) until you change them. If you don't customize a style aspect of a sub-brand, and later change that aspect in the base brand, the sub-brand will adopt the base brand's change. For example, if you haven't updated the corner radius of a sub-brand from the base brand's 3px radius, and then change the base brand's corner radius to 10px, all sub-brands that weren't already customizing the corner radius will now adopt a 10px corner radius.
+
+<Note>
+We love feedback! If you try out this feature, please reach out and let us know what you think and any feedback or questions you have at Support@rownd.io.
+</Note>
