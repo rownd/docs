@@ -41,7 +41,7 @@ Sub-brands are most often used when customers have a multitude of brands or apps
 
 ![Install sub-brands in your apps with their brand specific keys.](/images/sub-brand-app-key.png)
 
-6. Once users start signing into your apps, you’ll be able to see the sub-brands they interact with from the users' table. The really cool thing here too is that their profile and account information will persist across apps!
+6. Once users start signing into your apps, you’ll be able to see the sub-brands they have interacted with from the users table. The really cool thing here too is that their profile and account information will persist across sub-brands and the base app!
 
 
 <div style={{ position: 'relative', paddingBottom: '63.829787234042556%', height: '0' }}><iframe src="https://www.loom.com/share/0d6865e81423495a938e1904e9c3b098?sid=3dd1371f-f31d-47d3-827a-a59ebab0f28c" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%'}}></iframe></div>
