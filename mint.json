@@ -89,7 +89,8 @@
           "group": "Customizations",
           "pages": [
             "configuration/customizations/global-style",
-            "configuration/customizations/email-customization"
+            "configuration/customizations/email-customization",
+            "configuration/customizations/sub-brands"
           ]
         },
         {
