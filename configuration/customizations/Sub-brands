@@ -13,7 +13,7 @@ A sub-brand is a variation of your Rownd application. Sub-brands can have their 
 
 #### Why might you enable sub-brands?
 
-Sub-brands are most often used when customers have a multitude of brands or apps that they want users to stay signed in across. Here are a few examples and use cases:
+Sub-brands are most often used when customers have multiple brands or style considerations for different environments like their web app, mobile app, or blog site. Here are a few examples and use cases:
 
 - League or collection of apps: For example, a sports league wants sign-ins for their rewards program, but each team has its own application and requirements. In this scenario, the larger Rownd app would represent the league, and each team would be its own sub-brand. This way, each team could still have its logo and branding colors, as well as its sign-in method configuration, while at the larger app level, the league can see which users are interacting with which teams (sub-brands), and users can easily sign in across team apps.
 
