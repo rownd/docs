@@ -37,7 +37,7 @@ Sub-brands are most often used when customers have a multitude of brands or apps
 
 4. From here, you can use the drop-down and change the design theme.
 
-5. To install in your app, grab the app key either from the app key tab or from the sub-brands tab to bring your sub-brand to life.
+5. To install in your app, grab the app key either from the app key tab or from the sub-brands tab. Include it in the Rownd SDK configuration or add it to the Javascript snippet.
 
 ![Install sub-brands in your apps with their brand specific keys.](/images/sub-brand-app-key.png)
 
