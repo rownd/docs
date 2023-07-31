@@ -19,7 +19,7 @@ Sub-brands are most often used when customers have multiple brands or style cons
 
 - Parent brand scenario: When one company owns multiple brands (Example: Walt Disney Company owning ESPN, Hulu, Disney +, ABC, etc.), they’d want to know which customers are interacting with which apps, without those users having a separate account for each app. By using sub-brands, the parent brand can better understand their users in seeing where they are visiting.
 
-- Testing scenario: You can also use sub-brands as a way of testing your Rownd flow without creating a new app.
+- Testing scenario: You can also use sub-brands as a way of testing your Rownd flow without impacting production users. Since you can attach a specific app key to a sub-brand, you can create a sub-brand with changes that you'd like to change and use its app key in a separate testing environment to validate the changes.
 
 
 
