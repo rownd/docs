@@ -56,7 +56,8 @@ import React from "react";
 import { useRownd } from "@rownd/react";
 
 export default function MyProtectedComponent(props) {
-  const { is_authenticated, user, requestSignIn } = useRownd();
+  const { is_authenticated, user, requestSignIn, getAccessToken } = useRownd();
+  const { } = useEffect()
 
   useEffect(() => {
     if (!is_authenticated) {
