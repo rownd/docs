@@ -1,5 +1,6 @@
 ---
-title: "Overview"
+title: "Firebase - Realtime Database"
+sidebarTitle: "Realtime Database"
 ---
 
 The Firebase Realtime Database integration lets you sync personal information
@@ -9,7 +10,7 @@ manageable by the data owners. All of this is done by leveraging Google Cloud
 Functions and the Rownd platform.
 
 Check out the Google Cloud
-[prerequisites](/rownd/guides/configuration/integrations/firebase-realtime-database/google-cloud-platform-requirements)
+[prerequisites](/configuration/integrations/firebase/google-cloud-platform-requirements)
 to ensure your GCP account and Project are ready for the Rownd Integration.
 
 #### Creating the integration
@@ -20,20 +21,22 @@ to ensure your GCP account and Project are ready for the Rownd Integration.
 2. Choose the **Firebase - Realtime Database** connector from the Connector
    Catalog
 
-3. Enter a name for your new Integration.
+3. Enter a name for your new integration.
 
 After you've entered a descriptive name, click **Next**
 
 1.  Authenticate with Google Cloud
 
-Click the **Begin authenticate** button and log in to your Google Account.
+Click the **Begin authenticate** button and sign in to your Google Account.
 
+<Note>
 Firebase Realtime Database runs on Google Cloud. Rownd leverages the Google
 Cloud Platform to receive Realtime Database updates. Rownd will need permission
 to read Google Cloud Projects, read and write Firebase resources, and create
-Cloud Functions (among other things.) For a full list of access that Rownd
+Cloud Functions. For a full list of access that Rownd
 needs, click
-[here](/rownd/guides/configuration/integrations/firebase-realtime-database/google-cloud-platform-requirements#access-requirements).
+[here](/rownd/guides/configuration/integrations/firebase/google-cloud-platform-requirements#access-requirements).
+</Note>
 
 Grant Rownd the access into your Google Account, and then click the **Next**
 button when authentication is complete.
@@ -126,7 +129,7 @@ surrounded by curly braces `{}`. For instance, if `Foreign Key` is `"userId"`,
 then the path could look something like `"/users/{userId}/profile"`
 
 For more examples of defining user data locations, see the
-[examples section](/rownd/guides/configuration/integrations/firebase-realtime-database/examples-defining-user-data-locations).
+[examples section](/rownd/guides/configuration/integrations/firebase/realtime-database--defining-user-data-locations).
 
 1.  Create the Integration
 

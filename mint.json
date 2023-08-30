@@ -39,7 +39,7 @@
     {
       "name": "Contact Us",
       "icon": "envelope",
-      "url": "mailto:hello@rownd.io"
+      "url": "mailto:hello@rownd.com"
     }
   ],
   "navigation": [
@@ -118,11 +118,13 @@
             "configuration/integrations/airtable",
             "configuration/integrations/hubspot",
             {
-              "group": "Firebase (Realtime Database)",
+              "group": "Firebase",
               "pages": [
-                "configuration/integrations/firebase---realtime-database",
-                "configuration/integrations/google-cloud-platform-requirements",
-                "configuration/integrations/examples--defining-user-data-locations"
+                "/configuration/integrations/firebase/overview",
+                "configuration/integrations/firebase/authentication",
+                "configuration/integrations/firebase/google-cloud-platform-requirements",
+                "configuration/integrations/firebase/realtime-database",
+                "configuration/integrations/firebase/realtime-database--defining-user-data-locations"
               ]
             },
             "configuration/integrations/mailerlite",
