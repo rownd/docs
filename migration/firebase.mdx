@@ -1,0 +1,60 @@
+---
+title: "Migrating from Firebase Authentication"
+sidebarTitle: "Firebase"
+---
+<!-- Summary of migration -->
+
+## Overview
+<!-- Outline the basic steps required for migrating to Rownd and call out any "gotchas" -->
+
+## Set up Rownd
+<!-- Create a Rownd app, enable matching sign-in methods, set up an integration (if applicable) -->
+
+## Update back-end code
+<!-- Remove old provider SDKs, remove old provider code, install Rownd SDK, add Rownd code-->
+
+## Update front-end code
+<!-- Remove old provider SDKs, remove old provider code, install Rownd SDK, add Rownd code-->
+
+## Keep existing users signed-in
+<!-- Describe how to use an existing token from the old provider to sign into Rownd -->
+Migrating your authentication to Rownd will help convert more users as they move through your funnel; however, what about the users you already have? They'll quickly become frustrated if they get signed out as a result of the migration.
+
+To keep existing users signed in, you can pass their old access token to Rownd for validation. Rownd will then issue a new token to the user, so they'll be able to continue using your product without interruption. Once the new token is issued, the old provider's token can be permanently discarded.
+
+1. In your front-end code, check if the user is already signed in to Rownd (e.g., `rownd.isAuthenticated`). If they are, you're done!
+2. If they aren't, check if they're currently authenticated via Firebase. If they are, retrieve their ID token.
+    ```typescript
+    import { getAuth } from "firebase/auth";
+    const firebaseConfig = { ... };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    if (auth.currentUser) {
+        const token = await auth.currentUser.getIdToken();
+    }
+    ```
+3. Pass the token to Rownd for validation. If the token is valid, Rownd will issue a new token to the user.
+    ```typescript
+    const token = await rownd.getAccessToken(token);
+    ```
+4. `rownd.isAuthenticated` should now be `true` and the user can continue using your product normally.
+
+## Sync user profiles (optional)
+<!--  Steps to migrate users to keep IDs stable, leveraging an integration if possible, otherwise CSV/JSON export and import w/ sample scripts, etc -->
+Rownd supports multiple ways to sync your user data from Firebase. Once the Firebase integration is created and attached to your app, Rownd will begin migrating users "just in time," meaning that as users sign in, their data will automatically be imported into Rownd (matched on email address, phone number, etc).
+
+However, pre-loading user data into Rownd will speed up the initial authentication handshake. You can use the Firebase connector's "sync" option to do a bulk import of all users from your Firebase app to Rownd. Any users that sign-in after the sync begins will be auto-migrated using the "just in time" method.
+
+## Test the migration
+<!-- Make sure everything works -->
+Once everything is set up, it's time to test various aspects of the migration. Here are some things to consider:
+
+1. Make sure new users can sign in successfully. If you use an email provider that supports sub-addressing, you can make up "new" users like `juliet+test1@gmail.com` and the messages will be delivered to `juliet@gmail.com`.
+
+2. Verify existing users can sign in successfully and that they receive the same user ID that they had prior to the migration.
+
+3. If you chose to keep existing users signed in, test the migration flow to ensure that you remain signed in throughout the process. This usually means loading or installing the previous version of your product, signing in with your old provider, then loading the Rownd-enabled version of the app.
+
+## Completing the migration
+<!-- Any last steps to wrap things up.  -->

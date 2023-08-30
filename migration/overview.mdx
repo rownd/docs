@@ -1,26 +1,26 @@
 ---
 title: "Migration to Rownd"
-sidebarTitle: "Migrating to Rownd"
+sidebarTitle: "Overview"
 description: "Flee static sign-in and move to Rownd with ease"
 ---
-Whether you use Auth0, Stytch, or you built your own auth, moving can seem like an overwhelming task. We are here to say it is not only possible, but straight-forward. 
+Whether you use Auth0, Stytch, Cognito, Firebase, or you built a custom solution, moving to something new can seem like an overwhelming task. However, with Rownd, it's not hard or overwhelming. We've made it super easy for you to migrate.
 
-A few things to consider when leaving one auth provider:
+A few things to consider when leaving your current auth provider:
 
-1. The easy part is moving the data. User profiles, emails, phone numbers, even Google IDs can be imported into Rownd.  
-2. Consider keeping users signed-in through the migration--your users will love you for it. This means you'll temporarily run two auth providers in parallel.  
+1. The easiest part is moving the data. User profiles, emails, phone numbers, even Google IDs can be imported into Rownd. In many cases, this can even happen automatically.
+2. Consider keeping users signed-in through the migration--your users will love you for it. This means you'll temporarily run two auth providers in parallel.
 
 Let's dig in.
 
-## Get Rownd set up
-The first step is to get Rownd configured in your dev enviornment. We have a plethora of SDKs and code snippets to make this straight-forward.  
+## Set up Rownd
+The first step is to confgiure Rownd in your dev enviornment. We have a plethora of SDKs and code snippets to make this straight-forward.
 
 ### Considerations when setting up Rownd
 1. **No sign-in page:**  Rownd is different. You won't need a sign-in page. Simply trigger the Rownd sign-in flow from existing buttons or trigger sign-in dynamically. It's your choice.
 
-2. **No difficult coding:** Rownd renders its sign-in dialogs on for you, so that branding, authenticaton options, and more can be configured dynamically through the Rownd platform.
+2. **No difficult coding:** Rownd provides all of the authentication UI out of the box, so you won't need to build anything yourself. Applying branding, authenticaton options, and more can be configured dynamically through the Rownd platform.
 
-3. **Move auth where you need it:** Although some customers simply replace their sign-in button with Rownd, we recommend moving it deeper into your product. Let your customers experience your product prior to requesting registration. 
+3. **Move auth where you need it:** Although some customers simply replace their existing sign-in flows with Rownd, we recommend moving authentication deeper into your offering. Letting your customers experience some of your product prior to requesting registration is a great way to boost your conversion rate.
 
 ## Keeping users signed-in
 
@@ -38,7 +38,7 @@ If you already had [Google](/configuration/authentication-methods/google) or [Ap
 2. Use the same Apple App ID for both. 
 
 ## Migrating data
-Migrating existing user data is the easiest part. A few days before deploying to production, contact the migration team at Rownd (migration@rownd.io) and we'll help you through every step of the journey.
+Migrating existing user profiles is the easiest part. A few days before deploying to production, contact the migration team at Rownd (migration@rownd.io) and we'll help you through every step of the journey.
 
 ### Considerations for migrating data
 1. Consider what data you want to transfer to Rownd. Most sign-in methods should be migrated. Rownd can also manage other profile information (names, addresses, etc).

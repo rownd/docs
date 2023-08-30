@@ -47,7 +47,16 @@
       "group": "Welcome",
       "pages": [
         "welcome/overview",
-        "welcome/getting-started"
+        "welcome/getting-started",
+        {
+          "group": "Migrating to Rownd",
+          "pages": [
+            "migration/overview",
+            "migration/auth0",
+            "migration/cognito",
+            "migration/firebase"
+          ]
+        }
       ]
     },
     {
@@ -211,6 +220,6 @@
     "twitter": "https://twitter.com/RowndHQ",
     "linkedin": "https://www.linkedin.com/company/rownd/",
     "tiktok": "https://www.tiktok.com/@my.data.not.yours",
-    "website": "https://rownd.io/"
+    "website": "https://rownd.com/"
   }
 }
