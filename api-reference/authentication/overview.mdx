@@ -23,9 +23,9 @@ In most cases, Rownd's SDKs and the Rownd Hub call Rownd APIs on behalf of a use
 
 We recommend that you use Rownd bearer tokens to authenticate users against your own API or service. Since Rownd's tokens are signed asymmetrically, you can use our public JWK set to validate a token's signature.
 
-<Note>
+<Info>
 If you're using a Rownd server SDK (e.g., Node.js), convenience methods or middleware are provided to automatically validate a bearer token and attach the user's profile to the request object.
-</Note>
+</Info>
 
 Use these endpoints to fetch our OIDC and/or JWK configurations:
 

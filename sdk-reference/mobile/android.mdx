@@ -299,9 +299,9 @@ Rownd.requestSignIn(RowndSignInOpts(
 ))
 ```
 <br />
-<Note>
+<Info>
 The following user profile APIs technically accept `Any` as the value of a field. However, that value **must** be serializable using [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html) library. If the value is not serializable out of the box, you'll need to provide your own serializer implementation as described in the Kotlin documentation.
-</Note>
+</Info>
 
 ### suspend Rownd.getAccessToken(): String?
 Assuming a user is signed-in, returns a valid access token, refreshing the current one if needed.
@@ -363,9 +363,9 @@ Only fields that you designate `encrypted` are encrypted on-device prior to stor
 
 Of course, all data within the Rownd platform is encrypted at rest on disk and in transit, but this does not afford the same privacy guarantees as data encrypted on a user's local device. For especially sensitive data, we recommend enabling field-level encryption.
 
-<Note>
+<Info>
 Data encrypted on-device will not be accessible by you, the app developer, outside of the context of your app. In other words, your app can use encrypted data in its plaintext (decrypted) form while the user is signed in, but you won't be able to retrieve that data from the Rownd servers in a decrypted form. For data that you choose to encrypt, you should never transmit the plain text value across a network.
-</Note>
+</Info>
 
 In some cases, you may want to encrypt data on-device that you'll send to your own servers for storage. Rownd provides convenience methods to encrypt and decrypt that data with the same user-owned key.
 
@@ -379,6 +379,6 @@ Attempts to decrypt the provided String `data`, returning the plaintext as a str
 
 If the decryption fails, an `EncryptionException` will be thrown with a message explaining the failure.
 
-<Note>
+<Info>
 Encryption is only possible once a user has authenticated. Rownd supports multiple levels of authentication (e.g., guest, unverified, and verified), but the lowest level of authentication must be achieved prior to encrypting or decrypting data. If you need to explicitly check whether encryption is possible at a specific point in time, call `Rownd.user.isEncryptionPossible(): Boolean` prior to calling `encrypt()` or `decrypt()`.
-</Note>
+</Info>

@@ -10,11 +10,16 @@ In this guide, we'll help you plan your migration from Firebase to Rownd so that
 
 Here's what you'll work through as part of this migration:
 1. Creating a Rownd account and setting up your test and production apps.
-2. Updating your code to leverage Rownd instead of Firebase.
+2. Updating your code to leverage Rownd instead of Firebase for authentication.
 3. Migrating your existing users to Rownd.
 
 ## Set up Rownd
 <!-- Create a Rownd app, enable matching sign-in methods, set up an integration (if applicable) -->
+1. Sign into the [Rownd Platform](https://app.rownd.io). If this is your first visit, an account and app will be created for you automatically.
+2. Create a new [Rownd app](/configuration/applications#create-a-new-application) for your product. You'll probably want to create a separate app for your test and production environments.
+3. [Enable the sign-in methods](/configuration/authentication-methods) that you want to support. If you already have Google or Apple sign-in enabled, you can use the same credentials in Rownd.
+4. [Customize the sign-in experience](/configuration/authentication-methods) to match your brand with logos and colors.
+5. [Create a Firebase Authentication integration](/configuration/integrations/firebase/authentication) and attach it to your app. This will allow Rownd to migrate your existing users automatically.
 
 ## Update back-end code
 <!-- remove old provider code, install Rownd SDK, add Rownd code-->

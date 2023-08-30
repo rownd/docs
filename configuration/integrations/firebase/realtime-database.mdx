@@ -22,41 +22,34 @@ to ensure your GCP account and Project are ready for the Rownd Integration.
    Catalog
 
 3. Enter a name for your new integration.
+   After you've entered a descriptive name, click **Next**
 
-After you've entered a descriptive name, click **Next**
+4.  Click the **Begin authentication** button and sign in to your Google Account.
 
-1.  Authenticate with Google Cloud
+    <Info>
+    Firebase Realtime Database runs on Google Cloud. Rownd leverages the Google
+    Cloud Platform to receive Realtime Database updates. Rownd will need permission
+    to read Google Cloud Projects, read and write Firebase resources, and create
+    Cloud Functions. For a full list of access that Rownd
+    needs, click
+    [here](/rownd/guides/configuration/integrations/firebase/google-cloud-platform-requirements#access-requirements).
+    </Info>
 
-Click the **Begin authenticate** button and sign in to your Google Account.
+    Grant Rownd the access to your Google Account, and then click the **Next**
+    button when authentication is complete.
 
-<Note>
-Firebase Realtime Database runs on Google Cloud. Rownd leverages the Google
-Cloud Platform to receive Realtime Database updates. Rownd will need permission
-to read Google Cloud Projects, read and write Firebase resources, and create
-Cloud Functions. For a full list of access that Rownd
-needs, click
-[here](/rownd/guides/configuration/integrations/firebase/google-cloud-platform-requirements#access-requirements).
-</Note>
+5.  Select the Google Cloud Project, Firebase Application, and Firebase Database
+that you'd like to link with Rownd.
 
-Grant Rownd the access into your Google Account, and then click the **Next**
-button when authentication is complete.
+    When done, click **Next**
 
-1.  Firebase Settings
-
-Select the Google Cloud Project, Firebase Application, and Firebase Database
-where you'd like to enable Rownd.
-
-When done, click **Next**
-
-2.  Database Settings
-
-In the **Database Settings** step, you will provide Rownd with information about
+6.  In the **Database Settings** step, you will provide Rownd with information about
 where and how personal information is stored within your Firebase Realtime
 Database.
 
-The RTDB structure is essentially a large JSON object. You will specify the JSON
-path to where the personal information exists. If PII is stored in multiple
-places within the database, you can add multiple paths to the configuration.
+    The RTDB structure is essentially a large JSON object. You will specify the JSON
+    path to where the personal information exists. If PII is stored in multiple
+    places within the database, you can add multiple paths to the configuration.
 
 #### Defining User Data Locations
 

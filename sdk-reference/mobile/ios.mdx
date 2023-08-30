@@ -273,9 +273,9 @@ Attempts to decrypt the provided String `data`, returning the plaintext as a str
 
 If the decryption fails, an `EncryptionError` will be thrown with a message explaining the failure.
 
-<Note>
+<Info>
   Encryption is only possible once a user has authenticated. Rownd supports multiple levels of authentication (e.g.,
   guest, unverified, and verified), but the lowest level of authentication must be achieved prior to encrypting or
   decrypting data. If you need to explicitly check whether encryption is possible at a specific point in time, call
   `Rownd.user.isEncryptionPossible() -> Bool` prior to calling `encrypt()` or `decrypt()`.
-</Note>
+</Info>

@@ -16,27 +16,26 @@ to ensure your GCP account and Project are ready to integrate with Rownd.
    Catalog
 
 3. Enter a name for your new integration.
+    After you've entered a descriptive name, click **Next**
 
-After you've entered a descriptive name, click **Next**
+4.  Click the **Begin authentication** button to sign in to your Google Account and grant Rownd access to your Firebase project.
 
-1.  Authenticate with Google Cloud
+    <Info>
+    Firebase Authentication runs on Google Cloud. Rownd leverages the Google
+    Cloud Platform to receive updates from Firebase as any users are created, modified, or deleted. Rownd will need permission to read Google Cloud Projects, read and write Firebase resources, and create
+    Cloud Functions. For a full list of access that Rownd
+    needs, click
+    [here](/rownd/guides/configuration/integrations/firebase/google-cloud-platform-requirements#access-requirements).
+    </Info>
 
-Click the **Begin authenticate** button and sign in to your Google Account.
+    Grant Rownd the access to your Google Account, and then click the **Next**
+    button when authentication is complete.
 
-<Info>
-Firebase Authentication runs on Google Cloud. Rownd leverages the Google
-Cloud Platform to receive updates from Firebase as any users are created, modified, or deleted. Rownd will need permission to read Google Cloud Projects, read and write Firebase resources, and create
-Cloud Functions. For a full list of access that Rownd
-needs, click
-[here](/rownd/guides/configuration/integrations/firebase/google-cloud-platform-requirements#access-requirements).
-</Info>
+5.  Select the Firebase Project and Application that you'd like to link with Rownd.
+    When finished, click **Create**
 
-Grant Rownd the access into your Google Account, and then click the **Next**
-button when authentication is complete.
+    Initialization of the integration may take a few minutes while Rownd creates the required links with your Firebase project. You can track its progress in the **Connections** tab of the Integrations area.
 
-1.  Firebase Settings
+When the connection is ready, you can use the three-dots menu on the far right of the row to attach the connection to your app.
 
-Select the Google Cloud Project, Firebase Application, and Firebase Database
-where you'd like to enable Rownd.
-
-When done, click **Next**
+Once these steps are completed, you should be able to use Rownd to sign in as an existing Firebase user, receiving the same ID that you had previously.
