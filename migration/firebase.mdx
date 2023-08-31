@@ -22,7 +22,7 @@ Here's what you'll work through as part of this migration:
 ## Update front-end code
 In this example we'll update the front-end and replace Firebase authentication with Rownd. React code examples are provided for demonstration purposes. Feel free to use any of our [sdks](http://localhost:3000/sdk-reference/overview) to replace Firebase.
 
-1. Remove code related to Firebase UI. 
+1. Remove all code related to Firebase. If you'd like to keep existing users signed in during migration, a `getAuth(app)` instance from Firebase will still be required.
 
 2. Install Rownd. 
 ```
