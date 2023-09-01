@@ -120,7 +120,7 @@
             {
               "group": "Firebase",
               "pages": [
-                "/configuration/integrations/firebase/overview",
+                "configuration/integrations/firebase/overview",
                 "configuration/integrations/firebase/authentication",
                 "configuration/integrations/firebase/google-cloud-platform-requirements",
                 "configuration/integrations/firebase/realtime-database",
