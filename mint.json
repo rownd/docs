@@ -39,7 +39,7 @@
     {
       "name": "Contact Us",
       "icon": "envelope",
-      "url": "mailto:hello@rownd.io"
+      "url": "mailto:hello@rownd.com"
     }
   ],
   "navigation": [
@@ -47,7 +47,16 @@
       "group": "Welcome",
       "pages": [
         "welcome/overview",
-        "welcome/getting-started"
+        "welcome/getting-started",
+        {
+          "group": "Migrating to Rownd",
+          "pages": [
+            "migration/overview",
+            "migration/auth0",
+            "migration/cognito",
+            "migration/firebase"
+          ]
+        }
       ]
     },
     {
@@ -106,16 +115,10 @@
           "group": "Integrations",
           "pages": [
             "configuration/integrations/overview",
+            "configuration/integrations/auth0",
+            "configuration/integrations/firebase/authentication",
             "configuration/integrations/airtable",
             "configuration/integrations/hubspot",
-            {
-              "group": "Firebase (Realtime Database)",
-              "pages": [
-                "configuration/integrations/firebase---realtime-database",
-                "configuration/integrations/google-cloud-platform-requirements",
-                "configuration/integrations/examples--defining-user-data-locations"
-              ]
-            },
             "configuration/integrations/mailerlite",
             "configuration/integrations/token-validator",
             "configuration/integrations/webhooks"
@@ -211,6 +214,6 @@
     "twitter": "https://twitter.com/RowndHQ",
     "linkedin": "https://www.linkedin.com/company/rownd/",
     "tiktok": "https://www.tiktok.com/@my.data.not.yours",
-    "website": "https://rownd.io/"
+    "website": "https://rownd.com/"
   }
 }

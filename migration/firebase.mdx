@@ -1,0 +1,114 @@
+---
+title: "Migrating from Firebase Authentication"
+sidebarTitle: "Firebase"
+---
+Migrating from Firebase Authentication to Rownd is fast and easy. In most cases, you'll probably be able to remove a lot of unnecessary code and configuration from your product in exchange for Rownd's turnkey solution. Let's get started!
+
+## Overview
+In this guide, we'll help you plan your migration from Firebase to Rownd so that you can think through the process and avoid any pitfalls. We'll also provide some code snippets to help you get started.
+
+Here's what you'll work through as part of this migration:
+1. Creating a Rownd account and setting up your test and production apps.
+2. Updating your code to leverage Rownd instead of Firebase for authentication.
+3. Migrating your existing users to Rownd.
+
+<Note>We've prepared a [sample repository](https://github.com/rownd/migration-firebase#firebase-migration-to-rownd) that demonstrates the migration process from a code perspective.</Note>
+
+## Set up Rownd
+<Snippet file="migration/setup-rownd-steps.mdx" />
+
+5. [Create a Firebase Authentication integration](/configuration/integrations/firebase/authentication) and attach it to your app. This will allow Rownd to migrate your existing users automatically.
+
+## Update back-end code
+<Info>
+Some Firebase apps don't have a back-end component. If that's the case for you, you can skip this section!
+</Info>
+In most cases, you should be able to remove all Firebase Authentication-related code from any backend servers or functions you're using. Take the following steps to migrate your back-end from Firebase Authentication to Rownd.
+
+1. If you're only using Firebase Authentication, uninstall Firebase SDKs from your back-end project.
+2. Install the Rownd SDK for your [back-end language or framework](/sdk-reference/backend).
+2. Locate code that uses the Firebase SDK to manage users, validate tokens, and so on. Remove this code.
+3. Replace the previous Firebase code with Rownd code. See our [GitHub repo](https://github.com/rownd/migration-firebase) for an example of this code migration.
+
+## Update front-end code
+Firebase provides a limited amount of pre-built UI, so it's likely you've created some custom UI to handle sign-in and sign-up. Rownd provides a fully customizable UI that you can use to replace your existing UI. Take the following steps to migrate your front-end from Firebase Authentication to Rownd.
+
+<Info>If you plan to keep existing users signed-in (and you should!), keep your Firebase SDKs installed until you've migrated all of your active users to Rownd. This usually takes a month or two depending on your users' behavior patterns.</Info>
+
+1. Remove existing authentication code, authentication screens, and so on. (If you're migrating a mobile app, you may want to keep the splash screen, although Rownd can help you let users into your app before they fully authenticate).
+2. Install a [front-end web SDK](/sdk-reference/web) or [mobile SDK](/sdk-reference/mobile) for your platform or framework.
+3. Add the required bits of Rownd code to authenticate users and protect your front-end.
+
+Here's an example where we'll update the front-end and replace Firebase authentication with Rownd. React code examples are provided for demonstration purposes.
+
+1. Remove all code related to Firebase. If you'd like to keep existing users signed in during migration, a `getAuth(app)` instance from Firebase will still be required.
+
+2. Install Rownd. 
+```
+npm install @rownd/react
+```
+
+3. Add the RowndProvider to the app's main entry.
+<CodeGroup>
+```typescript React .tsx
+import React from 'react',
+import ReactDOM from 'react-dom';
+import { RowndProvider } from '@rownd/react';
+import App from './App';
+
+ReactDOM.render(
+  <RowndProvider
+    appKey="<your app key>"
+  >
+    <App />
+  </RowndProvider>,
+  document.getElementById('root')
+```
+</CodeGroup>
+
+4. Add a sign-in trigger to all protected pages:
+<CodeGroup>
+```typescript React .tsx
+import { useRownd } from '@rownd/react';
+export default function MyProtectedComponent(props) {
+  const { is_authenticated, requestSignIn, is_initializing } = useRownd();
+  useEffect(() => {
+    if (!is_authenticated && !is_initializing) {
+      requestSignIn()
+    }
+  }, [is_authenticated, is_initializing, requestSignIn]);
+}
+```
+</CodeGroup>
+
+## Keep existing users signed-in
+Migrating your authentication to Rownd will help convert more users as they move through your funnel; however, what about the users you already have? They'll quickly become frustrated if they get signed out as a result of the migration.
+
+To keep existing users signed in, you can pass their old access token to Rownd for validation. Rownd will then issue a new token to the user, so they'll be able to continue using your product without interruption. Once the new token is issued, the old provider's token can be permanently discarded.
+
+1. In your front-end code, check if the user is already signed in to Rownd (e.g., `rownd.isAuthenticated`). If they are, you're done!
+2. If they aren't, check if they're currently authenticated via Firebase. If they are, retrieve their ID token.
+    ```typescript
+    import { getAuth } from "firebase/auth";
+    const firebaseConfig = { ... };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    if (auth.currentUser) {
+        const token = await auth.currentUser.getIdToken();
+    }
+    ```
+3. Pass the token to Rownd for validation. If the token is valid, Rownd will issue a new token to the user.
+    ```typescript
+    const token = await rownd.getAccessToken(token);
+    ```
+4. `rownd.isAuthenticated` should now be `true` and the user can continue using your product normally.
+
+## Sync user profiles (optional)
+Rownd supports multiple ways to sync your user data from Firebase. Once the Firebase integration is created and attached to your app, Rownd will begin migrating users "just in time," meaning that as users sign in, their data will automatically be imported into Rownd (matched on email address, phone number, etc).
+
+However, pre-loading user data into Rownd will speed up the initial authentication handshake. You can use the Firebase connector's "sync" option to do a bulk import of all users from your Firebase app to Rownd. Any users that sign-in after the sync begins will be auto-migrated using the "just in time" method.
+
+<Snippet file="migration/testing.mdx" />
+
+<Snippet file="migration/completion.mdx" />

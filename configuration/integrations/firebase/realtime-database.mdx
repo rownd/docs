@@ -1,5 +1,6 @@
 ---
-title: "Overview"
+title: "Firebase - Realtime Database"
+sidebarTitle: "Realtime Database"
 ---
 
 The Firebase Realtime Database integration lets you sync personal information
@@ -9,7 +10,7 @@ manageable by the data owners. All of this is done by leveraging Google Cloud
 Functions and the Rownd platform.
 
 Check out the Google Cloud
-[prerequisites](/rownd/guides/configuration/integrations/firebase-realtime-database/google-cloud-platform-requirements)
+[prerequisites](/configuration/integrations/firebase/google-cloud-platform-requirements)
 to ensure your GCP account and Project are ready for the Rownd Integration.
 
 #### Creating the integration
@@ -20,40 +21,34 @@ to ensure your GCP account and Project are ready for the Rownd Integration.
 2. Choose the **Firebase - Realtime Database** connector from the Connector
    Catalog
 
-3. Enter a name for your new Integration.
+3. Enter a name for your new integration.
+   After you've entered a descriptive name, click **Next**
 
-After you've entered a descriptive name, click **Next**
+4.  Click the **Begin authentication** button and sign in to your Google Account to grant Rownd access to your Firebase project.
 
-1.  Authenticate with Google Cloud
+    <Info>
+    Firebase Realtime Database runs on Google Cloud. Rownd leverages the Google
+    Cloud Platform to receive Realtime Database updates. Rownd will need permission
+    to read Google Cloud Projects, read and write Firebase resources, and create
+    Cloud Functions. For a full list of access that Rownd
+    needs, click
+    [here](/rownd/guides/configuration/integrations/firebase/google-cloud-platform-requirements#access-requirements).
+    </Info>
 
-Click the **Begin authenticate** button and log in to your Google Account.
+    Grant Rownd the access to your Google Account, and then click the **Next**
+    button when authentication is complete.
 
-Firebase Realtime Database runs on Google Cloud. Rownd leverages the Google
-Cloud Platform to receive Realtime Database updates. Rownd will need permission
-to read Google Cloud Projects, read and write Firebase resources, and create
-Cloud Functions (among other things.) For a full list of access that Rownd
-needs, click
-[here](/rownd/guides/configuration/integrations/firebase-realtime-database/google-cloud-platform-requirements#access-requirements).
+5.  Select the Firebase Project, Application, and Database that you'd like to link with Rownd.
 
-Grant Rownd the access into your Google Account, and then click the **Next**
-button when authentication is complete.
+    When finished, click **Next**
 
-1.  Firebase Settings
-
-Select the Google Cloud Project, Firebase Application, and Firebase Database
-where you'd like to enable Rownd.
-
-When done, click **Next**
-
-2.  Database Settings
-
-In the **Database Settings** step, you will provide Rownd with information about
+6.  In the **Database Settings** step, you will provide Rownd with information about
 where and how personal information is stored within your Firebase Realtime
 Database.
 
-The RTDB structure is essentially a large JSON object. You will specify the JSON
-path to where the personal information exists. If PII is stored in multiple
-places within the database, you can add multiple paths to the configuration.
+    The RTDB structure is essentially a large JSON object. You will specify the JSON
+    path to where the personal information exists. If PII is stored in multiple
+    places within the database, you can add multiple paths to the configuration.
 
 #### Defining User Data Locations
 
@@ -126,7 +121,7 @@ surrounded by curly braces `{}`. For instance, if `Foreign Key` is `"userId"`,
 then the path could look something like `"/users/{userId}/profile"`
 
 For more examples of defining user data locations, see the
-[examples section](/rownd/guides/configuration/integrations/firebase-realtime-database/examples-defining-user-data-locations).
+[examples section](/rownd/guides/configuration/integrations/firebase/realtime-database--defining-user-data-locations).
 
 1.  Create the Integration
 
