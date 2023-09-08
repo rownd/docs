@@ -1,5 +1,5 @@
 ---
-title: "Migration to Rownd"
+title: "Overview"
 sidebarTitle: "Overview"
 description: "Flee static sign-in and move to Rownd with ease"
 ---
@@ -34,12 +34,47 @@ Rownd provides a [token validator](/configuration/integrations/token-validator) 
 If you already had [Google](/configuration/authentication-methods/google) or [Apple](/configuration/authentication-methods/apple) sign-in options, you can set them up quickly in Rownd as well.
 
 ### Considerations for setting up Google and/or Apple sign-in
-1. Use the same Google Client ID that you used to set up the authentication prior to migration. This ensures the Google ID remains the same. If that's not possible for some reason, Rownd can still automatically link their email address to a new Google ID.
-2. Use the same Apple App ID for both. 
+1. Use the same Google Client ID that you used to set up the authentication prior to migration. This ensures the Google ID remains the same. If that's not possible for some reason, Rownd can still automatically users based on their Google account's email address.
+2. Use the same Apple App ID for both.
 
 ## Migrating data
-Migrating existing user profiles is the easiest part. A few days before deploying to production, contact the migration team at Rownd (migration@rownd.io) and we'll help you through every step of the journey.
+Migrating existing user profiles is the easiest part. If you're migrating from another auth provider, Rownd can automatically migrate your users for you. See our provider-specific migration guides for more information.
+
+If you're migrating from an auth provider that Rownd doesn't support natively, or if you're coming from your own auth solution, [reach out to us](mailto:migration@rownd.io?subject=Migrating%20to%20Rownd%20from%20another%20provider) a few days before deploying to production. We'll provide hands-on assistance to ensure your migration is smooth.
 
 ### Considerations for migrating data
 1. Consider what data you want to transfer to Rownd. Most sign-in methods should be migrated. Rownd can also manage other profile information (names, addresses, etc).
 2. You may choose to migrate data from two or more sources. For example, you may move profile data from Auth0 and personal information (PII) from your own database. Let us know!
+
+## Start a migration
+Choose your migration path below to get started!
+
+<CardGroup>
+  <Card
+    title="Auth0"
+    icon={<><svg className="hidden dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M358.1 378.8L319.6 260L420.5 186.9H295.7l-38.6-118.7l-.01-.03h124.8l38.6 118.7v-.003l0.03-.02c22.4 68.8-.7 147 -62.4 192zm-201.9 0l-.036 .03L257.13 452.2L358.09 378.84L257.17 305.51ZM93.85 186.85c-23.57 72.57 3.79 149.46 62.36 192l0.01-.036L194.77 260.17L93.89 186.87H218.6L257.15 68.2L257.2 68.2H132.4Z" fill="#b4b4fe" /></svg><svg className="block dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M358.1 378.8L319.6 260L420.5 186.9H295.7l-38.6-118.7l-.01-.03h124.8l38.6 118.7v-.003l0.03-.02c22.4 68.8-.7 147 -62.4 192zm-201.9 0l-.036 .03L257.13 452.2L358.09 378.84L257.17 305.51ZM93.85 186.85c-23.57 72.57 3.79 149.46 62.36 192l0.01-.036L194.77 260.17L93.89 186.87H218.6L257.15 68.2L257.2 68.2H132.4Z" fill="#5b0ae0" /></svg></>}
+    icon-type="duotone"
+    href="/migration/auth0">
+    Reduce expenses and improve your user experience
+  </Card>
+  <Card
+    title="Cognito (AWS)"
+    icon="aws"
+    icon-type="duotone"
+    href="/migration/cognito">
+    Say goodbye to AWS's frustrating auth tools
+  </Card>
+  <Card
+    title="Firebase Authentication"
+    icon={<><svg className="hidden dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><g fill="none"><path d="M0 0h192v192H0z"/><path d="M36.227 122.934L53.655 11.388a4 4 0 0 1 7.477-1.275l18.74 34.96zm65.373 59.553a11.989 11.989 0 0 1-11.696-.02L32 150 136.636 45.175a3.994 3.994 0 0 1 6.771 2.164l8.292 51.302A46.308 46.308 0 0 0 144 98c-25.405 0-46 20.595-46 46 0 12.856 5.274 24.48 13.775 32.827zM33.584 139.92L92.461 34.888a3.999 3.999 0 0 1 7.081 0l13.406 25.525zM104 144c0-22.091 17.909-40 40-40s40 17.909 40 40-17.909 40-40 40-40-17.909-40-40zm48-2c3.32 0 5.98-2.68 5.98-6s-2.66-6-5.98-6c-3.32 0-6 2.68-6 6s2.68 6 6 6zm-16 0c3.32 0 5.98-2.68 5.98-6s-2.66-6-5.98-6c-3.32 0-6 2.68-6 6s2.68 6 6 6zm0 4c-4.66 0-14 2.34-14 7v5h28v-5c0-4.66-9.34-7-14-7zm16 0c-.58 0-1.24.04-1.94.1 2.32 1.68 3.94 3.94 3.94 6.9v5h12v-5c0-4.66-9.34-7-14-7z" fill="#b4b4fe"/></g></svg><svg className="block dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><g fill="none"><path d="M0 0h192v192H0z"/><path d="M36.227 122.934L53.655 11.388a4 4 0 0 1 7.477-1.275l18.74 34.96zm65.373 59.553a11.989 11.989 0 0 1-11.696-.02L32 150 136.636 45.175a3.994 3.994 0 0 1 6.771 2.164l8.292 51.302A46.308 46.308 0 0 0 144 98c-25.405 0-46 20.595-46 46 0 12.856 5.274 24.48 13.775 32.827zM33.584 139.92L92.461 34.888a3.999 3.999 0 0 1 7.081 0l13.406 25.525zM104 144c0-22.091 17.909-40 40-40s40 17.909 40 40-17.909 40-40 40-40-17.909-40-40zm48-2c3.32 0 5.98-2.68 5.98-6s-2.66-6-5.98-6c-3.32 0-6 2.68-6 6s2.68 6 6 6zm-16 0c3.32 0 5.98-2.68 5.98-6s-2.66-6-5.98-6c-3.32 0-6 2.68-6 6s2.68 6 6 6zm0 4c-4.66 0-14 2.34-14 7v5h28v-5c0-4.66-9.34-7-14-7zm16 0c-.58 0-1.24.04-1.94.1 2.32 1.68 3.94 3.94 3.94 6.9v5h12v-5c0-4.66-9.34-7-14-7z" fill="#5b0ae0"/></g></svg></>} 
+    href="/migration/firebase" >
+   Use Rownd with your existing Firebase project
+  </Card>
+  <Card
+    title="Other / custom"
+    icon="screwdriver-wrench"
+    href="mailto:migration@rownd.io">
+    Another auth provider or your own custom solution
+  </Card>
+
+</CardGroup>
