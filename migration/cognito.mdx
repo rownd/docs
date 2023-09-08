@@ -2,59 +2,168 @@
 title: "Migrating from AWS Cognito"
 sidebarTitle: "AWS Cognito"
 ---
-<!-- Summary of migration -->
 
 ## Overview
-<!-- Outline the basic steps required for migrating to Rownd and call out any "gotchas" -->
+
+Here's what you'll work through as part of this migration:
+1. Creating a Rownd account and setting up your test and production apps.
+2. Updating your code to leverage Rownd instead of Cognito for authentication.
+3. Migrating your existing users to Rownd.
 
 ## Set up Rownd
-<!-- Create a Rownd app, enable matching sign-in methods, set up an integration (if applicable) -->
+
+<Snippet file="migration/setup-rownd-steps.mdx" />
 
 ## Update back-end code
-<!-- Remove old provider SDKs, remove old provider code, install Rownd SDK, add Rownd code-->
+You'll need to update your backend APIs to accept Rownd-signed JWTs instead of AWS Cognito JWTs.
+
+ 1. Install the Rownd SDK for your [back-end language or framework](/sdk-reference/backend).
+ 2. Locate code that uses the AWS Cognito to manage users, validate tokens, and so on. Remove this code.
+
+Our SDKs provide functions to validate Rownd tokens, fetch user data, and in some cases middleware that you can plug directly into your request handlers to authenticate users automatically. 
+
+Here's an example of using the Node.js SDK's Express middleware:
+
+<Info>
+Notice the use of the `authenticate` middleware function from `rownd.express` which validates a JWT in the `Authorization` header and fetches profile data from Rownd, making it available on the request object for other request handlers. You can also build a middleware yourself or use one-off instances of `rownd.validateToken(token);` and `rownd.fetchUserInfo(token);`. 
+</Info>
+
+```typescript
+import { createInstance } from '@rownd/node';
+const rownd = createInstance({
+  app_key: 'YOUR_APP_KEY',
+  app_secret: 'YOUR_APP_SECRET',
+});
+const { authenticate } = rownd.express;
+
+app.get('/api/*', authenticate({ fetchUserInfo: true }));
+
+app.get('/api/profile', (req, res) => {
+    res.send({
+        profile: req.user
+    });
+});
+```
 
 ## Update front-end code
-<!-- Remove old provider SDKs, remove old provider code, install Rownd SDK, add Rownd code-->
 
-## Keep existing users signed-in
-<!-- Describe how to use an existing token from the old provider to sign into Rownd -->
-Migrating your authentication to Rownd will help convert more users as they move through your funnel; however, what about the users you already have? They'll quickly become frustrated if they get signed out as a result of the migration.
+1. Install the `@rownd/react` dependency with your preferred package manager
+```
+npm install @rownd/react
+```
 
-To keep existing users signed in, you can pass their old access token to Rownd for validation. Rownd will then issue a new token to the user, so they'll be able to continue using your product without interruption. Once the new token is issued, the old provider's token can be permanently discarded.
+2. Add the RowndProvider to the app's main entry.
+<CodeGroup>
+```typescript React .tsx
+import React from 'react',
+import ReactDOM from 'react-dom';
+import { RowndProvider } from '@rownd/react';
+import App from './App';
 
-1. In your front-end code, check if the user is already signed in to Rownd (e.g., `rownd.isAuthenticated`). If they are, you're done!
-2. If they aren't, check if they're currently authenticated via Firebase. If they are, retrieve their ID token.
-    ```typescript
-    import { getAuth } from "firebase/auth";
-    const firebaseConfig = { ... };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+ReactDOM.render(
+  <RowndProvider
+    appKey="<your app key>"
+  >
+    <App />
+  </RowndProvider>,
+  document.getElementById('root')
+```
+</CodeGroup>
 
-    if (auth.currentUser) {
-        const token = await auth.currentUser.getIdToken();
-    }
-    ```
-3. Pass the token to Rownd for validation. If the token is valid, Rownd will issue a new token to the user.
-    ```typescript
-    const token = await rownd.getAccessToken(token);
-    ```
-4. `rownd.isAuthenticated` should now be `true` and the user can continue using your product normally.
+
+3. Replace all sign up and sign in buttons to send a requestSignIn API request to sign in and create new users.
+
+```typescript 
+const { requestSignIn } = useRownd();
+<button onClick={() => requestSignIn()}>Login or Sign Up</button>
+```
+
+4. Replace ConfirmSignUp with is_authenticated API request
+
+```typescript 
+const { is_authenticated } = useRownd();
+return (
+  <>
+    {is_authenticated && <ProtectedRoute />}
+    {!is_authenticated && <PublicRoute />}
+  </>
+);
+```
+
+
+5. Replace InitiateAuth with getAccessToken API request
+
+```typescript 
+const { getAccessToken } = useRownd();
+
+let accessToken = await getAccessToken({
+  waitForToken: false,
+});
+```
+
+6. Replace sign out buttons to send a signOut API request
+
+```typescript 
+const { signOut } = useRownd();
+<button onClick={() => signout()}>Logout</button>
+```
 
 ## Sync user profiles (optional)
-<!--  Steps to migrate users to keep IDs stable, leveraging an integration if possible, otherwise CSV/JSON export and import w/ sample scripts, etc -->
-Rownd supports multiple ways to sync your user data from Firebase. Once the Firebase integration is created and attached to your app, Rownd will begin migrating users "just in time," meaning that as users sign in, their data will automatically be imported into Rownd (matched on email address, phone number, etc).
 
-However, pre-loading user data into Rownd will speed up the initial authentication handshake. You can use the Firebase connector's "sync" option to do a bulk import of all users from your Firebase app to Rownd. Any users that sign-in after the sync begins will be auto-migrated using the "just in time" method.
+Export user data, then import it
 
-## Test the migration
-<!-- Make sure everything works -->
-Once everything is set up, it's time to test various aspects of the migration. Here are some things to consider:
+1. To do a bulk import of all users from your Cognito to Rownd see our [GitHub repo](https://github.com/rownd/csv-exporter) to export user data and transform your user data to the correct schema 
 
-1. Make sure new users can sign in successfully. If you use an email provider that supports sub-addressing, you can make up "new" users like `juliet+test1@gmail.com` and the messages will be delivered to `juliet@gmail.com`.
+2. Then use the following script to import your users into Rownd.
 
-2. Verify existing users can sign in successfully and that they receive the same user ID that they had prior to the migration.
+ <CodeGroup>
+```
+const axios = require('axios');
+let data = JSON.stringify({
+  "users": [
+    {
+      "user_id": "__default__",
+      "data": {
+        "email": "romeo@gmail.com",
+        "sub": "41dbf550-1031-70e1-cc01-ce0106007d33"
+      }
+    },
+    {
+      "user_id": "__default__",
+      "data": {
+        "email": "johndoe@mailinator.com",
+        "sub": "518b35f0-9081-707d-5814-54cb79d27cc6"
+      }
+    },
+    {
+      "user_id": "__default__",
+      "data": {
+        "email": "janedoe@gmail.com",
+        "sub": "910b8560-c071-70a3-09e3-ef0bd61a8168"
+      }
+    }
+  ]
+});
 
-3. If you chose to keep existing users signed in, test the migration flow to ensure that you remain signed in throughout the process. This usually means loading or installing the previous version of your product, signing in with your old provider, then loading the Rownd-enabled version of the app.
+let config = {
+  method: 'put',
+  maxBodyLength: Infinity,
+  url: 'https://api.rownd.io/applications/<YOUR APP ID>/users/data',
+  headers: { 
+    'x-rownd-app-key': '<YOUR APP KEY>', 
+    'x-rownd-app-secret': '<YOUR APP SECRET>', 
+    'Content-Type': 'application/json', 
+  },
+  data : data
+};
 
-## Completing the migration
-<!-- Any last steps to wrap things up.  -->
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+
+```
+</CodeGroup>
