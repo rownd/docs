@@ -1,6 +1,6 @@
 ---
 title: "Migrating from AWS Cognito"
-sidebarTitle: "AWS Cognito"
+sidebarTitle: "Cognito (AWS)"
 ---
 
 ## Overview
@@ -9,6 +9,8 @@ Here's what you'll work through as part of this migration:
 1. Creating a Rownd account and setting up your test and production apps.
 2. Updating your code to leverage Rownd instead of Cognito for authentication.
 3. Migrating your existing users to Rownd.
+
+<Note>We've prepared a [sample repository](https://github.com/rownd/migration-cognito#cognito-migration-to-rownd) that demonstrates the migration process from a code perspective.</Note>
 
 ## Set up Rownd
 
@@ -22,10 +24,10 @@ You'll need to update your backend APIs to accept Rownd-signed JWTs instead of A
 
 Our SDKs provide functions to validate Rownd tokens, fetch user data, and in some cases middleware that you can plug directly into your request handlers to authenticate users automatically. 
 
-Here's an example of using the Node.js SDK's Express middleware:
+Here's an example using Express middleware in Node.js:
 
 <Info>
-Notice the use of the `authenticate` middleware function from `rownd.express` which validates a JWT in the `Authorization` header and fetches profile data from Rownd, making it available on the request object for other request handlers. You can also build a middleware yourself or use one-off instances of `rownd.validateToken(token);` and `rownd.fetchUserInfo(token);`. 
+Notice the use of the `authenticate` middleware function from `rownd.express` which validates a JWT in the `Authorization` header and fetches profile data from Rownd, making it available on the request object for other request handlers. You can also build a middleware yourself or use one-off instances of `rownd.validateToken(token)` and `rownd.fetchUserInfo(token)`. 
 </Info>
 
 ```typescript
@@ -52,7 +54,7 @@ app.get('/api/profile', (req, res) => {
 npm install @rownd/react
 ```
 
-2. Add the RowndProvider to the app's main entry.
+2. Add the `<RowndProvider>` to the app's main entry.
 <CodeGroup>
 ```typescript React .tsx
 import React from 'react',
@@ -71,7 +73,7 @@ ReactDOM.render(
 </CodeGroup>
 
 
-3. Replace all sign up and sign in buttons to send a requestSignIn API request to sign in and create new users.
+3. Replace all sign up and sign in buttons to trigger the `requestSignIn` flow for new or existing users.
 
 ```typescript 
 const { requestSignIn } = useRownd();
