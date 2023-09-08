@@ -115,18 +115,10 @@
           "group": "Integrations",
           "pages": [
             "configuration/integrations/overview",
+            "configuration/integrations/auth0",
+            "configuration/integrations/firebase/authentication",
             "configuration/integrations/airtable",
             "configuration/integrations/hubspot",
-            {
-              "group": "Firebase",
-              "pages": [
-                "configuration/integrations/firebase/overview",
-                "configuration/integrations/firebase/authentication",
-                "configuration/integrations/firebase/google-cloud-platform-requirements",
-                "configuration/integrations/firebase/realtime-database",
-                "configuration/integrations/firebase/realtime-database--defining-user-data-locations"
-              ]
-            },
             "configuration/integrations/mailerlite",
             "configuration/integrations/token-validator",
             "configuration/integrations/webhooks"
