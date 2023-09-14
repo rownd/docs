@@ -1,6 +1,6 @@
 # Rownd Documentation
 
-The content and configuration powering the documentation available at [docs.dev.rownd.io](https://docs.dev.rownd.io)
+The content and configuration powering the documentation available at [docs.dev.rownd.io](https://docs.rownd.io)
 
 ### 👩‍💻 Development
 
