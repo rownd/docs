@@ -55,9 +55,7 @@ npx expo install expo-build-properties
 }
 ```
 
-4. Install Sodium (iOS Framework). [Step 2 for iOS](#ios)
-
-5. (optional) Enable Apple sign-in for iOS in your `app.json` file.
+4. (optional) Enable Apple sign-in for iOS in your `app.json` file.
 
 ```json
 {
@@ -67,7 +65,7 @@ npx expo install expo-build-properties
 }
 ```
 
-6. (optional) Enable Google sign-in for iOS. Add your Google IOS Client ID client as a URL Scheme in your `app.json` file.
+5. (optional) Enable Google sign-in for iOS. Add your Google IOS Client ID client as a URL Scheme in your `app.json` file.
 
 ```json
 {
@@ -129,27 +127,7 @@ public class MainActivity extends ReactActivity {
 platform: ios, "14.0";
 ```
 
-2. Add the code below to install the Sodium pod dependency correctly. Place
-   inside the target. File: _ios/Podfile_
-
-```swift Podfile
-dynamic_frameworks = ['Sodium']
-pre_install do |installer|
-  installer.pod_targets.each do |pod|
-    if dynamic_frameworks.include?(pod.name)
-      puts "Overriding the dynamic_framework? method for #{pod.name}"
-      def pod.dynamic_framework?;
-        true
-      end
-      def pod.build_type;
-        Pod::BuildType.dynamic_framework
-      end
-    end
-  end
-end
-```
-
-3. Install the Rownd pod and it's dependencies
+2. Install the Rownd pod and it's dependencies
 
 ```bash
 cd ios && pod install
