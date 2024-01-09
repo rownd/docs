@@ -15,6 +15,72 @@ First, install the Rownd SDK for React Native.
 npm install @rownd/react-native
 ```
 
+### Expo development
+
+1. Add `@rownd/react-native` as a plugin to your `app.json` file.
+
+```json
+{
+  "expo": {
+    "plugins": ["@rownd/react-native"]
+  }
+}
+```
+
+2. Install [Expo BuildProperties](https://docs.expo.dev/versions/latest/sdk/build-properties/) to set iOS/Android versions
+
+```sh
+npx expo install expo-build-properties
+```
+
+3. Add `expo-build-properties` as a plugin to your `app.json` file. Ensure the Sdk versions match or are above provided iOS/Android versions.
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26
+          },
+          "ios": {
+            "deploymentTarget": "14.0"
+          }
+        }
+      ]
+    ]
+  }
+}
+```
+
+4. (optional) Enable Apple sign-in for iOS in your `app.json` file.
+
+```json
+{
+  "ios": {
+    "usesAppleSignIn": true
+  }
+}
+```
+
+5. (optional) Enable Google sign-in for iOS. Add your Google IOS Client ID client as a URL Scheme in your `app.json` file.
+
+```json
+{
+  "infoPlist": {
+    "CFBundleURLTypes": [
+      {
+        "CFBundleURLSchemes": [
+          "com.googleusercontent.apps.xxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxx"
+        ]
+      }
+    ]
+  }
+}
+```
+
 #### Android
 
 1.  Ensure the Sdk versions match or are above provided versions. File:
@@ -61,27 +127,7 @@ public class MainActivity extends ReactActivity {
 platform: ios, "14.0";
 ```
 
-2. Add the code below to install the Sodium pod dependency correctly. Place
-   inside the target. File: _ios/Podfile_
-
-```swift Podfile
-dynamic_frameworks = ['Sodium']
-pre_install do |installer|
-  installer.pod_targets.each do |pod|
-    if dynamic_frameworks.include?(pod.name)
-      puts "Overriding the dynamic_framework? method for #{pod.name}"
-      def pod.dynamic_framework?;
-        true
-      end
-      def pod.build_type;
-        Pod::BuildType.dynamic_framework
-      end
-    end
-  end
-end
-```
-
-3. Install the Rownd pod and it's dependencies
+2. Install the Rownd pod and it's dependencies
 
 ```bash
 cd ios && pod install
