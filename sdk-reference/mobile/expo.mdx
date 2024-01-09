@@ -1,0 +1,87 @@
+---
+title: "Expo"
+description: "Rownd bindings for Expo"
+---
+
+### Prerequisites
+
+You must be using React Native v0.64 or higher. 
+
+Must be an ejected Expo app which can be bare React Native or use an Expo development build. Instructions for bare React Native app can be found [here](/sdk-reference/mobile/react-native).
+
+### Installation
+
+First, install the Rownd SDK for Expo.
+
+```bash
+npm install @rownd/react-native
+```
+
+### Expo development
+
+1. Add `@rownd/react-native` as a plugin to your `app.json` file.
+
+```json
+{
+  "expo": {
+    "plugins": ["@rownd/react-native"]
+  }
+}
+```
+
+2. Install [Expo BuildProperties](https://docs.expo.dev/versions/latest/sdk/build-properties/) to set iOS/Android versions
+
+```sh
+npx expo install expo-build-properties
+```
+
+3. Add `expo-build-properties` as a plugin to your `app.json` file. Ensure the Sdk versions match or are above provided iOS/Android versions.
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26
+          },
+          "ios": {
+            "deploymentTarget": "14.0"
+          }
+        }
+      ]
+    ]
+  }
+}
+```
+
+4. (optional) Enable Apple sign-in for iOS in your `app.json` file.
+
+```json
+{
+  "ios": {
+    "usesAppleSignIn": true
+  }
+}
+```
+
+5. (optional) Enable Google sign-in for iOS. Add your Google IOS Client ID client as a URL Scheme in your `app.json` file.
+
+```json
+{
+  "infoPlist": {
+    "CFBundleURLTypes": [
+      {
+        "CFBundleURLSchemes": [
+          "com.googleusercontent.apps.xxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxx"
+        ]
+      }
+    ]
+  }
+}
+```
+
+
+<Snippet file="mobile/react-native/react-native.mdx" />
