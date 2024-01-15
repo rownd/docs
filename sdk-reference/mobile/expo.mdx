@@ -50,6 +50,7 @@ npx expo install expo-build-properties
 {
   "expo": {
     "plugins": [
+      "@rownd/react-native",
       [
         "expo-build-properties",
         {
@@ -70,8 +71,10 @@ npx expo install expo-build-properties
 
 ```json
 {
-  "ios": {
-    "usesAppleSignIn": true
+  "expo": {
+    "ios": {
+      "usesAppleSignIn": true
+    }
   }
 }
 ```
@@ -80,17 +83,57 @@ npx expo install expo-build-properties
 
 ```json
 {
-  "infoPlist": {
-    "CFBundleURLTypes": [
-      {
-        "CFBundleURLSchemes": [
-          "com.googleusercontent.apps.xxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxx"
-        ]
-      }
-    ]
+  "expo": {
+    "infoPlist": {
+      "CFBundleURLTypes": [
+        {
+          "CFBundleURLSchemes": [
+            "com.googleusercontent.apps.xxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxx"
+          ]
+        }
+      ]
+    }
   }
 }
 ```
 
+#### Enable deep linking
+
+Rownd supports automatically signing-in users when they initially install your
+app or when they click a sign-in link when the app is already installed. Follow instructions below to setup.
+
+1. Visit the Rownd platform and go to the [Sign in methods](https://app.rownd.io) page. Open the Mobile app settings modal and (1) create a subdomain and (2) fill out the iOS/Android settings.
+
+2. Enable deep linking for Expo using `app.json` and `<subdomain>` created in the Rownd platform.
+
+<Note>These settings might only apply at the time the native projects were generated. Try deleting the ios/android folders and rebuilding the project.</Note>
+
+File: `app.json`
+```json
+{
+  "expo": {
+    "ios": {
+      ...
+       "associatedDomains": ["applinks:<subdomain>.rownd.link"]
+    },
+    "android": {
+      ...
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "<subdomain>.rownd.link"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    }
+  }
+}
+```
 
 <Snippet file="mobile/react-native/react-native.mdx" />
