@@ -1,0 +1,139 @@
+---
+title: "Expo"
+description: "Rownd bindings for Expo"
+---
+
+<div data-snack-id="@mfmurrayrownd/rownd-demo" data-snack-platform="web" data-snack-preview="true" data-snack-theme="light" style={{
+  "overflow": "hidden",
+  "background": "#fbfcfd",
+  "border": "1px solid var(--color-border)",
+  "border-radius": "4px",
+  "height": "605px",
+  "width": "100%"
+}}></div>
+
+### Prerequisites
+
+You must be using React Native v0.64 or higher. 
+
+Must be an ejected Expo app which can be bare React Native or use an Expo development build. Instructions for bare React Native app can be found [here](/sdk-reference/mobile/react-native).
+
+### Installation
+
+First, install the Rownd SDK for Expo.
+
+```bash
+npm install @rownd/react-native
+```
+
+### Expo development
+
+1. Add `@rownd/react-native` as a plugin to your `app.json` file.
+
+```json
+{
+  "expo": {
+    "plugins": ["@rownd/react-native"]
+  }
+}
+```
+
+2. Install [Expo BuildProperties](https://docs.expo.dev/versions/latest/sdk/build-properties/) to set iOS/Android versions
+
+```sh
+npx expo install expo-build-properties
+```
+
+3. Add `expo-build-properties` as a plugin to your `app.json` file. Ensure the Sdk versions match or are above provided iOS/Android versions.
+
+```json
+{
+  "expo": {
+    "plugins": [
+      "@rownd/react-native",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26
+          },
+          "ios": {
+            "deploymentTarget": "14.0"
+          }
+        }
+      ]
+    ]
+  }
+}
+```
+
+4. (optional) Enable Apple sign-in for iOS in your `app.json` file.
+
+```json
+{
+  "expo": {
+    "ios": {
+      "usesAppleSignIn": true
+    }
+  }
+}
+```
+
+5. (optional) Enable Google sign-in for iOS. Add your Google IOS Client ID client as a URL Scheme in your `app.json` file.
+
+```json
+{
+  "expo": {
+    "infoPlist": {
+      "CFBundleURLTypes": [
+        {
+          "CFBundleURLSchemes": [
+            "com.googleusercontent.apps.xxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxx"
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+#### Enable deep linking
+
+Rownd supports automatically signing-in users when they initially install your
+app or when they click a sign-in link when the app is already installed. Follow instructions below to setup.
+
+1. Visit the Rownd platform and go to the [Sign-in methods](https://app.rownd.io) page. Open the Mobile app settings modal and (1) create a subdomain and (2) fill out the iOS/Android settings.
+
+2. Enable deep linking for Expo using `app.json` and `<subdomain>` created in the Rownd platform.
+
+<Note>These settings might only apply at the time the native projects were generated. Try deleting the ios/android folders and rebuilding the project.</Note>
+
+File: `app.json`
+```json
+{
+  "expo": {
+    "ios": {
+      ...
+       "associatedDomains": ["applinks:<subdomain>.rownd.link"]
+    },
+    "android": {
+      ...
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "<subdomain>.rownd.link"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    }
+  }
+}
+```
+
+<Snippet file="mobile/react-native/react-native.mdx" />
