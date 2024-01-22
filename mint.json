@@ -88,10 +88,10 @@
         },
         "configuration/app-credentials",
         {
-          "group": "Web3",
+          "group": "Automations",
           "pages": [
-            "configuration/web3/near-overview",
-            "configuration/web3/near-examples"
+            "configuration/automations/overview",
+            "configuration/automations/sign-in-prompt"
           ]
         },
         {
@@ -122,6 +122,13 @@
             "configuration/integrations/mailerlite",
             "configuration/integrations/token-validator",
             "configuration/integrations/webhooks"
+          ]
+        },
+        {
+          "group": "Web3",
+          "pages": [
+            "configuration/web3/near-overview",
+            "configuration/web3/near-examples"
           ]
         }
       ]
