@@ -53,7 +53,7 @@ In Rownd, groups are user segments designed for apps with larger accounts, offer
 9. Edit a group name by clikcing on the 'Edit' icon on the card under your Group's name in a group page.
 
 
-### Rownd Groups API Commands (these cards would link/point to sections in the API reference docs that need to be written) 
+### Rownd Groups API Commands 
 
 Use the following Rownd API references to enhance group functionality within your app, including:
 
