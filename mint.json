@@ -25,6 +25,7 @@
       "url": "https://rownd.io"
     }
   ],
+  "openapi": "/openapi/api-server.json",
   "anchors": [
     {
       "name": "API Reference",
@@ -108,7 +109,8 @@
             "configuration/user-accounts/overview",
             "configuration/user-accounts/hub-user-profiles",
             "configuration/user-accounts/platform-user-table",
-            "configuration/user-accounts/progressive-profiles"
+            "configuration/user-accounts/progressive-profiles",
+            "configuration/user-accounts/groups"
           ]
         },
         {
@@ -215,6 +217,72 @@
         "api-reference/user-profiles/retrieve-field",
         "api-reference/user-profiles/update-field",
         "api-reference/user-profiles/retrieve-data-policies"
+      ]
+    },
+    {
+      "group": "Groups",
+      "pages": [
+        "api-reference/groups/overview",
+        {
+          "group": "Platform",
+          "pages": [
+            "api-reference/groups/platform/group-create",
+            "api-reference/groups/platform/group-read",
+            "api-reference/groups/platform/group-update",
+            "api-reference/groups/platform/group-delete",
+            "api-reference/groups/platform/group-list",
+            {
+              "group": "Invitations",
+              "pages": [
+                "api-reference/groups/platform/invites/invite-create",
+                "api-reference/groups/platform/invites/invite-read",
+                "api-reference/groups/platform/invites/invite-update",
+                "api-reference/groups/platform/invites/invite-delete",
+                "api-reference/groups/platform/invites/invite-list"
+              ]
+            },
+            {
+              "group": "Members",
+              "pages": [
+                "api-reference/groups/platform/members/member-create",
+                "api-reference/groups/platform/members/member-read",
+                "api-reference/groups/platform/members/member-update",
+                "api-reference/groups/platform/members/member-delete",
+                "api-reference/groups/platform/members/member-list"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "User-Facing",
+          "pages": [
+            "api-reference/groups/user/group-create",
+            "api-reference/groups/user/group-read",
+            "api-reference/groups/user/group-update",
+            "api-reference/groups/user/group-delete",
+            "api-reference/groups/user/group-list",
+            {
+              "group": "Invitations",
+              "pages": [
+                "api-reference/groups/user/invites/invite-create",
+                "api-reference/groups/user/invites/invite-read",
+                "api-reference/groups/user/invites/invite-update",
+                "api-reference/groups/user/invites/invite-delete",
+                "api-reference/groups/user/invites/invite-list"
+              ]
+            },
+            {
+              "group": "Members",
+              "pages": [
+                "api-reference/groups/user/members/member-create",
+                "api-reference/groups/user/members/member-read",
+                "api-reference/groups/user/members/member-update",
+                "api-reference/groups/user/members/member-delete",
+                "api-reference/groups/user/members/member-list"
+              ]
+            }
+          ]
+        }
       ]
     }
   ],
