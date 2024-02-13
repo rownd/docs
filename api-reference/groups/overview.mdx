@@ -1,0 +1,67 @@
+---
+title: Groups Overview
+sidebarTitle: Overview
+---
+
+With Rownd groups, you can segment your application users into logical segments. Each segment contains group members
+which are tied back to application users via their `user_id`. With the group APIs, you can add a group member
+directly or by creating a group invite. Group invites result in a one-time-use link that you can send to a 
+user that when visited adds them to the group with specific roles. Each group member is assigned to roles, 
+which are an array of strings like `"admin"` or `"editor"`. You can specify member roles via member creation 
+or updates, or during an invite creation.
+
+The groups APIs are split into two sets that differ slighly on imlementation: [Platform](#platform) and 
+[User-Facing](#userfacing)
+
+## Platform
+The [platform](/api-reference/groups/platform/group-create) APIs accept Rownd application credentials for authentication. They are intended for use by an
+application administrator. You should use these APIs on your backend server or equivalent to manage groups,
+members, and invites
+
+## User-Facing
+The [user-facing](/api-reference/groups/user/group-create) APIs accept an authenticated user's Rownd access token (JWT) for authentication. This set of APIs is intended for use in frontend applications when you want to give your
+users the ability to manage their own groups, members, and invites.
+
+### User-Facing Distinctions
+The user-facing APIs differ slightly in implementation. Here are the main differences:
+
+#### Authorization
+Group members and invites can only be managed by group owners. A group owner is a group member that has the
+`"owner"` role.
+
+#### Group Owners
+The creator of a group is always given the `"owner"` role.
+
+## Getting Started
+
+Here are a few key endpoints to help you get started integrating Groups into your app:
+<CardGroup>
+  <Card
+    title="Create a Group"
+    icon="user-group"
+    color="#339933"
+    href="/api-reference/groups/platform/group-create">
+    Platform API for creating a group
+  </Card>
+  <Card
+    title="Create a Group Invite"
+    icon="paper-plane"
+    color="#3f3fc3"
+    href="/api-reference/groups/platform/invites/invite-create">
+    Platform API for creating a group invite
+  </Card>
+  <Card
+    title="Update a Group Member"
+    icon="user"
+    color="#5b13df"
+    href="/api-reference/groups/platform/members/member-update">
+    Platform API for updating a group member
+  </Card>
+  <Card
+    title="Delete a Group Member"
+    icon="user-slash"
+    color="#ff0000"
+    href="/api-reference/groups/platform/members/member-delete">
+    Platform API for deleting a group member
+  </Card>
+</CardGroup>
