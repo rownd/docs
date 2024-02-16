@@ -26,12 +26,20 @@
     }
   ],
   "openapi": "/openapi/api-server.json",
-  "anchors": [
+  "primaryTab": {
+    "name": "Documentation"
+  },
+  "tabs": [
+    {
+      "name": "SDK Reference",
+      "url": "sdk-reference"
+    },
     {
       "name": "API Reference",
-      "icon": "square-terminal",
       "url": "api-reference"
-    },
+    }
+  ],
+  "anchors": [
     {
       "name": "Blog",
       "icon": "newspaper",
@@ -155,132 +163,171 @@
       ]
     },
     {
-      "group": "SDK Reference",
+      "group": "Get Started",
       "pages": [
-        "sdk-reference/overview",
+        "sdk-reference/overview"
+      ]
+    },
+    {
+      "group": "Mobile",
+      "pages": [
+        "sdk-reference/mobile/overview",
+        "sdk-reference/mobile/android",
+        "sdk-reference/mobile/flutter",
+        "sdk-reference/mobile/ios",
+        "sdk-reference/mobile/react-native",
+        "sdk-reference/mobile/expo"
+      ]
+    },
+    {
+      "group": "Web",
+      "pages": [
+        "sdk-reference/web/overview",
         {
-          "group": "Mobile",
+          "group": "Javascript",
+          "icon": "js",
           "pages": [
-            "sdk-reference/mobile/overview",
-            "sdk-reference/mobile/android",
-            "sdk-reference/mobile/flutter",
-            "sdk-reference/mobile/ios",
-            "sdk-reference/mobile/react-native",
-            "sdk-reference/mobile/expo"
-          ]
-        },
-        {
-          "group": "Web",
-          "pages": [
-            "sdk-reference/web/overview",
             "sdk-reference/web/javascript--api-reference",
-            "sdk-reference/web/javascript--browser",
-            "sdk-reference/web/html",
-            "sdk-reference/web/react---next-js",
-            "sdk-reference/web/angular",
-            "sdk-reference/web/vue",
-            "sdk-reference/web/wordpress---woocommerce",
-            "sdk-reference/web/ruby-on-rails"
+            "sdk-reference/web/javascript--browser"
           ]
         },
+        "sdk-reference/web/html",
+        "sdk-reference/web/react---next-js",
+        "sdk-reference/web/angular",
+        "sdk-reference/web/vue",
+        "sdk-reference/web/wordpress---woocommerce",
+        "sdk-reference/web/ruby-on-rails"
+      ]
+    },
+    {
+      "group": "Backend / Server",
+      "pages": [
+        "sdk-reference/backend/overview",
+        "sdk-reference/web/node-js",
+        "sdk-reference/web/wordpress---woocommerce",
+        "sdk-reference/web/ruby-on-rails",
+        "sdk-reference/web/django--python",
+        "sdk-reference/web/net-core"
+      ]
+    },
+    {
+      "group": "Get Started",
+      "pages": [
         {
-          "group": "Backend / Server",
+          "group": "Authentication",
           "pages": [
-            "sdk-reference/backend/overview",
-            "sdk-reference/web/node-js",
-            "sdk-reference/web/wordpress---woocommerce",
-            "sdk-reference/web/ruby-on-rails",
-            "sdk-reference/web/django--python",
-            "sdk-reference/web/net-core"
+            "api-reference/authentication/overview",
+            "api-reference/authentication/retrieve-jwk",
+            "api-reference/authentication/retrieve-oidc"
           ]
         }
       ]
     },
     {
-      "group": "Authentication",
+      "group": "App-Scoped Endpoints",
       "pages": [
-        "api-reference/authentication/overview",
-        "api-reference/authentication/retrieve-jwk",
-        "api-reference/authentication/retrieve-oidc",
-        "api-reference/authentication/create-magic-link"
-      ]
-    },
-    {
-      "group": "User Profiles",
-      "pages": [
-        "api-reference/user-profiles/list-user-profiles",
-        "api-reference/user-profiles/get-sample-data",
-        "api-reference/user-profiles/get-user-data",
-        "api-reference/user-profiles/insert-update",
-        "api-reference/user-profiles/update-patch",
-        "api-reference/user-profiles/delete",
-        "api-reference/user-profiles/retrieve-field",
-        "api-reference/user-profiles/update-field",
-        "api-reference/user-profiles/retrieve-data-policies"
-      ]
-    },
-    {
-      "group": "Groups",
-      "pages": [
-        "api-reference/groups/overview",
         {
-          "group": "Platform",
+          "group": "Magic Links",
+          "icon": "link",
           "pages": [
+            "api-reference/authentication/create-magic-link"
+          ]
+        },
+        {
+          "group": "User Profiles",
+          "icon": "address-card",
+          "pages": [
+            "api-reference/user-profiles/app/insert-update",
+            "api-reference/user-profiles/app/get-user-data",
+            "api-reference/user-profiles/app/update-patch",
+            "api-reference/user-profiles/app/delete",
+            "api-reference/user-profiles/app/list-user-profiles",
+            "api-reference/user-profiles/app/retrieve-field",
+            "api-reference/user-profiles/app/update-field",
+            "api-reference/user-profiles/app/get-sample-data"
+          ]
+        },
+        {
+          "group": "Groups",
+          "icon": "user-group",
+          "pages": [
+            "api-reference/groups/overview",
             "api-reference/groups/platform/group-create",
             "api-reference/groups/platform/group-read",
             "api-reference/groups/platform/group-update",
             "api-reference/groups/platform/group-delete",
-            "api-reference/groups/platform/group-list",
-            {
-              "group": "Invitations",
-              "pages": [
-                "api-reference/groups/platform/invites/invite-create",
-                "api-reference/groups/platform/invites/invite-read",
-                "api-reference/groups/platform/invites/invite-update",
-                "api-reference/groups/platform/invites/invite-delete",
-                "api-reference/groups/platform/invites/invite-list"
-              ]
-            },
-            {
-              "group": "Members",
-              "pages": [
-                "api-reference/groups/platform/members/member-create",
-                "api-reference/groups/platform/members/member-read",
-                "api-reference/groups/platform/members/member-update",
-                "api-reference/groups/platform/members/member-delete",
-                "api-reference/groups/platform/members/member-list"
-              ]
-            }
+            "api-reference/groups/platform/group-list"
           ]
         },
         {
-          "group": "User-Facing",
+          "group": "Group Invitations",
+          "icon": "paper-plane",
           "pages": [
+            "api-reference/groups/platform/invites/invite-create",
+            "api-reference/groups/platform/invites/invite-read",
+            "api-reference/groups/platform/invites/invite-update",
+            "api-reference/groups/platform/invites/invite-delete",
+            "api-reference/groups/platform/invites/invite-list"
+          ]
+        },
+        {
+          "group": "Group Members",
+          "icon": "user",
+          "pages": [
+            "api-reference/groups/platform/members/member-create",
+            "api-reference/groups/platform/members/member-read",
+            "api-reference/groups/platform/members/member-update",
+            "api-reference/groups/platform/members/member-delete",
+            "api-reference/groups/platform/members/member-list"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "User-Scoped Endpoints",
+      "pages": [
+        {
+          "group": "User Profiles",
+          "icon": "address-card",
+          "pages": [
+            "api-reference/user-profiles/user/get-user-data",
+            "api-reference/user-profiles/user/update-put",
+            "api-reference/user-profiles/user/retrieve-field",
+            "api-reference/user-profiles/user/update-field"
+          ]
+        },
+        {
+          "group": "Groups",
+          "icon": "user-group",
+          "pages": [
+            "api-reference/groups/overview",
             "api-reference/groups/user/group-create",
             "api-reference/groups/user/group-read",
             "api-reference/groups/user/group-update",
             "api-reference/groups/user/group-delete",
-            "api-reference/groups/user/group-list",
-            {
-              "group": "Invitations",
-              "pages": [
-                "api-reference/groups/user/invites/invite-create",
-                "api-reference/groups/user/invites/invite-read",
-                "api-reference/groups/user/invites/invite-update",
-                "api-reference/groups/user/invites/invite-delete",
-                "api-reference/groups/user/invites/invite-list"
-              ]
-            },
-            {
-              "group": "Members",
-              "pages": [
-                "api-reference/groups/user/members/member-create",
-                "api-reference/groups/user/members/member-read",
-                "api-reference/groups/user/members/member-update",
-                "api-reference/groups/user/members/member-delete",
-                "api-reference/groups/user/members/member-list"
-              ]
-            }
+            "api-reference/groups/user/group-list"
+          ]
+        },
+        {
+          "group": "Group Invitations",
+          "icon": "paper-plane",
+          "pages": [
+            "api-reference/groups/user/invites/invite-create",
+            "api-reference/groups/user/invites/invite-read",
+            "api-reference/groups/user/invites/invite-update",
+            "api-reference/groups/user/invites/invite-delete",
+            "api-reference/groups/user/invites/invite-list"
+          ]
+        },
+        {
+          "group": "Group Members",
+          "icon": "user",
+          "pages": [
+            "api-reference/groups/user/members/member-create",
+            "api-reference/groups/user/members/member-read",
+            "api-reference/groups/user/members/member-update",
+            "api-reference/groups/user/members/member-delete",
+            "api-reference/groups/user/members/member-list"
           ]
         }
       ]

@@ -1,5 +1,6 @@
 ---
 title: "Mobile SDK Overview"
+sidebarTitle: Overview
 ---
 
 Rownd builds the core of its mobile app SDKs using native code, which provides the best performance across all platforms. Whether you're using pure-native or leveraging a multiplatform framework like React Native or Flutter, Rownd has you covered.
@@ -17,6 +18,7 @@ Rownd's SDKs have dozens of visual elements that can save you days of nit-picky 
 <CardGroup>
     <Card
         title="Android"
+        color="#a4c639"
         icon="android"
         href="/sdk-reference/mobile/android"
     >
@@ -25,12 +27,14 @@ Rownd's SDKs have dozens of visual elements that can save you days of nit-picky 
     <Card
         title="iOS"
         icon="apple"
+        color="#000"
         href="/sdk-reference/mobile/ios"
     >
         Swift
     </Card>
     <Card
         title="Flutter"
+        color="#027DFD"
         icon={<svg
                 className="h-6 w-6 bg-primary dark:bg-primary-light"
                 style={{
@@ -43,6 +47,7 @@ Rownd's SDKs have dozens of visual elements that can save you days of nit-picky 
     />
     <Card
         title="React Native"
+        color="#61DBFB"
         icon="react"
         href="/sdk-reference/mobile/react-native"
     />
@@ -54,6 +59,7 @@ Rownd's SDKs have dozens of visual elements that can save you days of nit-picky 
                     "WebkitMaskImage": "url('/images/expo-client.svg')",
                     "WebkitMaskRepeat": "no-repeat",
                     "WebkitMaskPosition": "center center",
+                    "filter": "invert(0%) sepia(1%) saturate(3%) hue-rotate(326deg) brightness(97%) contrast(104%)"
                 }}
             />}
         href="/sdk-reference/mobile/expo"

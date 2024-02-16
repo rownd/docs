@@ -460,6 +460,149 @@
         }
       }
     },
+    "/applications/{app}/assets/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "app",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "application_asset_get",
+        "tags": [
+          "applications"
+        ],
+        "x-required-role": [
+          "editor",
+          "admin",
+          "owner",
+          "viewer"
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved application asset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetUpload"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "name": "x-rownd-filename",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "app",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "application_asset_upsert",
+        "tags": [
+          "applications"
+        ],
+        "x-required-role": [
+          "editor",
+          "admin",
+          "owner"
+        ],
+        "requestBody": {
+          "content": {
+            "image/png": {
+              "schema": {
+                "type": "object",
+                "format": "binary"
+              }
+            },
+            "image/svg": {
+              "schema": {
+                "type": "object",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The asset was accepted for processing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetUpload"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "app",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "application_asset_delete",
+        "tags": [
+          "applications"
+        ],
+        "x-required-role": [
+          "editor",
+          "admin",
+          "owner"
+        ],
+        "responses": {
+          "204": {
+            "description": "Application asset deleted successfully"
+          }
+        }
+      }
+    },
     "/applications/{app}/animation/{type}": {
       "put": {
         "parameters": [
@@ -1292,55 +1435,29 @@
       }
     },
     "/applications/{app}/users/data": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AppID"
+        }
+      ],
       "get": {
         "parameters": [
           {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/Fields"
           },
           {
-            "name": "fields",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/LookupFilter",
+            "description": "Return user profiles with verified values that match this filter. This is a comma-separated\nlist of values.\n",
+            "example": "gary@foo.com,+19199993333"
           },
           {
-            "name": "lookup_filter",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "The values of verification fields to filter by (e.g., email, phone number).\nDepends on what verification method is used by the underlying application. This is a\ncomma-separated list of values.\n",
-            "example": "jsmith@test.org"
+            "$ref": "#/components/parameters/IDFilter"
           },
           {
-            "name": "id_filter",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "A comma-separated list of user IDs to filter by. If any ID is not found, it will be excluded from the response.\n"
+            "$ref": "#/components/parameters/PageSizeMax1000"
           },
           {
-            "name": "page_size",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Number of users to return per query. Max is 1000"
-          },
-          {
-            "name": "after",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Returns the next page of results after the user ID (inclusive)"
+            "$ref": "#/components/parameters/After"
           },
           {
             "name": "include_duplicates",
@@ -1348,19 +1465,18 @@
             "schema": {
               "type": "boolean"
             },
-            "description": "Include multiple users if they are found using the lookup and id filters"
+            "description": "Include multiple users if they are found using the lookup and id filters",
+            "example": true
           }
         ],
         "operationId": "application_user_data_list",
         "security": [
           {
-            "hubAccessTokenForRowndApi": []
-          },
-          {
-            "appKey": []
-          },
-          {
+            "appKey": [],
             "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
           },
           {
             "serviceAccountToken": []
@@ -1380,26 +1496,15 @@
         }
       },
       "put": {
-        "parameters": [
-          {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "operationId": "application_user_data_bulk_upsert",
+        "description": "Upsert a batch of user profiles",
         "security": [
           {
-            "hubAccessTokenForRowndApi": []
-          },
-          {
-            "appKey": []
-          },
-          {
+            "appKey": [],
             "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
           },
           {
             "serviceAccountToken": []
@@ -1424,11 +1529,13 @@
                       ],
                       "properties": {
                         "user_id": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The user ID. If you'd like Rownd to generate IDs for you, use one of the\nID directives like `\"__default__\"` or `\"__uuid__\"`.\n",
+                          "example": "__default__"
                         },
                         "data": {
-                          "type": "object",
-                          "additionalProperties": true
+                          "$ref": "#/components/schemas/AppUserDataData",
+                          "description": "The user profile data"
                         }
                       }
                     }
@@ -1447,10 +1554,13 @@
                   "type": "object",
                   "properties": {
                     "total_results": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "The total number of results"
                     },
                     "has_failures": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Indicates if there was a failure upserting at least one of the users",
+                      "example": false
                     },
                     "results": {
                       "type": "array",
@@ -1464,17 +1574,12 @@
                             ],
                             "properties": {
                               "user_id": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "The generated user ID"
                               },
                               "data": {
-                                "x-rownd-modifiers": [
-                                  {
-                                    "name": "maskEncryptedValues",
-                                    "phase": "response"
-                                  }
-                                ],
-                                "type": "object",
-                                "additionalProperties": true
+                                "$ref": "#/components/schemas/AppUserDataData",
+                                "description": "The generated user profile data"
                               }
                             },
                             "additionalProperties": true
@@ -1484,10 +1589,14 @@
                             "enum": [
                               "success",
                               "failure"
-                            ]
+                            ],
+                            "description": "The result of processing the user profile",
+                            "example": "success"
                           },
                           "error": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "An error message if Rownd could not upsert the user profile successfully",
+                            "example": "Something went wrong"
                           }
                         }
                       }
@@ -1567,24 +1676,18 @@
       "get": {
         "parameters": [
           {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/AppID"
           }
         ],
         "operationId": "application_user_sample_data_get",
+        "description": "Retrieve sample user data",
         "security": [
           {
-            "hubAccessTokenForRowndApi": []
-          },
-          {
-            "appKey": []
-          },
-          {
+            "appKey": [],
             "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
           },
           {
             "auth0": []
@@ -1605,42 +1708,29 @@
       }
     },
     "/applications/{app}/users/{user}/data": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AppID"
+        },
+        {
+          "$ref": "#/components/parameters/UserID"
+        }
+      ],
       "get": {
         "parameters": [
           {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "user",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fields",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/Fields"
           }
         ],
         "operationId": "application_user_data_get",
+        "description": "Retrieve a user profile",
         "security": [
           {
-            "hubAccessTokenForRowndApi": []
-          },
-          {
-            "appKey": []
-          },
-          {
+            "appKey": [],
             "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
           },
           {
             "serviceAccountToken": []
@@ -1654,7 +1744,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User record retrieved successfully",
+            "description": "User profile retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -1668,40 +1758,18 @@
       "put": {
         "parameters": [
           {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "user",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "write_data_to_integrations",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/WriteDataToIntegrations"
           }
         ],
         "operationId": "application_user_data_upsert",
-        "description": "Inserts or updates user data. If Rownd should generate its own ID for this record,\nset `__uuid__` or `__objectid__` as the `user` path parameter. `__uuid__` will result\nin a v4 uuid and `__objectid__` will result in a BSON ObjectID.\n",
+        "description": "Insert or update user profile data",
         "security": [
           {
-            "hubAccessTokenForRowndApi": []
-          },
-          {
-            "appKey": []
-          },
-          {
+            "appKey": [],
             "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
           },
           {
             "serviceAccountToken": []
@@ -1726,7 +1794,7 @@
         },
         "responses": {
           "200": {
-            "description": "User record updated successfully",
+            "description": "User profile updated successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -1750,37 +1818,24 @@
       "patch": {
         "parameters": [
           {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/AppID"
           },
           {
-            "name": "user",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/UserID"
           },
           {
-            "name": "write_data_to_integrations",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
+            "$ref": "#/components/parameters/WriteDataToIntegrations"
           }
         ],
         "operationId": "application_user_data_patch",
-        "description": "Updates user data.\n",
+        "description": "Updates user profile data",
         "security": [
           {
-            "hubAccessTokenForRowndApi": []
+            "appKey": [],
+            "appSecret": []
           },
           {
-            "appKey": []
+            "hubAccessTokenForRowndApi": []
           },
           {
             "serviceAccountToken": []
@@ -1817,34 +1872,15 @@
         }
       },
       "delete": {
-        "parameters": [
-          {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "user",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "operationId": "application_user_data_delete",
+        "description": "Delete a user profile",
         "security": [
           {
-            "hubAccessTokenForRowndApi": []
-          },
-          {
-            "appKey": []
-          },
-          {
+            "appKey": [],
             "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
           },
           {
             "serviceAccountToken": []
@@ -1863,45 +1899,19 @@
     "/applications/{app}/users/{user}/data/fields/{field}": {
       "parameters": [
         {
-          "name": "app",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/AppID"
         },
         {
-          "name": "user",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/UserID"
         },
         {
-          "name": "field",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/Field"
         }
       ],
       "get": {
         "parameters": [
           {
-            "name": "preview",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "small",
-                "medium",
-                "large"
-              ]
-            },
-            "description": "Return an image thumbnail of the resource"
+            "$ref": "#/components/parameters/Preview"
           },
           {
             "name": "fail_on_error",
@@ -1914,15 +1924,14 @@
           }
         ],
         "operationId": "application_user_data_field_get",
+        "description": "Retrieve the value of one field in a user profile",
         "security": [
           {
-            "hubAccessTokenForRowndApi": []
-          },
-          {
-            "appKey": []
-          },
-          {
+            "appKey": [],
             "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
           },
           {
             "auth0": []
@@ -1954,6 +1963,19 @@
       },
       "put": {
         "operationId": "application_user_data_field_update",
+        "description": "Update the value of one field in a user profile",
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          },
+          {
+            "auth0": []
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -1980,20 +2002,6 @@
             }
           }
         },
-        "security": [
-          {
-            "hubAccessTokenForRowndApi": []
-          },
-          {
-            "appKey": []
-          },
-          {
-            "appSecret": []
-          },
-          {
-            "auth0": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "The value of the data field",
@@ -5049,17 +5057,12 @@
     "/me/applications/{app}/data": {
       "parameters": [
         {
-          "name": "app",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          },
-          "example": "test-app-1"
+          "$ref": "#/components/parameters/AppID"
         }
       ],
       "get": {
         "operationId": "my_application_data_get",
+        "description": "Retrieve",
         "security": [
           {
             "hubAccessToken": []
@@ -5135,15 +5138,11 @@
       "get": {
         "parameters": [
           {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/AppID"
           }
         ],
         "operationId": "my_duplicate_application_data_get",
+        "description": "Retrieve all user profiles with matching verification values",
         "security": [
           {
             "hubAccessToken": []
@@ -5173,6 +5172,13 @@
       },
       "post": {
         "operationId": "my_duplicate_application_data_merge",
+        "description": "Merge multple user profiles into one profile",
+        "tags": [
+          "me"
+        ],
+        "x-required-role": [
+          "none"
+        ],
         "security": [
           {
             "hubAccessToken": []
@@ -5185,7 +5191,8 @@
               "schema": {
                 "properties": {
                   "app_user_id": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The user's ID"
                   },
                   "app_user_data": {
                     "type": "object",
@@ -5196,12 +5203,6 @@
             }
           }
         },
-        "tags": [
-          "me"
-        ],
-        "x-required-role": [
-          "none"
-        ],
         "responses": {
           "200": {
             "description": "merged app user",
@@ -5236,39 +5237,20 @@
     "/me/applications/{app}/data/fields/{field}": {
       "parameters": [
         {
-          "name": "app",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/AppID"
         },
         {
-          "name": "field",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/Field"
         }
       ],
       "get": {
         "parameters": [
           {
-            "name": "preview",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "small",
-                "medium",
-                "large"
-              ]
-            }
+            "$ref": "#/components/parameters/Preview"
           }
         ],
         "operationId": "my_application_data_field_get",
+        "description": "Retrieve the value of one field in a user profile",
         "security": [
           {
             "hubAccessToken": []
@@ -5309,6 +5291,7 @@
       },
       "put": {
         "operationId": "my_application_data_field_update",
+        "description": "Update the value of one field in a user profile",
         "security": [
           {
             "auth0": []
@@ -6308,17 +6291,14 @@
     "/hub/auth/keys": {
       "get": {
         "operationId": "hub_auth_keys",
+        "description": "Retrieve the current JWK set that validates Rownd-issued tokens",
         "tags": [
           "hub"
         ],
-        "security": [
-          {
-            "none": []
-          }
-        ],
+        "security": [],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Keys retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -6328,8 +6308,9 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "additionalProperties": true
-                      }
+                        "$ref": "#/components/schemas/JWK"
+                      },
+                      "description": "List of public JWKs for verifying Rownd JWTs"
                     }
                   }
                 }
@@ -6345,19 +6326,16 @@
         "tags": [
           "hub"
         ],
-        "security": [
-          {
-            "none": []
-          }
-        ],
+        "security": [],
         "responses": {
           "200": {
-            "description": "Return OAuth 2.0 metadata",
+            "description": "Retrieve Rownd's OAuth 2.0 metadata",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": true
+                  "additionalProperties": true,
+                  "description": "The OAUth 2.0 metdata"
                 }
               }
             }
@@ -6371,7 +6349,8 @@
         "description": "Generate a magic link",
         "security": [
           {
-            "appKey": []
+            "appKey": [],
+            "appSecret": []
           }
         ],
         "requestBody": {
@@ -6379,24 +6358,37 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "verification_mode",
+                  "data"
+                ],
                 "properties": {
                   "verification_mode": {
                     "type": "string",
                     "enum": [
                       "email",
                       "phone"
-                    ]
+                    ],
+                    "description": "The means by which this magic link will be verified by the user. When the magic link\nis visited, the user's email or phone number will be marked as verified depending on\nverification mode. In practice, you should set this value to `'phone'` if you are\nsending this link to the user via SMS. Likewise, set to `'email'` if you are sending\nthe magic link to the user via email.\n"
                   },
                   "data": {
                     "type": "object",
-                    "additionalProperties": true
+                    "additionalProperties": true,
+                    "description": "Data to add to the user's profile",
+                    "example": {
+                      "email": "gary@foo.com",
+                      "first_name": "Gary"
+                    }
                   },
                   "redirect_url": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The absolute URL or relative path to send your user after sign-in",
+                    "example": "/somewhere/in/my/app#"
                   },
                   "user_id": {
                     "type": "string",
-                    "description": "bring your own user id. Can be `__uuid__` or `__objectid__`. This will not override an existing user`"
+                    "description": "Specify a user ID. If the user already exists, include their user ID. Otherwise,\nuse one of `'__default__'`, `'__uuid__'`, or `'__objectid__'`. These special values\ntell Rownd to generate an ID in the provided format, or use the application's \ndefault user ID format.\n",
+                    "default": "__default__"
                   },
                   "expiration": {
                     "type": "string",
@@ -6406,7 +6398,7 @@
                   },
                   "group_to_join": {
                     "type": "string",
-                    "description": "ID of a group to which the user will join upon completing sign-in. The group\nmust have an admission policy of 'open'.\n"
+                    "description": "ID of a group to which the user will join upon completing sign-in. The group\nmust have an admission policy of `'open'`.`\n"
                   }
                 }
               }
@@ -6415,7 +6407,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "Successfully created magic link",
             "content": {
               "application/json": {
                 "schema": {
@@ -8467,6 +8459,75 @@
           "type": "integer"
         },
         "description": "Number of resources to return per query. Max is 100."
+      },
+      "PageSizeMax1000": {
+        "name": "page_size",
+        "in": "query",
+        "schema": {
+          "type": "integer"
+        },
+        "description": "Number of resources to return per query. Max is 1000."
+      },
+      "UserID": {
+        "name": "user",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Fields": {
+        "name": "fields",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "description": "Comma-separated list of fields to include in the profile data",
+          "example": "email,first_name"
+        }
+      },
+      "WriteDataToIntegrations": {
+        "name": "write_data_to_integrations",
+        "in": "query",
+        "schema": {
+          "type": "boolean",
+          "description": "Should Rownd write the profile data changes to integrations attached to your application",
+          "default": true,
+          "example": true
+        }
+      },
+      "Field": {
+        "name": "field",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "The name of a field in your application schema",
+        "example": "first_name"
+      },
+      "IDFilter": {
+        "name": "id_filter",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "description": "A comma-separated list of resource IDs to filter by",
+        "example": "user_a7b53gwdaml5jt7t71442nt7"
+      },
+      "Preview": {
+        "name": "preview",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "small",
+            "medium",
+            "large"
+          ]
+        },
+        "description": "Return an image thumbnail of the resource",
+        "example": "small"
       }
     },
     "schemas": {
@@ -8522,38 +8583,6 @@
         "readOnly": true,
         "example": "user_t6ftnnmw55pamuhfo9xvw0yl",
         "description": "The ID of the user that most recently updated the resource"
-      },
-      "UserUpsertError": {
-        "properties": {
-          "statusCode": {
-            "type": "number"
-          },
-          "error": {
-            "type": "string"
-          },
-          "code": {
-            "type": "string",
-            "example": "E_USER_UPDATE_FAILED"
-          },
-          "message": {
-            "type": "string"
-          },
-          "messages": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "field_errors": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
       },
       "Intent": {
         "type": "string",
@@ -10591,6 +10620,36 @@
           }
         }
       },
+      "AssetUpload": {
+        "required": [
+          "id",
+          "content_type",
+          "url"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "content_type": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true,
+            "x-rownd-modifiers": [
+              {
+                "name": "rewriteAssetUrl",
+                "phase": "response"
+              }
+            ]
+          }
+        }
+      },
       "ApplicationVerifyEmailImage": {
         "properties": {
           "image": {
@@ -11364,126 +11423,6 @@
           }
         }
       },
-      "AppUserDataList": {
-        "properties": {
-          "total_results": {
-            "type": "number",
-            "readOnly": true
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AppUserData"
-            }
-          }
-        }
-      },
-      "AppUserData": {
-        "properties": {
-          "rownd_user": {
-            "type": "string",
-            "readOnly": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/AppUserDataData"
-          },
-          "connection_map": {
-            "type": "object",
-            "$ref": "#/components/schemas/AppUserDataConnectionMap",
-            "readOnly": true
-          },
-          "redacted": {
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "revoke_after": {
-            "readOnly": true,
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "retain_until": {
-            "readOnly": true,
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserGroup"
-            }
-          },
-          "meta": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "created": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "modified": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "first_sign_in": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "first_sign_in_method": {
-                    "type": "string"
-                  },
-                  "last_sign_in": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "last_sign_in_method": {
-                    "type": "string"
-                  },
-                  "last_active": {
-                    "type": "string",
-                    "format": "date-time"
-                  }
-                }
-              },
-              {
-                "$ref": "#/components/schemas/MyUserMeta"
-              }
-            ]
-          },
-          "verified_data": {
-            "readOnly": true,
-            "type": "object",
-            "additionalProperties": true
-          }
-        }
-      },
-      "AppUserDataData": {
-        "type": "object",
-        "additionalProperties": true,
-        "x-rownd-modifiers": [
-          {
-            "name": "generateUserDataObjectUrls",
-            "phase": "response"
-          },
-          {
-            "name": "maskEncryptedValues",
-            "phase": "response"
-          }
-        ],
-        "example": {
-          "email": "gary@foo.com",
-          "first_name": "Gary",
-          "last_name": "Jackson"
-        }
-      },
       "AppUserACLs": {
         "required": [
           "acls"
@@ -11508,28 +11447,6 @@
             "type": "string",
             "format": "date-time",
             "readOnly": true
-          }
-        }
-      },
-      "AppUserDataConnectionMap": {
-        "type": "object",
-        "additionalProperties": {
-          "type": "object",
-          "properties": {
-            "connection_record_id": {
-              "type": "string"
-            },
-            "fields": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "object",
-                "properties": {
-                  "in_sync": {
-                    "type": "boolean"
-                  }
-                }
-              }
-            }
           }
         }
       },
@@ -12595,17 +12512,6 @@
           }
         }
       },
-      "MagicLinkCreateResponse": {
-        "type": "object",
-        "properties": {
-          "link": {
-            "type": "string"
-          },
-          "app_user_id": {
-            "type": "string"
-          }
-        }
-      },
       "MagicLinkCompleteResponse": {
         "type": "object",
         "properties": {
@@ -13121,6 +13027,26 @@
         ],
         "description": "The state of the group member. A member that has been invited will not go into the `active`\nstate until they accept the invitation.\n"
       },
+      "AppUserDataData": {
+        "description": "User profile data",
+        "additionalProperties": true,
+        "x-rownd-modifiers": [
+          {
+            "name": "generateUserDataObjectUrls",
+            "phase": "response"
+          },
+          {
+            "name": "maskEncryptedValues",
+            "phase": "response"
+          }
+        ],
+        "example": {
+          "user_id": "user_a7b53gwdaml5jt7t71442nt7",
+          "email": "gary@foo.com",
+          "first_name": "Gary",
+          "last_name": "Jackson"
+        }
+      },
       "GroupInvite": {
         "required": [
           "roles"
@@ -13246,6 +13172,223 @@
             "items": {
               "$ref": "#/components/schemas/UserGroup"
             }
+          }
+        }
+      },
+      "JWK": {
+        "properties": {
+          "kty": {
+            "type": "string",
+            "description": "Key Type",
+            "example": "OKP"
+          },
+          "alg": {
+            "type": "string",
+            "description": "Algorithm intended for use with the key",
+            "example": "EdDSA"
+          },
+          "kid": {
+            "type": "string",
+            "description": "Key ID",
+            "example": "sig-1644937360"
+          },
+          "use": {
+            "type": "string",
+            "description": "Intended use of the public key",
+            "enum": [
+              "sig",
+              "enc"
+            ],
+            "example": "sig"
+          },
+          "crv": {
+            "type": "string",
+            "description": "Curve Name for Elliptic Curve Public Keys",
+            "example": "Ed25519"
+          },
+          "x": {
+            "type": "string",
+            "description": "Base64url encoded public key value",
+            "example": "ChrFqbu1T7TTuLFg3o_coBNwqdm_O5Llok1dey0G2Tg"
+          }
+        },
+        "additionalProperties": true
+      },
+      "MagicLinkCreateResponse": {
+        "properties": {
+          "link": {
+            "type": "string",
+            "description": "The magic link URL",
+            "example": "https://rownd.link/c8fLG0a"
+          },
+          "app_user_id": {
+            "type": "string",
+            "description": "The user ID specified during creation or the resolved user ID if one of the directives\nwas specified (e.g. `'__default__'`)\n",
+            "example": "user_fmpsrdqfcqzyicf3msor42e8"
+          }
+        }
+      },
+      "AppUserDataConnectionMap": {
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "connection_record_id": {
+              "type": "string"
+            },
+            "fields": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "in_sync": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AppUserData": {
+        "properties": {
+          "rownd_user": {
+            "readOnly": true,
+            "type": "string",
+            "description": "The user's ID",
+            "example": "user_a7b53gwdaml5jt7t71442nt7"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AppUserDataData"
+          },
+          "verified_data": {
+            "readOnly": true,
+            "type": "object",
+            "additionalProperties": true,
+            "description": "User profile data that has been verified",
+            "example": {
+              "email": "gary@foo.com",
+              "phone_number": "+19199993333"
+            }
+          },
+          "groups": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserGroup"
+            },
+            "description": "Groups in which the user is a member"
+          },
+          "meta": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "created": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "modified": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "first_sign_in": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "first_sign_in_method": {
+                    "type": "string"
+                  },
+                  "last_sign_in": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "last_sign_in_method": {
+                    "type": "string"
+                  },
+                  "last_active": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              {
+                "$ref": "#/components/schemas/MyUserMeta"
+              }
+            ]
+          },
+          "connection_map": {
+            "readOnly": true,
+            "$ref": "#/components/schemas/AppUserDataConnectionMap"
+          },
+          "redacted": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "revoke_after": {
+            "readOnly": true,
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "retain_until": {
+            "readOnly": true,
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UserUpsertError": {
+        "properties": {
+          "statusCode": {
+            "type": "number"
+          },
+          "error": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "example": "E_USER_UPDATE_FAILED"
+          },
+          "message": {
+            "type": "string"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "field_errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "AppUserDataList": {
+        "properties": {
+          "total_results": {
+            "type": "number",
+            "readOnly": true,
+            "description": "The number of results"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppUserData"
+            },
+            "description": "The list of user profiles"
           }
         }
       }
