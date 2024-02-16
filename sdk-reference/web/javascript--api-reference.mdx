@@ -10,7 +10,7 @@ Show the Rownd sign-in dialog, or automatically initiate a sign-in.
 
 ### Examples
 
-1. Prompt the user to sign in
+#### Prompt the user to sign in
 
 `requestSignIn()` can be called without any parameters and the user can choose to sign in
 with any of your app's configured sign-in methods.
@@ -19,7 +19,7 @@ with any of your app's configured sign-in methods.
 rownd.requestSignIn()
 ```
 
-2. Automatically sign in a user using their email
+#### Automatically sign in a user using their email
 
 ```javascript
 rownd.requestSignIn({
@@ -28,7 +28,7 @@ rownd.requestSignIn({
 })
 ```
 
-3. Prompt the user to sign in with Google and save a referral code to their user data
+#### Prompt the user to sign in with Google and save a referral code to their user data
 ```javascript
 rownd.requestSignIn({
   method: 'google',
@@ -328,7 +328,7 @@ queustion/prompt.
 
 ### Examples
 
-1. Prompt the user to enter their first and last name
+#### Prompt the user to enter their first and last name
 
 ```javascript
 rownd.requestFields({
