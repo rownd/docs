@@ -121,6 +121,13 @@
             "configuration/user-accounts/groups"
           ]
         },
+                {
+          "group": "Automations",
+          "pages": [
+            "configuration/Automations/overview",
+            "configuration/Automations/sign-in-prompt"
+          ]
+        },
         {
           "group": "Integrations",
           "pages": [
