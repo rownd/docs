@@ -147,6 +147,30 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 ```
 
+<Note>
+If you're building widgets that need access to Rownd auth state, you should listen for Rownd auth events and notify `WidgetCenter` that widgets may need updating any time the state changes. That way, they'll re-render while your app is in the foreground and will show an accurate state. Here's a simple example:
+```swift
+import Foundation
+import Combine
+import WidgetKit
+import Rownd
+
+class SomeClass {
+    private var authState = Rownd.getInstance().state().subscribe { $0.auth }
+    private var cancellables = Set<AnyCancellable>()
+
+    init() {
+        self.authState
+            .$current
+            .sink { [weak self] state in
+                WidgetCenter.shared.reloadAllTimelines()
+            }
+            .store(in: &cancellables)
+    }
+}
+```
+</Note>
+
 ### API reference
 
 In addition to the state observable APIs, Rownd provides imperative APIs that you can call to request sign in, get and retrieve user profile information, retrieve a current access token, or encrypt user data with the user's local key.
