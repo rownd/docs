@@ -4,12 +4,6 @@ description: "Rownd bindings for Flutter"
 icon: "mobile"
 ---
 
----
-title: "Flutter"
-description: "Rownd bindings for Flutter"
-icon: "mobile"
----
-
 ## Getting Started
 
 This SDK leverages Rownd's web and native iOS and Android SDKs to provide a simple interface for Flutter developers to add Rownd to their apps.
@@ -106,7 +100,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => _rownd.state()),
+          ChangeNotifierProvider(create: (_) => rowndPlugin.state()),
           Provider(create: (context) => rowndPlugin)
         ],
         child: MaterialApp(
