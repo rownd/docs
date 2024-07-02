@@ -83,6 +83,7 @@
             "configuration/authentication-methods/google",
             "configuration/authentication-methods/passkeys",
             "configuration/authentication-methods/guests",
+            "configuration/authentication-methods/oauth",
             "configuration/authentication-methods/unverified",
             "configuration/authentication-methods/existing-authentication"
           ]
