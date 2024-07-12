@@ -18,21 +18,31 @@ Enabling passkeys is easy and does not require any additional code. Simply follo
    ![Configuring passkeys only takes a few seconds.](/images/passkey-config.png)
 
    <Info>
-    At this time, passkey cannot be the only form of sign-in enabled. Users can add passkeys after signing up with another method. After the first sign-in, they can use their passkeys to sign in to their account. This ensures account access across different devices.
+     At this time, passkey cannot be the only form of sign-in enabled. Users can add passkeys after signing up with
+     another method. After the first sign-in, they can use their passkeys to sign in to their account. This ensures
+     account access across different devices.
    </Info>
 
 3. To confirm your changes, press **Save** in the upper right-hand corner of the page.
 
 With passkeys enabled, users with passkey-enabled devices can now enjoy a seamless and secure sign-in experience on your website and mobile apps.
 
-  <Info>
-   For iOS, ensure the "Associated Domains" is updated with your Rownd associated applink (set up above) and webcredentials.
+<Tabs>
+  <Tab title="iOS">
+   1. Configure iOS "Mobile app settings" in the [Rownd Platform](https://app.rownd.io/methods) with a subdomain, bundle ID, and a team ID. Instructions can be found [here](/configuration/mobile/ios).
+   2. In Xcode ensure "Associated Domains" is updated with your Rownd associated applink (set up above) and webcredentials
+   <Info>
+applinks:your_set_subdomain.rownd.link
 
-   applinks:your_set_domain.rownd.link
-   
-   webcredentials:your_set_domain.rownd.link
+webcredentials:your_set_subdomain.rownd.link
 
-   See image below
+See image below
    </Info>
 
 ![Apple XCode view.](/images/applinks.png)
+
+  </Tab>
+  <Tab title="Android">
+   1. Configure iOS "Mobile app settings" in the [Rownd Platform](https://app.rownd.io/methods) with a subdomain, package name, and a SHA 256 cert fingerprint. Instructions can be found [here](/configuration/mobile/android).
+  </Tab>
+</Tabs>
