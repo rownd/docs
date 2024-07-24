@@ -77,6 +77,7 @@
           "group": "Authentication methods",
           "pages": [
             "configuration/authentication-methods/overview",
+            "configuration/authentication-methods/instant-users",
             "configuration/authentication-methods/email",
             "configuration/authentication-methods/phone-sms",
             "configuration/authentication-methods/apple",
@@ -167,6 +168,8 @@
             "security/attack-mitigation/suspicious-ip-throttling"
           ]
         },
+        "security/SOC2-type2",
+        "security/hippa-ready",
         "security/responsible-disclosure"
       ]
     },
