@@ -94,7 +94,8 @@
           "pages": [
             "configuration/mobile/overview",
             "configuration/mobile/ios",
-            "configuration/mobile/android"
+            "configuration/mobile/android",
+            "configuration/mobile/mobile-app-settings"
           ]
         },
         "configuration/app-credentials",
@@ -123,7 +124,7 @@
             "configuration/user-accounts/groups"
           ]
         },
-                {
+        {
           "group": "Automations",
           "pages": [
             "configuration/Automations/overview",
@@ -154,8 +155,11 @@
     },
     {
       "group": "Administration",
-      "pages": ["administration/account", "administration/teams"]
-    }, 
+      "pages": [
+        "administration/account",
+        "administration/teams"
+      ]
+    },
     {
       "group": "Security",
       "pages": [
