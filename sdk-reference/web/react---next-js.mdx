@@ -362,3 +362,45 @@ const { passkeys } = useRownd();
   <Button onClick={() => passkeys.authenticate()}>Authenticate with Passkey</Button>
 </div>;
 ```
+
+#### RequireSignIn
+
+The `RequireSignIn` component is a wrapper that triggers the sign-in process when the component it wraps is rendered. It ensures that the user is signed in before accessing the content of the wrapped component. If the user is not authenticated, the sign-in process will automatically begin when the component mounts.
+
+```jsx
+const App = () => {
+  return (
+    <RequireSignIn>
+      <h1>Home page<h1/>
+    </RequireSignIn>
+  );
+};
+```
+
+#### SignedIn
+
+The `SignedIn` component is used to conditionally render its children only when the user is authenticated. If the user is not signed in, the wrapped content will not be displayed.
+
+```jsx
+const App = () => {
+  return (
+    <SignedIn>
+      <ProtectedContent />
+    </SignedIn>
+  );
+};
+```
+
+#### SignedOut
+
+The `SignedOut` component is the counterpart to `SignedIn`. It renders its children only when the user is not authenticated. If the user is signed in, the wrapped content will not be displayed.
+
+```jsx
+const App = () => {
+  return (
+    <SignedOut>
+      <LoginPrompt />
+    </SignedOut>
+  );
+};
+```
