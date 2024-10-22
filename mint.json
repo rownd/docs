@@ -10,6 +10,9 @@
     "light": "#B4B4FF",
     "dark": "#1B025F"
   },
+  "css": [
+    "/css/custom.css"
+  ],
   "analytics": {
     "gtm": {
       "tagId": "GTM-5VCR8GF"

@@ -1,0 +1,7 @@
+.dark .text-auto {
+    color: rgb(var(--primary-light));
+}
+
+.text-auto {
+    color: rgb(var(--primary));
+}
