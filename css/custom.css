@@ -1,7 +1,7 @@
-.dark .text-auto {
+.dark .icon-color {
     color: rgb(var(--primary-light));
 }
 
-.text-auto {
+.icon-color {
     color: rgb(var(--primary));
 }
