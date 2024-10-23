@@ -10,6 +10,9 @@
     "light": "#B4B4FF",
     "dark": "#1B025F"
   },
+  "css": [
+    "/css/custom.css"
+  ],
   "analytics": {
     "gtm": {
       "tagId": "GTM-5VCR8GF"
@@ -208,6 +211,7 @@
         },
         "sdk-reference/web/html",
         "sdk-reference/web/react---next-js",
+        "sdk-reference/web/remix",
         "sdk-reference/web/angular",
         "sdk-reference/web/vue",
         "sdk-reference/web/wordpress---woocommerce",
@@ -351,7 +355,6 @@
   "footerSocials": {
     "twitter": "https://twitter.com/RowndHQ",
     "linkedin": "https://www.linkedin.com/company/rownd/",
-    "tiktok": "https://www.tiktok.com/@my.data.not.yours",
     "website": "https://rownd.com/"
   }
 }

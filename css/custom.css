@@ -1,0 +1,7 @@
+.dark .icon-color {
+    color: rgb(var(--primary-light));
+}
+
+.icon-color {
+    color: rgb(var(--primary));
+}

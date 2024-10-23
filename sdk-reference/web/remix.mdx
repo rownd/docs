@@ -1,0 +1,120 @@
+---
+title: "Remix"
+description: Remix SDK reference
+icon: react
+---
+
+### Installation
+
+Simply run `npm install @rownd/react` or `yarn add @rownd/react`.
+
+### Setup
+
+The library provides a React provider for the client and a higher-order
+function for the server.
+
+In your app's `root.tsx` file, use the Remix Rownd provider to wrap children,
+likely before other providers:
+
+root.tsx
+```jsx
+...
+import { RemixRowndProvider } from '@rownd/react/remix';
+...
+
+export function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <RemixRowndProvider appKey="YOUR_APP_KEY">
+          {children}
+        </RemixRowndProvider>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+```
+
+In your app's `entry.server.ts` file, add the Rownd handle request higher-order
+function with your server's request handler `handleRequest`:
+
+entry.server.ts
+```jsx
+...
+import { withRowndHandleRequest } from '@rownd/react/remix';
+...
+
+export default withRowndHandleRequest(function handleRequest(
+  request: Request,
+  responseStatusCode: number,
+  responseHeaders: Headers,
+  remixContext: EntryContext,
+  loadContext: AppLoadContext
+) {
+  return ...
+});
+```
+
+### Protected component
+To protect a component from being accessed by unauthenticated users, you can use
+the `withRowndRequireSignIn` higher-order component and the `withRowndLoader`
+higher-order function.
+
+```jsx
+import type { LoaderFunctionArgs } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+
+import {
+  withRowndRequireSignIn,
+  withRowndLoader,
+  useRownd,
+} from '@rownd/react/remix';
+
+export const loader = withRowndLoader(async function (
+  { context, request }: LoaderFunctionArgs,
+  { user_id, access_token }
+) {
+
+    const authenticatedFetch = await fetch('https:random.com/posts',{
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    })
+
+    const posts = await authenticatedFetch.json();
+
+  return { posts, user_id };
+});
+
+function Index() {
+  const { signOut } = useRownd();
+  const { posts, user_id } = useLoaderData();
+
+  return (
+    <div>
+      ...
+      <h1>User ID: {user_id}</h1>
+      <button onClick={signOut}>Sign out</button>
+    </div>
+  );
+}
+
+function Fallback() {
+  return <div>Loading...</div>;
+}
+
+export default withRowndRequireSignIn(Index, useLoaderData, Fallback);
+```
+
+### API reference
+
+Please see the [React SDK](/sdk-reference/web/react---next-js#api-reference) for details on
+Rownd Client React API's.
