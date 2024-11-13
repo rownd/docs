@@ -148,6 +148,13 @@
           ]
         },
         {
+          "group": "Universal links",
+          "pages": [
+            "universal-links/overview",
+            
+          ]
+        }
+        {
           "group": "Web3",
           "pages": [
             "configuration/web3/near-overview",

@@ -1,0 +1,119 @@
+---
+title: "Rownd Universal Links"
+sidebarTitle: "Rownd Universal Links"
+---
+
+# Universal Links (Magic Links) in Rownd
+
+## Overview
+
+Universal Links, often called "Magic Links," allow users to access specific areas of an app or website with a single tap. This technology makes authentication and app access more seamless by bypassing the need for traditional login flows. Rownd's Universal Links provide a dynamic and secure way for users to authenticate, re-engage, and verify their identity, all through a single link.
+
+Our implementation of Universal Links integrates directly with Rownd's authentication, making it ideal for businesses that want to offer an easy and secure user experience. 
+
+### What makes Rownd Universal Links unique?
+
+- **Authentication-Integrated**: Unlike standard universal links, Rownd's Magic Links also manage user sign-in and verification, providing a streamlined login experience across devices and platforms.
+- **Security-First**: Each link is dynamically generated to verify user identity and restrict unauthorized access.
+- **Cross-Platform Support**: Rownd Universal Links are optimized for use across both iOS and Android, ensuring a consistent experience.
+- **Simple Universal Link (No Auth)**: One link to download an app from the right app store by adding `/download` to your Rownd subdomain (set up in Mobile settings). This allows users to directly access the download link without requiring authentication.
+
+---
+
+## Setting Up Universal Links in Rownd
+
+### 1. Configuring Universal Links for iOS
+
+To set up Universal Links for your iOS app, follow these steps:
+
+1. **App Association File**: Ensure that your app’s Apple App Site Association (AASA) file is properly configured to handle universal links.
+2. **Rownd Configuration**: Go to [Rownd's iOS Configuration](https://docs.rownd.io/configuration/mobile/ios) documentation and follow the steps to configure the universal link domain.
+3. **Link Testing**: After setup, test your links on a physical device to confirm they redirect correctly into the app.
+
+For a more detailed setup guide, refer to [Rownd's iOS Universal Link Documentation](https://docs.rownd.io/configuration/mobile/ios).
+
+---
+
+### 2. Configuring Universal Links for Android
+
+For Android apps, follow these steps:
+
+1. **Intent Filters**: Set up an intent filter in your app’s AndroidManifest.xml to handle the universal link domain.
+2. **Rownd Configuration**: Use [Rownd's Android Configuration](https://docs.rownd.io/configuration/mobile/android) to set up the universal links.
+3. **Verification**: Once the setup is complete, test the link on Android to ensure it opens correctly in the app.
+
+Find detailed instructions in [Rownd's Android Universal Link Documentation](https://docs.rownd.io/configuration/mobile/android).
+
+![Mobile App Settings](images/mobile-app-settings.png)
+
+---
+
+## Creating and Using Universal Links with Rownd
+
+With Rownd’s API, you can programmatically generate Magic Links that users can use for authentication or navigation within your app. This flexibility makes it possible to integrate Universal Links into various user journeys, from new user sign-up flows to secure authentication.
+
+### API Endpoint
+
+To create a Magic Link, use the following API endpoint:
+
+- **Endpoint**: [Create Magic Link API](https://docs.rownd.io/api-reference/authentication/create-magic-link)
+
+#### Example Request
+
+Here’s a basic example of how to create a Magic Link using Rownd's API:
+
+```bash
+POST https://api.rownd.io/authentication/magic-link
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+  "email": "user@example.com",
+  "redirect_url": "https://yourapp.com/welcome",
+  "use_for_authentication": true
+}
+```
+
+This request will create a Magic Link that authenticates the user when accessed and redirects them to the specified URL.
+
+### Example Response
+
+```json
+{
+  "magic_link": "https://rownd.link/YOUR_UNIQUE_MAGIC_LINK"
+}
+```
+
+You can then send this link to the user via email, SMS, or any other messaging platform.
+
+## Simple Universal Links
+
+In addition to Magic Links, Rownd also supports **Simple Universal Links** that require no authentication. By adding `/download` to your Rownd subdomain (configured in Mobile settings), you can create a link that directs users to download the app from the appropriate app store. This is ideal for onboarding users quickly without requiring authentication.
+
+### Example
+
+For instance, using the link `https://your-sub-domain.rownd.link/download` will automatically detect the user's device and redirect them to the appropriate app store (Google Play Store for Android users or the Apple App Store for iOS users). This provides a seamless and efficient experience for users to install the app without additional steps or authentication.
+
+---
+
+## Example Use Cases
+
+1. **One-Tap Sign-In**: Send users a Magic Link via email for one-tap authentication without requiring a password.
+2. **Onboarding**: Generate a Magic Link for new users that directs them to a custom onboarding experience within your app.
+3. **Re-Engagement**: Use Magic Links to re-engage inactive users, guiding them back to specific app screens.
+4. **App-download**: Provide one link to allow users to download an app.
+5. **No-Auth Universal Link**: Create a "no-auth" universal link by adding `/download` to your Rownd subdomain (set up in Mobile settings). This allows users to directly access the download link without requiring authentication.
+
+---
+
+## Additional Resources
+
+For more details on configuring and customizing Universal Links in Rownd, refer to the following:
+
+- [Rownd iOS Configuration Documentation](https://docs.rownd.io/configuration/mobile/ios)
+- [Rownd Android Configuration Documentation](https://docs.rownd.io/configuration/mobile/android)
+- [Create Magic Link API Reference](https://docs.rownd.io/api-reference/authentication/create-magic-link)
+
+--- 
+
+This setup should help you get started with implementing Universal Links in Rownd. For any additional questions, feel free to reach out to our support team or consult the API reference.
