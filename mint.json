@@ -135,7 +135,7 @@
           ]
         },
         {
-          "group": "Cross-domain Authentication",
+          "group": "Cross-domain authentication",
           "pages": [
             "configuration/cross-domain/overview",
             "configuration/cross-domain/implementation"
