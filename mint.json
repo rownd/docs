@@ -150,10 +150,10 @@
         {
           "group": "Universal links",
           "pages": [
-            "universal-links/overview",
+            "universal-links/overview"
             
           ]
-        }
+        },
         {
           "group": "Web3",
           "pages": [
@@ -218,6 +218,7 @@
         },
         "sdk-reference/web/html",
         "sdk-reference/web/react---next-js",
+        "sdk-reference/web/nextjs",
         "sdk-reference/web/remix",
         "sdk-reference/web/angular",
         "sdk-reference/web/vue",
