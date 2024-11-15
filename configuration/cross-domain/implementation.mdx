@@ -1,0 +1,69 @@
+---
+title: 'Implementation'
+description: 'Get cross-domain authentication added to your product'
+---
+
+## Getting Started
+
+1. **Locate your subdomain from the Rownd dashboard's** [settings](/configuration/mobile)
+
+2. **Create or use an existing** [**app key**](/configuration/app-credentials)
+
+3. **Form your root origin URL using the following template**```
+   https://REPLACE_WITH_YOUR_SUBDOMAIN.rownd.link/root/<appKey>
+   ```
+
+4. Add the root origin URL to your implementation of the Rownd SDK (see [examples](#implementation-examples) below)
+
+5. Test to ensure everything is working. You should be able to visit one of your domains, sign in successfully, and then visit another of your domains and remain signed in.
+
+### Implementation Examples
+
+If you're using our WordPress, Shopify, or similar integrations, look for a "Root Origin URL" setting the the plugin or app's configuration page.
+
+Below are some examples of how to enable cross-origin authentication across various Rownd SDKs.
+
+#### Next.js / React / Remix
+
+```jsx
+return (
+  <html lang="en">
+    <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <RowndProvider appKey={rowndAppKey} rootOrigin={yourRootOriginUrl}>
+        <AuthButtonHandler />
+        {children}
+      </RowndProvider>
+    </body>
+  </html>
+);
+```
+
+#### JavaScript
+
+For websites using the standard snippet:
+
+```javascript
+_rphConfig.push(['setRootOrigin', yourRootOriginUrl]);
+```
+
+## Best Practices
+
+1. Maintain consistent configuration across all properties
+
+2. Use trusted SSL certificates for all domains
+
+3. Test authentication flow in development environment before implementing in production
+
+4. Test user flows across different domains
+
+## Troubleshooting
+
+If the authentication state isn't syncing, make sure you:
+
+1. Verify that the root origin configuration is the same across all web properties
+
+2. Be sure SSL certificates are valid
+
+3. Confirm the app key is correct
+
+If you're still facing difficulty, please reach out to [Rownd support](mailto:support@rownd.io?subject=Cross-domain%20auth%20not%20working).
