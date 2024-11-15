@@ -1,0 +1,142 @@
+---
+title: Cross Domain Setup
+description:
+  "Take full advantage of cross domain authentication"
+---
+---
+
+# Cross-Domain Authentication with Rownd
+
+## Overview
+
+Rownd's cross-domain authentication provides a seamless user experience across multiple domains and subdomains without third-party cookies. This modern approach maintains secure user sessions across your entire digital ecosystem.
+
+## How It Works
+
+Rownd uses a novel authentication method that:
+- Operates independently of third-party cookies
+- Maintains sessions across different domains
+- Synchronizes user state automatically
+- Preserves security while improving user experience
+
+## Benefits
+
+- **Seamless User Experience**: Users stay signed in across all your properties
+- **Cookie-Independent**: Future-proof against browser privacy changes
+- **Flexible Implementation**: Works across web apps, mobile apps, and websites
+- **Improved Conversion**: Reduces friction in user journeys
+- **Enhanced Security**: Maintains secure sessions without compromising user privacy
+
+## Common Use Cases
+
+### Landing Page to Application
+1. Add Rownd to your marketing site
+2. Enable passive authentication (e.g., Google One Tap)
+3. Users automatically sign in when accessing your main application
+4. Increases conversion by removing authentication barriers
+
+### Documentation Portal Integration
+1. Implement Rownd across your documentation site
+2. Provide personalized help based on user context
+3. Track documentation usage patterns
+4. Deliver customized content based on user preferences
+
+### Multi-App Ecosystem
+1. Deploy Rownd across multiple applications
+2. Maintain consistent authentication state
+3. Works seamlessly with [sub-brands feature](https://docs.rownd.io/configuration/customizations/sub-brands)
+4. Create branded experiences for different user segments
+
+## Technical Configuration
+
+### Root Origin Setup
+
+Set `rootOrigin` to:
+```
+https://<subdomain>.rownd.link/root/<appKey>
+```
+
+### Implementation Examples
+
+#### Next.js Integration
+```jsx
+return (
+  <html lang="en">
+    <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <RowndProvider appKey={rowndAppKey} rootOrigin={rowndRootUrl}>
+        <AuthButtonHandler />
+        {children}
+      </RowndProvider>
+    </body>
+  </html>
+);
+```
+
+#### JavaScript Snippet
+For websites using the standard snippet:
+```javascript
+window._rphConfig = {
+  rootOrigin: 'https://<subdomain>.rownd.link/root/<appKey>'
+};
+```
+
+Alternative method using SDK:
+```javascript
+rownd.configure({
+  rootOrigin: 'https://<subdomain>.rownd.link/root/<appKey>'
+});
+```
+
+## Getting Started
+
+1. **Find Your Subdomain**
+   - Access Mobile Settings in Authentication methods
+   - Note your subdomain from the configuration
+
+2. **Locate Your App Key**
+   - Navigate to the App-key section in Platform (app.rownd.io)
+   - Copy your unique app key
+
+3. **Implementation Steps**
+   - Choose your integration method (SDK or snippet)
+   - Configure the root origin
+   - Test cross-domain functionality
+   - Monitor authentication flows
+
+## Best Practices
+
+1. **Domain Configuration**
+   - Maintain consistent configuration across all properties
+   - Verify SSL certificates for all domains
+   - Test authentication flow in development environment
+
+2. **Security Considerations**
+   - Keep app keys secure
+   - Use environment variables for sensitive values
+   - Regularly monitor authentication patterns
+
+3. **User Experience**
+   - Implement passive authentication where appropriate
+   - Provide clear feedback during authentication process
+   - Test user flows across different domains
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. **Authentication State Not Syncing**
+   - Verify root origin configuration
+   - Check SSL certificates
+   - Confirm app key is correct
+
+2. **Integration Issues**
+   - Review SDK implementation
+   - Verify all required dependencies
+   - Check console for errors
+
+## SDK References
+
+For detailed implementation guidelines, refer to:
+- [Web SDK Documentation](https://docs.rownd.io/sdk-reference/web)
+- [Mobile SDK Documentation](https://docs.rownd.io/sdk-reference/mobile)
+- [Sub-brands Configuration](https://docs.rownd.io/configuration/customizations/sub-brands)

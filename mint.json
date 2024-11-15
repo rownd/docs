@@ -135,6 +135,12 @@
           ]
         },
         {
+          "group": "Cross Domain Authentication",
+          "pages": [
+            "configuration/cross-domain/overview"  
+          ]
+        },
+        {
           "group": "Integrations",
           "pages": [
             "configuration/integrations/overview",
@@ -154,6 +160,7 @@
             
           ]
         },
+
         {
           "group": "Web3",
           "pages": [
