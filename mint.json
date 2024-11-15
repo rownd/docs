@@ -130,8 +130,8 @@
         {
           "group": "Automations",
           "pages": [
-            "configuration/Automations/overview",
-            "configuration/Automations/sign-in-prompt"
+            "configuration/automations/overview",
+            "configuration/automations/sign-in-prompt"
           ]
         },
         {
@@ -148,9 +148,9 @@
           ]
         },
         {
-          "group": "Universal links",
+          "group": "Magic links",
           "pages": [
-            "universal-links/overview"
+            "magic-links/overview"
             
           ]
         },
@@ -183,7 +183,7 @@
           ]
         },
         "security/SOC2-type2",
-        "security/hippa-ready",
+        "security/hipaa-ready",
         "security/responsible-disclosure"
       ]
     },
