@@ -130,8 +130,8 @@
         {
           "group": "Automations",
           "pages": [
-            "configuration/Automations/overview",
-            "configuration/Automations/sign-in-prompt"
+            "configuration/automations/overview",
+            "configuration/automations/sign-in-prompt"
           ]
         },
         {
@@ -145,6 +145,13 @@
             "configuration/integrations/mailerlite",
             "configuration/integrations/token-validator",
             "configuration/integrations/webhooks"
+          ]
+        },
+        {
+          "group": "Magic links",
+          "pages": [
+            "magic-links/overview"
+            
           ]
         },
         {
@@ -176,7 +183,7 @@
           ]
         },
         "security/SOC2-type2",
-        "security/hippa-ready",
+        "security/hipaa-ready",
         "security/responsible-disclosure"
       ]
     },
