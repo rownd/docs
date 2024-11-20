@@ -1,0 +1,48 @@
+---
+title: "Authenticated links"
+sidebarTitle: "Authenticated links"
+---
+
+Authenticated magic links are a powerful tool for securely granting users access to your app or website. These links contain an embedded authentication payload that verifies the user's identity, allowing them to bypass the traditional login process. This not only enhances the user experience by providing a seamless entry point but also ensures that access is restricted to authorized users.
+
+When a user clicks on an authenticated magic link, they are automatically signed in and redirected to the specified destination within your app or site. This can be particularly useful for re-engaging users, onboarding new users, or directing users to specific content or features.
+
+To create authenticated magic links, you can use the Rownd API, which allows you to customize the link's behavior and target destination. This flexibility ensures that you can tailor the user experience to meet your specific needs while maintaining a high level of security.
+
+Overall, authenticated magic links offer a convenient and secure way to manage user access, making them an essential component of modern authentication strategies.
+
+## Creating authenticated magic links
+
+Authenticated magic links can only be created via the Rownd API. Since these links contain sensitive authentication information, it's essential to follow best practices for handling and distributing them securely.
+
+Magic links can be created via our REST API or through our SDKs. Backend SDKs can be used to create magic links for any user, while frontend SDKs can be used to create magic links for the currently authenticated user, which are useful for device-transition scenarios.
+
+Here's an example creating an authenticated magic link using the Rownd API. In this example, we're using an email address as the primary user identifier, setting some profile information, and specifying a redirect URL for the user. If the user exists, they will be signed in and redirected to the specified URL. If the user doesn't exist, an account will be created automatically during sign-in.
+
+**Request**
+```bash
+POST https://api.rownd.io/hub/auth/magic
+Content-Type: application/json
+X-Rownd-App-Key: YOUR_APP_KEY
+X-Rownd-App-Secret: YOUR_APP_SECRET
+
+{
+    "purpose": "auth",
+    "verification_method": "email",
+    "data": {
+        "email": "juliet@rose.com",
+        "first_name": "Juliet",
+        "last_name": "Rose"
+    },
+    "redirect_url": "https://yourapp.com/welcome",
+    "expiration": "1h"
+}
+```
+
+**Response**
+```json
+{
+    "link": "https://rownd.link/YOUR_UNIQUE_MAGIC_LINK",
+    "app_user_id": "user_a1b2c3d4"
+}
+```

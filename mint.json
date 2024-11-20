@@ -156,8 +156,9 @@
         {
           "group": "Magic links",
           "pages": [
-            "magic-links/overview"
-            
+            "magic-links/overview",
+            "magic-links/authenticated",
+            "magic-links/unauthenticated"
           ]
         },
 
