@@ -4,17 +4,6 @@
     "title": "Rownd API",
     "version": "1.0.0"
   },
-  "tags": [
-    {
-      "name": "applications"
-    },
-    {
-      "name": "application_creds"
-    },
-    {
-      "name": "application_schemas"
-    }
-  ],
   "servers": [
     {
       "url": "https://api.rownd.io",
@@ -28,6 +17,17 @@
   "security": [
     {
       "hubAccessTokenForRowndApi": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "applications"
+    },
+    {
+      "name": "application_creds"
+    },
+    {
+      "name": "application_schemas"
     }
   ],
   "paths": {
@@ -56,6 +56,30 @@
                       "description": "Whether the API is ready"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service_health": {
+      "get": {
+        "summary": "Check the health status of rownd",
+        "operationId": "api_service_health",
+        "security": [
+          {
+            "none": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rownd status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
                 }
               }
             }
@@ -120,9 +144,6 @@
         "security": [
           {
             "hubAccessTokenForRowndApi": []
-          },
-          {
-            "auth0": []
           },
           {
             "serviceAccountToken": []
@@ -1312,9 +1333,6 @@
           },
           {
             "serviceAccountToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "tags": [
@@ -1352,9 +1370,6 @@
           },
           {
             "serviceAccountToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "tags": [
@@ -1447,8 +1462,7 @@
           },
           {
             "$ref": "#/components/parameters/LookupFilter",
-            "description": "Return user profiles with verified values that match this filter. This is a comma-separated\nlist of values.\n",
-            "example": "gary@foo.com,+19199993333"
+            "description": "Return user profiles with verified values that match this filter. This is a comma-separated\nlist of values.\n"
           },
           {
             "$ref": "#/components/parameters/IDFilter"
@@ -1458,6 +1472,9 @@
           },
           {
             "$ref": "#/components/parameters/After"
+          },
+          {
+            "$ref": "#/components/parameters/Sort"
           },
           {
             "name": "include_duplicates",
@@ -1627,9 +1644,7 @@
             "hubAccessTokenForRowndApi": []
           },
           {
-            "appKey": []
-          },
-          {
+            "appKey": [],
             "appSecret": []
           }
         ],
@@ -1688,9 +1703,6 @@
           },
           {
             "hubAccessTokenForRowndApi": []
-          },
-          {
-            "auth0": []
           }
         ],
         "responses": {
@@ -1736,9 +1748,6 @@
             "serviceAccountToken": []
           },
           {
-            "auth0": []
-          },
-          {
             "internalPreSharedKey": []
           }
         ],
@@ -1773,9 +1782,6 @@
           },
           {
             "serviceAccountToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "requestBody": {
@@ -1839,9 +1845,6 @@
           },
           {
             "serviceAccountToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "requestBody": {
@@ -1884,9 +1887,6 @@
           },
           {
             "serviceAccountToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "responses": {
@@ -1932,9 +1932,6 @@
           },
           {
             "hubAccessTokenForRowndApi": []
-          },
-          {
-            "auth0": []
           }
         ],
         "responses": {
@@ -1971,9 +1968,6 @@
           },
           {
             "hubAccessTokenForRowndApi": []
-          },
-          {
-            "auth0": []
           }
         ],
         "requestBody": {
@@ -2016,72 +2010,43 @@
         }
       }
     },
-    "/applications/{app}/users/{user}/acls": {
-      "parameters": [
-        {
-          "name": "app",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "user",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "operationId": "application_user_acls_get",
-        "responses": {
-          "200": {
-            "description": "User ACLs retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppUserACLs"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "operationId": "application_user_acls_upsert",
-        "tags": [
-          "me"
-        ],
-        "x-required-role": [
-          "none"
-        ],
-        "security": [
+    "/applications/{app}/users/{user}/state": {
+      "post": {
+        "parameters": [
           {
-            "hubAccessToken": []
+            "$ref": "#/components/parameters/AppID"
           },
           {
-            "auth0": []
+            "$ref": "#/components/parameters/UserID"
+          }
+        ],
+        "operationId": "application_user_state_update",
+        "description": "Set the user's state",
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AppUserACLs"
+                "$ref": "#/components/schemas/AppUserStateUpdateRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "User ACLs retrieved successfully",
+            "description": "User state updated successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AppUserACLs"
+                  "$ref": "#/components/schemas/AppUserData"
                 }
               }
             }
@@ -2461,10 +2426,14 @@
         ],
         "security": [
           {
-            "appKey": []
+            "appKey": [],
+            "appSecret": []
           },
           {
             "hubAccessTokenForRowndApi": []
+          },
+          {
+            "hubKey": []
           }
         ],
         "responses": {
@@ -2498,10 +2467,14 @@
         ],
         "security": [
           {
-            "appKey": []
+            "appKey": [],
+            "appSecret": []
           },
           {
             "hubAccessTokenForRowndApi": []
+          },
+          {
+            "hubKey": []
           }
         ],
         "responses": {
@@ -2573,15 +2546,18 @@
         }
       }
     },
-    "/applications/{app}/automations/mobile/versions": {
+    "/applications/{app}/automations/mobile/pages/{page}/captures": {
       "parameters": [
         {
           "$ref": "#/components/parameters/AppID"
+        },
+        {
+          "$ref": "#/components/parameters/MobileAppPageID"
         }
       ],
       "post": {
-        "operationId": "mobile_app_version_create",
-        "description": "Create a mobile app version",
+        "operationId": "mobile_app_page_capture_create",
+        "description": "Create a mobile app page capture",
         "tags": [
           "automations"
         ],
@@ -2597,18 +2573,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MobileAppVersionCreateRequest"
+                "$ref": "#/components/schemas/MobileAppPageCaptureCreateRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successfully created mobile app version",
+            "description": "Successfully created mobile app page capture",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MobileAppVersion"
+                  "$ref": "#/components/schemas/MobileAppPageCapture"
                 }
               }
             }
@@ -2616,23 +2592,30 @@
         }
       },
       "get": {
-        "operationId": "mobile_app_versions_list",
-        "description": "List mobile app versions",
+        "operationId": "mobile_app_page_captures_list",
+        "description": "List mobile app page captures",
         "tags": [
           "automations"
         ],
         "security": [
           {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
             "hubAccessTokenForRowndApi": []
+          },
+          {
+            "hubKey": []
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved mobile app versions",
+            "description": "Successfully retrieved mobile app page captures",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MobileAppVersionList"
+                  "$ref": "#/components/schemas/MobileAppPageCaptureList"
                 }
               }
             }
@@ -2640,36 +2623,40 @@
         }
       }
     },
-    "/applications/{app}/automations/mobile/versions/{version}": {
+    "/applications/{app}/automations/mobile/pages/{page}/captures/{capture}": {
       "parameters": [
         {
           "$ref": "#/components/parameters/AppID"
         },
         {
-          "$ref": "#/components/parameters/MobileAppVersionID"
+          "$ref": "#/components/parameters/MobileAppPageID"
+        },
+        {
+          "$ref": "#/components/parameters/MobileAppPageCaptureID"
         }
       ],
       "get": {
-        "operationId": "mobile_app_version_get",
-        "description": "Get mobile app version",
+        "operationId": "mobile_app_page_capture_get",
+        "description": "Get mobile app page capture",
         "tags": [
           "automations"
         ],
         "security": [
           {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
             "hubAccessTokenForRowndApi": []
           }
         ],
-        "x-required-roles": [
-          "editor"
-        ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved mobile app version",
+            "description": "Successfully retrieved mobile app page capture",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MobileAppVersion"
+                  "$ref": "#/components/schemas/MobileAppPageCapture"
                 }
               }
             }
@@ -2677,8 +2664,8 @@
         }
       },
       "put": {
-        "operationId": "mobile_app_version_update",
-        "description": "Update mobile app version",
+        "operationId": "mobile_app_page_capture_update",
+        "description": "Update mobile app page capture",
         "tags": [
           "automations"
         ],
@@ -2694,18 +2681,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MobileAppVersion"
+                "$ref": "#/components/schemas/MobileAppPageCaptureUpdateRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successfully updated mobile app version",
+            "description": "Successfully updated mobile app page capture",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MobileAppVersion"
+                  "$ref": "#/components/schemas/MobileAppPageCapture"
                 }
               }
             }
@@ -2713,7 +2700,7 @@
         }
       },
       "delete": {
-        "operationId": "mobile_app_version_delete",
+        "operationId": "mobile_app_page_capture_delete",
         "tags": [
           "automations"
         ],
@@ -2727,7 +2714,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Successfully deleted mobile app version"
+            "description": "Successfully deleted mobile app page capture"
           }
         }
       }
@@ -2812,6 +2799,9 @@
           },
           {
             "$ref": "#/components/parameters/After"
+          },
+          {
+            "$ref": "#/components/parameters/LookupFilter"
           }
         ],
         "responses": {
@@ -3011,7 +3001,6 @@
       },
       "post": {
         "operationId": "application_group_member_create",
-        "summary": "Create a Group Member",
         "description": "Platform API for creating a member within the group. You can create a member by providing a user\nID or a user lookup value like an email address or phone number. The first member created within\na group will automatically be assigned the `'owner'` role.\n",
         "tags": [
           "groups"
@@ -3057,7 +3046,7 @@
           "$ref": "#/components/parameters/GroupID"
         },
         {
-          "$ref": "#/components/parameters/MemberID"
+          "$ref": "#/components/parameters/GroupMemberID"
         }
       ],
       "get": {
@@ -3269,7 +3258,7 @@
           "$ref": "#/components/parameters/GroupID"
         },
         {
-          "$ref": "#/components/parameters/InviteID"
+          "$ref": "#/components/parameters/GroupInviteID"
         }
       ],
       "get": {
@@ -3577,7 +3566,7 @@
           "$ref": "#/components/parameters/GroupID"
         },
         {
-          "$ref": "#/components/parameters/MemberID"
+          "$ref": "#/components/parameters/GroupMemberID"
         }
       ],
       "get": {
@@ -3733,7 +3722,7 @@
           "$ref": "#/components/parameters/GroupID"
         },
         {
-          "$ref": "#/components/parameters/InviteID"
+          "$ref": "#/components/parameters/GroupInviteID"
         }
       ],
       "get": {
@@ -3805,7 +3794,7 @@
           "$ref": "#/components/parameters/GroupID"
         },
         {
-          "$ref": "#/components/parameters/InviteID"
+          "$ref": "#/components/parameters/GroupInviteID"
         }
       ],
       "post": {
@@ -3838,6 +3827,9 @@
                     },
                     "accepted_by": {
                       "type": "string"
+                    },
+                    "group": {
+                      "$ref": "#/components/schemas/group"
                     }
                   }
                 }
@@ -3942,6 +3934,32 @@
     "/accounts": {
       "get": {
         "operationId": "account_list",
+        "parameters": [
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "description": "Number of accounts to return per query. Max is 100."
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Returns the next page of results after the account ID (inclusive)"
+          },
+          {
+            "name": "list_support_accessible_accounts_only",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "description": "Show only accounts with support access enabled"
+            }
+          }
+        ],
         "tags": [
           "accounts"
         ],
@@ -3969,6 +3987,15 @@
         "x-required-role": [
           "none"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountCreatePayload"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Account created successfully",
@@ -4713,137 +4740,6 @@
         }
       }
     },
-    "/accounts/{account}/teams/default/invitations/accept": {
-      "x-rownd-visibility": "private",
-      "post": {
-        "parameters": [
-          {
-            "name": "account",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "account_team_member_invite_accept",
-        "x-required-role": [
-          "none"
-        ],
-        "tags": [
-          "accounts",
-          "teams"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "token"
-                ],
-                "properties": {
-                  "token": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Team invitation accepted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TeamInvitationResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/teams/invitation": {
-      "x-rownd-visibility": "private",
-      "parameters": [
-        {
-          "name": "x-rownd-invite-token",
-          "in": "header",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "operationId": "account_team_invitation_get",
-        "x-required-role": [
-          "none"
-        ],
-        "tags": [
-          "accounts",
-          "teams"
-        ],
-        "responses": {
-          "200": {
-            "description": "Invitation retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TeamInvitationConsentInfo"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "account_team_member_invite_process",
-        "x-required-role": [
-          "none"
-        ],
-        "tags": [
-          "accounts",
-          "teams"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "action"
-                ],
-                "properties": {
-                  "action": {
-                    "type": "string",
-                    "enum": [
-                      "accept",
-                      "decline"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Team invitation accepted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TeamInvitationResponse"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "Team invitation declined successfully"
-          }
-        }
-      }
-    },
     "/me": {
       "get": {
         "operationId": "my_profile_get",
@@ -4856,109 +4752,18 @@
         "security": [
           {
             "hubAccessToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "responses": {
           "200": {
-            "description": "The current user's profile information",
+            "description": "The current user's data collected/stored by an application.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserProfile"
+                  "$ref": "#/components/schemas/AppUserData"
                 }
               }
             }
-          }
-        }
-      },
-      "patch": {
-        "operationId": "my_profile_update",
-        "tags": [
-          "me"
-        ],
-        "x-required-role": [
-          "none"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserProfile"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully updated the current user's profile",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserProfile"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/me/settings/mfa": {
-      "get": {
-        "operationId": "my_settings_mfa_status",
-        "tags": [
-          "me"
-        ],
-        "x-required-role": [
-          "none"
-        ],
-        "responses": {
-          "200": {
-            "description": "The current user's multi-factor authentication status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserMFAStatus"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "my_settings_mfa_enable",
-        "tags": [
-          "me"
-        ],
-        "x-required-role": [
-          "none"
-        ],
-        "responses": {
-          "200": {
-            "description": "Generated a two-factor init token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserMFALink"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "my_settings_mfa_disable",
-        "tags": [
-          "me"
-        ],
-        "x-required-role": [
-          "none"
-        ],
-        "responses": {
-          "204": {
-            "description": "The current user's multi-factor authentication enrollment has been deleted."
           }
         }
       }
@@ -5062,13 +4867,10 @@
       ],
       "get": {
         "operationId": "my_application_data_get",
-        "description": "Retrieve",
+        "description": "Retrieve user profile",
         "security": [
           {
             "hubAccessToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "tags": [
@@ -5092,10 +4894,8 @@
       },
       "put": {
         "operationId": "my_application_data_update",
+        "description": "Update user profile",
         "security": [
-          {
-            "auth0": []
-          },
           {
             "hubAccessToken": []
           }
@@ -5132,6 +4932,26 @@
             }
           }
         }
+      },
+      "delete": {
+        "operationId": "my_application_data_delete",
+        "description": "Delete user profile",
+        "security": [
+          {
+            "hubAccessToken": []
+          }
+        ],
+        "tags": [
+          "me"
+        ],
+        "x-required-role": [
+          "none"
+        ],
+        "responses": {
+          "204": {
+            "description": "Data successfully deleted"
+          }
+        }
       }
     },
     "/me/applications/{app}/data/merge": {
@@ -5146,9 +4966,6 @@
         "security": [
           {
             "hubAccessToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "tags": [
@@ -5254,9 +5071,6 @@
         "security": [
           {
             "hubAccessToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "tags": [
@@ -5293,9 +5107,6 @@
         "operationId": "my_application_data_field_update",
         "description": "Update the value of one field in a user profile",
         "security": [
-          {
-            "auth0": []
-          },
           {
             "hubAccessToken": []
           }
@@ -5340,130 +5151,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AppUserData"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/me/applications/{app}/acls": {
-      "get": {
-        "parameters": [
-          {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "my_application_acls_get",
-        "security": [
-          {
-            "auth0": []
-          },
-          {
-            "hubAccessToken": []
-          }
-        ],
-        "tags": [
-          "me"
-        ],
-        "x-required-role": [
-          "none"
-        ],
-        "responses": {
-          "200": {
-            "description": "User ACLs retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppUserACLs"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "parameters": [
-          {
-            "name": "app",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "my_application_acls_update",
-        "security": [
-          {
-            "auth0": []
-          },
-          {
-            "hubAccessToken": []
-          }
-        ],
-        "tags": [
-          "me"
-        ],
-        "x-required-role": [
-          "none"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AppUserACLs"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "User ACLs retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppUserACLs"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/me/applications/data/claim": {
-      "post": {
-        "parameters": [
-          {
-            "name": "app",
-            "description": "An ID for an application that should be explicitly checked for claims.",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "my_application_data_claim",
-        "description": "Checks for unclaimed data matching the user's verified information and associates it with their account.",
-        "tags": [
-          "me"
-        ],
-        "x-required-role": [
-          "none"
-        ],
-        "responses": {
-          "200": {
-            "description": "Claims checked and completed successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppUserClaimResponse"
                 }
               }
             }
@@ -5748,6 +5435,96 @@
         }
       }
     },
+    "/hub/auth/instant": {
+      "post": {
+        "operationId": "hub_auth_instant",
+        "tags": [
+          "hub"
+        ],
+        "security": [
+          {
+            "hubKey": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "return_url": {
+                    "type": "string"
+                  },
+                  "identifier": {
+                    "type": "string"
+                  },
+                  "user_id": {
+                    "type": "string",
+                    "description": "bring your own user id"
+                  },
+                  "app_id": {
+                    "type": "string"
+                  },
+                  "user_data": {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  "recaptcha_challenge_response": {
+                    "type": "string",
+                    "description": "The challenge response from Google ReCaptcha"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "auth_tokens": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": {
+                          "type": "string"
+                        },
+                        "refresh_token": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "init_data": {
+                      "type": "object",
+                      "additionalProperties": true,
+                      "properties": {
+                        "instant_id": {
+                          "type": "string"
+                        },
+                        "user_id": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "registration_status": {
+                      "type": "string",
+                      "enum": [
+                        "instant_user"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/hub/auth/init": {
       "post": {
         "operationId": "hub_auth_init",
@@ -5779,6 +5556,10 @@
                     "type": "boolean",
                     "description": "Indicates that this user is anonymous and doesn't need to provide any information."
                   },
+                  "instant_user_id": {
+                    "type": "string",
+                    "description": "An instant user ID. When specified, sign-in is initiated for this user"
+                  },
                   "crypto_wallet_address": {
                     "type": "string",
                     "description": "publicKey"
@@ -5789,7 +5570,7 @@
                   },
                   "user_id": {
                     "type": "string",
-                    "description": "bring your own user id"
+                    "description": "Specify an ID for a new user sign-in"
                   },
                   "requested_fields": {
                     "type": "object",
@@ -5867,6 +5648,9 @@
                       }
                     },
                     "registration_status": {
+                      "type": "string"
+                    },
+                    "user_type": {
                       "type": "string"
                     },
                     "fingerprint": {
@@ -6267,6 +6051,10 @@
                   "group_to_join": {
                     "type": "string",
                     "description": "ID of a group to which the user will join upon completing sign-in. The group\nmust have an admission policy of 'open'.\n"
+                  },
+                  "instant_user_id": {
+                    "type": "string",
+                    "description": "An instant user ID. When specified, the token exchange is initiated for this user"
                   }
                 }
               }
@@ -6351,6 +6139,9 @@
           {
             "appKey": [],
             "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
           }
         ],
         "requestBody": {
@@ -6358,12 +6149,16 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "verification_mode",
-                  "data"
-                ],
                 "properties": {
-                  "verification_mode": {
+                  "purpose": {
+                    "type": "string",
+                    "enum": [
+                      "auth",
+                      "shorten"
+                    ],
+                    "description": "Determines whether this link will identify a user and allow them to sign in\nautomatically or whether it will just act as a simple redirect. An `auth`\nlink should only be sent to a single user, whereas a `shorten` link can\nbe sent to many users if desired, since it does not carry an authentication\npayload.\n"
+                  },
+                  "verification_type": {
                     "type": "string",
                     "enum": [
                       "email",
@@ -6374,7 +6169,7 @@
                   "data": {
                     "type": "object",
                     "additionalProperties": true,
-                    "description": "Data to add to the user's profile",
+                    "description": "Data to add to the user's profile. These properties must exist in the Profile Data\nportion of the Rownd application. If properties such as email, phone, etc identify\nan existing user, the user will be auto-matched regardless of the user_id value.\n",
                     "example": {
                       "email": "gary@foo.com",
                       "first_name": "Gary"
@@ -6382,23 +6177,23 @@
                   },
                   "redirect_url": {
                     "type": "string",
-                    "description": "The absolute URL or relative path to send your user after sign-in",
+                    "description": "The absolute URL or relative path to send your user after sign-in. If the URL is\nrelative, it will be appended to your application's default redirect URL as defined\nin your Rownd application settings. If no default redirect is set, the magic link\ncreation will fail.\n",
                     "example": "/somewhere/in/my/app#"
                   },
                   "user_id": {
                     "type": "string",
-                    "description": "Specify a user ID. If the user already exists, include their user ID. Otherwise,\nuse one of `'__default__'`, `'__uuid__'`, or `'__objectid__'`. These special values\ntell Rownd to generate an ID in the provided format, or use the application's \ndefault user ID format.\n",
+                    "description": "Specify a user ID. If the user already exists, include their user ID. Otherwise,\nuse one of `'__default__'`, `'__uuid__'`, or `'__objectid__'`. These special values\ntell Rownd to generate an ID in the provided format, or use the application's\ndefault user ID format.\n",
                     "default": "__default__"
                   },
                   "expiration": {
                     "type": "string",
-                    "description": "A string representing the duration for which a magic link is valid.",
-                    "example": "90d",
+                    "description": "A human-readable string representing the duration for which a magic link is valid.\nExamples of valid values include `1h`, `2d`, `3w`, `1m`, etc. May not exceed `30d`.\nDefaults to `30d`.",
+                    "example": "30d",
                     "pattern": "^(\\d+|\\d+\\.\\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)$"
                   },
                   "group_to_join": {
                     "type": "string",
-                    "description": "ID of a group to which the user will join upon completing sign-in. The group\nmust have an admission policy of `'open'`.`\n"
+                    "description": "The ID of a group which the user will auto-join upon completing sign-in. The group\nmust have an `'open'` admission policy.\n"
                   }
                 }
               }
@@ -6414,6 +6209,25 @@
                   "$ref": "#/components/schemas/MagicLinkCreateResponse"
                 }
               }
+            }
+          }
+        }
+      }
+    },
+    "/hub/auth/magic/robots.txt": {
+      "get": {
+        "operationId": "hub_auth_magic_robots",
+        "description": "Returns the robots.txt string response for magic links",
+        "security": [
+          {
+            "none": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "string response for robots.txt",
+            "content": {
+              "text/plain": {}
             }
           }
         }
@@ -6761,7 +6575,7 @@
           {
             "name": "origin",
             "in": "header",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -6966,7 +6780,7 @@
           {
             "name": "origin",
             "in": "header",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -7394,203 +7208,6 @@
         }
       }
     },
-    "/users/signup": {
-      "x-rownd-visibility": "private",
-      "post": {
-        "operationId": "user_signup",
-        "tags": [
-          "users"
-        ],
-        "security": [
-          {
-            "none": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserSignupRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "User successfully registered",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/signup/init": {
-      "x-rownd-visibility": "private",
-      "post": {
-        "operationId": "user_signup_init",
-        "tags": [
-          "users"
-        ],
-        "security": [
-          {
-            "none": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "email"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "app_id": {
-                    "type": "string"
-                  },
-                  "verification_url": {
-                    "type": "string",
-                    "format": "uri"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Signup via email initiated successfully"
-          }
-        }
-      }
-    },
-    "/users/signup/verify": {
-      "x-rownd-visibility": "private",
-      "post": {
-        "operationId": "user_signup_verify",
-        "tags": [
-          "users"
-        ],
-        "security": [
-          {
-            "none": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "verification_token": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Verification token is valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "token_ok": {
-                      "type": "boolean"
-                    },
-                    "email": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/signup/complete": {
-      "x-rownd-visibility": "private",
-      "post": {
-        "operationId": "user_signup_complete",
-        "tags": [
-          "users"
-        ],
-        "x-required-role": [
-          "none"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "verification_token": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "User signup completed successfully"
-          }
-        }
-      }
-    },
-    "/users/login-strategies": {
-      "x-rownd-visibility": "private",
-      "get": {
-        "parameters": [
-          {
-            "name": "client_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "redirect_uri",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          }
-        ],
-        "operationId": "user_login_strategies",
-        "tags": [
-          "users"
-        ],
-        "security": [
-          {
-            "none": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Available login strategies",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginStrategies"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/users/email-insights": {
       "x-rownd-visibility": "private",
       "get": {
@@ -7850,10 +7467,11 @@
           "integrations"
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Connection"
+                "$ref": "#/components/schemas/ConnectionCreateRequest"
               }
             }
           }
@@ -7891,9 +7509,6 @@
           },
           {
             "serviceAccountToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "tags": [
@@ -7960,9 +7575,6 @@
           },
           {
             "serviceAccountToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "responses": {
@@ -7994,16 +7606,14 @@
           },
           {
             "serviceAccountToken": []
-          },
-          {
-            "auth0": []
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Connection"
+                "$ref": "#/components/schemas/ConnectionUpdateRequest"
               }
             }
           }
@@ -8191,6 +7801,7 @@
           "integrations"
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -8239,6 +7850,7 @@
           "integrations"
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -8275,6 +7887,7 @@
       "get": {
         "operationId": "oauth2_account_available_providers",
         "x-required-role": [
+          "owner",
           "admin",
           "editor",
           "viewer"
@@ -8333,10 +7946,6 @@
   },
   "components": {
     "securitySchemes": {
-      "auth0": {
-        "type": "openIdConnect",
-        "openIdConnectUrl": "https://dev-ddkad7um.auth0.com/.well-known/openid-configuration"
-      },
       "appKey": {
         "type": "apiKey",
         "in": "header",
@@ -8382,14 +7991,6 @@
       }
     },
     "parameters": {
-      "After": {
-        "name": "after",
-        "in": "query",
-        "schema": {
-          "type": "string"
-        },
-        "description": "ID of the last resource in the previous page. If provided, the next page of results is\nreturned beginning with this resource ID.\n"
-      },
       "AppID": {
         "name": "app",
         "in": "path",
@@ -8399,23 +8000,14 @@
         "required": true,
         "description": "Rownd application ID"
       },
-      "GroupID": {
-        "name": "group",
-        "in": "path",
+      "Fields": {
+        "name": "fields",
+        "in": "query",
         "schema": {
-          "type": "string"
-        },
-        "required": true,
-        "description": "Group ID"
-      },
-      "InviteID": {
-        "name": "invite",
-        "in": "path",
-        "schema": {
-          "type": "string"
-        },
-        "required": true,
-        "description": "Group Invite ID"
+          "type": "string",
+          "description": "Comma-separated list of fields to include in the profile data",
+          "example": "email,first_name"
+        }
       },
       "LookupFilter": {
         "name": "lookup_filter",
@@ -8425,40 +8017,14 @@
         },
         "description": "Return resources that match this filter"
       },
-      "MemberID": {
-        "name": "member",
-        "in": "path",
-        "schema": {
-          "type": "string"
-        },
-        "required": true,
-        "description": "Group Member ID"
-      },
-      "MobileAppPageID": {
-        "name": "page",
-        "in": "path",
-        "schema": {
-          "type": "string"
-        },
-        "required": true,
-        "description": "Page ID"
-      },
-      "MobileAppVersionID": {
-        "name": "version",
-        "in": "path",
-        "schema": {
-          "type": "string"
-        },
-        "required": true,
-        "description": "Version IDs"
-      },
-      "PageSizeMax100": {
-        "name": "page_size",
+      "IDFilter": {
+        "name": "id_filter",
         "in": "query",
         "schema": {
-          "type": "integer"
+          "type": "string"
         },
-        "description": "Number of resources to return per query. Max is 100."
+        "description": "A comma-separated list of resource IDs to filter by",
+        "example": "user_a7b53gwdaml5jt7t71442nt7"
       },
       "PageSizeMax1000": {
         "name": "page_size",
@@ -8468,21 +8034,32 @@
         },
         "description": "Number of resources to return per query. Max is 1000."
       },
+      "After": {
+        "name": "after",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "description": "ID of the last resource in the previous page. If provided, the next page of results is\nreturned beginning with this resource ID.\n"
+      },
+      "Sort": {
+        "name": "sort",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "asc",
+            "desc"
+          ]
+        },
+        "description": "Which direction to sort the results"
+      },
       "UserID": {
         "name": "user",
         "in": "path",
         "required": true,
         "schema": {
           "type": "string"
-        }
-      },
-      "Fields": {
-        "name": "fields",
-        "in": "query",
-        "schema": {
-          "type": "string",
-          "description": "Comma-separated list of fields to include in the profile data",
-          "example": "email,first_name"
         }
       },
       "WriteDataToIntegrations": {
@@ -8505,15 +8082,6 @@
         "description": "The name of a field in your application schema",
         "example": "first_name"
       },
-      "IDFilter": {
-        "name": "id_filter",
-        "in": "query",
-        "schema": {
-          "type": "string"
-        },
-        "description": "A comma-separated list of resource IDs to filter by",
-        "example": "user_a7b53gwdaml5jt7t71442nt7"
-      },
       "Preview": {
         "name": "preview",
         "in": "query",
@@ -8528,6 +8096,65 @@
         },
         "description": "Return an image thumbnail of the resource",
         "example": "small"
+      },
+      "MobileAppPageID": {
+        "name": "page",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Page ID"
+      },
+      "MobileAppPageCaptureID": {
+        "name": "version",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Version IDs"
+      },
+      "PageSizeMax100": {
+        "name": "page_size",
+        "in": "query",
+        "schema": {
+          "type": "integer"
+        },
+        "description": "Number of resources to return per query. Max is 100."
+      },
+      "GroupID": {
+        "name": "group",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Group ID"
+      },
+      "GroupMemberID": {
+        "name": "member",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Group Member ID"
+      },
+      "GroupInviteID": {
+        "name": "invite",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Group Invite ID"
+      },
+      "InviteID": {
+        "$ref": "#/components/parameters/GroupInviteID"
+      },
+      "MemberID": {
+        "$ref": "#/components/parameters/GroupMemberID"
       }
     },
     "schemas": {
@@ -8607,7 +8234,8 @@
         "type": "string",
         "enum": [
           "existing_user",
-          "new_user"
+          "new_user",
+          "instant_user"
         ]
       },
       "TeamMemberRole": {
@@ -8662,6 +8290,40 @@
               "default"
             ],
             "default": "default"
+          },
+          "allow_support_access": {
+            "type": "boolean",
+            "default": false
+          },
+          "team_id": {
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "AccountCreatePayload": {
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the account"
+          },
+          "role_set": {
+            "enum": [
+              "gov_v1",
+              "default"
+            ],
+            "default": "default"
+          },
+          "allow_support_access": {
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -9131,6 +8793,18 @@
                 ]
               }
             }
+          },
+          "custom_props": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "profile_storage_version": {
+            "type": "string",
+            "enum": [
+              "v1",
+              "v2",
+              "v2_migration"
+            ]
           }
         }
       },
@@ -9157,6 +8831,12 @@
               },
               "team_id": {
                 "type": "string"
+              },
+              "app_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -9204,7 +8884,7 @@
                   "type": "string",
                   "example": "near.create-named-account"
                 },
-                "connection_id": {
+                "connection": {
                   "type": "string"
                 }
               }
@@ -9451,6 +9131,16 @@
                   }
                 }
               },
+              "sign_in_failure_modal": {
+                "type": "object",
+                "description": "custom content for hub sign in failure modal",
+                "properties": {
+                  "failure_message": {
+                    "type": "string",
+                    "description": "custom message for hub sign in failure modal"
+                  }
+                }
+              },
               "no_account_message": {
                 "type": "object",
                 "description": "custom content for hub no account modal",
@@ -9459,6 +9149,18 @@
                     "type": "string",
                     "description": "custom title for hub no account modal"
                   }
+                }
+              }
+            },
+            "mobile": {
+              "type": "object",
+              "properties": {
+                "origins_to_show_in_bottom_sheet": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "List of origins that will appear within the bottom sheet vs. opening in the default browser."
                 }
               }
             }
@@ -9617,6 +9319,21 @@
                   "custom_closing_content": {
                     "type": "string",
                     "description": "custom closing text content added to the email"
+                  }
+                }
+              },
+              "instant_user": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "enable instant users"
+                  },
+                  "auto_delete_frequency": {
+                    "type": "string",
+                    "description": "frequency for when inactive instant users get deleted",
+                    "example": "30d",
+                    "pattern": "^(once|never|(\\d+|\\d+\\.\\d+) ?(hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y))$"
                   }
                 }
               },
@@ -9840,7 +9557,8 @@
                         "phase": "response",
                         "options": {
                           "mask_properties": [
-                            "client_secret"
+                            "client_secret",
+                            "private_key_jwk"
                           ]
                         }
                       },
@@ -9849,7 +9567,8 @@
                         "phase": "request",
                         "options": {
                           "encrypt_properties": [
-                            "client_secret"
+                            "client_secret",
+                            "private_key_jwk"
                           ]
                         }
                       }
@@ -9883,8 +9602,7 @@
                         "description": "The OAuth2 issuer URL (if using a non-default value)"
                       },
                       "display_name": {
-                        "type": "string",
-                        "readonly": true
+                        "type": "string"
                       },
                       "icon_light_url": {
                         "type": "string",
@@ -9901,6 +9619,41 @@
               "show_app_icon": {
                 "type": "boolean",
                 "default": false
+              },
+              "restrictions": {
+                "type": "object",
+                "properties": {
+                  "allowed_email_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "domain": {
+                          "type": "string"
+                        },
+                        "meta": {
+                          "type": "object",
+                          "additionalProperties": true
+                        }
+                      }
+                    }
+                  },
+                  "sign_up_status": {
+                    "enum": [
+                      "enabled",
+                      "disabled"
+                    ],
+                    "default": "enabled"
+                  }
+                }
+              },
+              "fingerprint": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
               },
               "preferred_method": {
                 "type": "string",
@@ -9980,6 +9733,15 @@
                     "type": "boolean"
                   }
                 }
+              },
+              "delete_account_button": {
+                "type": "object",
+                "description": "profile delete account button customization",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
               }
             }
           }
@@ -10019,6 +9781,17 @@
       },
       "AppExtensionsConfig": {
         "properties": {
+          "text_messaging": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "type": "string",
+                "default": "rownd",
+                "description": "Should be either \"rownd\" or \"connection:{ID}\" where ID is the ID of a connection attached to the application",
+                "example": "connection:cxn_fj4lsk5hj2g4i2903gj"
+              }
+            }
+          },
           "short_links": {
             "type": "object",
             "properties": {
@@ -10095,7 +9868,8 @@
               "customize_content",
               "register_passkey",
               "request_information",
-              "legal_opt_in"
+              "legal_opt_in",
+              "hide_content"
             ]
           },
           "name": {
@@ -10247,6 +10021,7 @@
               "EVENT",
               "MOBILE_EVENT",
               "TIME",
+              "TIME_ONCE",
               "POST_SIGN_IN"
             ]
           },
@@ -10277,7 +10052,9 @@
               "PROMPT_FOR_PASSKEY",
               "SIGN_OUT",
               "COLLECT_INFORMATION",
-              "LEGAL_OPT_IN"
+              "LEGAL_OPT_IN",
+              "OPEN_PROFILE",
+              "EDIT_ELEMENTS"
             ]
           },
           "args": {
@@ -10973,8 +10750,7 @@
             "type",
             "display_name",
             "data_category",
-            "owned_by",
-            "collection_justification"
+            "owned_by"
           ],
           "properties": {
             "display_name": {
@@ -11026,41 +10802,7 @@
               "type": "boolean",
               "default": true
             },
-            "revoke_after": {
-              "type": "string",
-              "enum": [
-                "1 hour",
-                "1 day",
-                "1 week",
-                "1 month",
-                "6 months",
-                "1 year",
-                "3 years",
-                "never"
-              ]
-            },
-            "required_retention": {
-              "type": "string",
-              "enum": [
-                "none",
-                "1 hour",
-                "1 day",
-                "1 week"
-              ]
-            },
             "example": {
-              "type": "string"
-            },
-            "collection_justification": {
-              "type": "string"
-            },
-            "opt_out_warning": {
-              "type": "string"
-            },
-            "third_party_sharing": {
-              "type": "boolean"
-            },
-            "third_party_explanation": {
               "type": "string"
             },
             "verified": {
@@ -11197,11 +10939,6 @@
               "$ref": "#/components/schemas/AppFormField"
             }
           },
-          "collection_justification": {
-            "description": "Collates all of the collection justifications across form fields",
-            "type": "string",
-            "readOnly": true
-          },
           "application": {
             "type": "string",
             "readOnly": true
@@ -11260,23 +10997,11 @@
           "placeholder": {
             "type": "string"
           },
-          "collection_justification": {
-            "type": "string",
-            "readOnly": true
-          },
           "required": {
             "type": "boolean",
             "readOnly": true
           },
           "type": {
-            "type": "string",
-            "readOnly": true
-          },
-          "required_retention": {
-            "type": "string",
-            "readOnly": true
-          },
-          "revoke_after": {
             "type": "string",
             "readOnly": true
           }
@@ -11370,30 +11095,6 @@
           }
         }
       },
-      "LoginStrategies": {
-        "properties": {
-          "total_results": {
-            "type": "number"
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "display_name": {
-                  "type": "string"
-                },
-                "login_url": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
       "AppUserAssociationRequest": {
         "properties": {
           "challenge_field": {
@@ -11420,71 +11121,6 @@
             "type": "string",
             "format": "uri",
             "readOnly": true
-          }
-        }
-      },
-      "AppUserACLs": {
-        "required": [
-          "acls"
-        ],
-        "properties": {
-          "acls": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object",
-              "properties": {
-                "shared": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
-          "user_id": {
-            "type": "string",
-            "readOnly": true
-          },
-          "last_modified": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true
-          }
-        }
-      },
-      "UserMFALink": {
-        "properties": {
-          "ticket_id": {
-            "type": "string"
-          },
-          "ticket_url": {
-            "type": "string",
-            "format": "uri"
-          }
-        }
-      },
-      "UserMFAStatus": {
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "pending",
-              "confirmed",
-              "disabled"
-            ]
-          },
-          "enrolled_at": {
-            "type": "string"
-          },
-          "last_auth": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "auth_method": {
-            "type": "string"
           }
         }
       },
@@ -11968,31 +11604,7 @@
             ]
           },
           "configuration_state": {
-            "type": "object",
-            "required": [
-              "state"
-            ],
-            "properties": {
-              "state": {
-                "type": "string",
-                "enum": [
-                  "created",
-                  "initializing",
-                  "destroying",
-                  "completed",
-                  "failed"
-                ]
-              },
-              "completed_steps": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "reason": {
-                "type": "string"
-              }
-            }
+            "$ref": "#/components/schemas/ConnectionConfigurationState"
           },
           "connection_url": {
             "type": "string",
@@ -12091,6 +11703,32 @@
             "items": {
               "$ref": "#/components/schemas/Connection"
             }
+          }
+        }
+      },
+      "ConnectionConfigurationState": {
+        "required": [
+          "state"
+        ],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "created",
+              "initializing",
+              "destroying",
+              "completed",
+              "failed"
+            ]
+          },
+          "completed_steps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reason": {
+            "type": "string"
           }
         }
       },
@@ -12203,6 +11841,38 @@
           }
         }
       },
+      "ConnectionCreateRequest": {
+        "required": [
+          "name",
+          "connector"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "connector": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "ConnectionUpdateRequest": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "configuration_state": {
+            "$ref": "#/components/schemas/ConnectionConfigurationState"
+          }
+        }
+      },
       "ConnectionAction": {
         "required": [
           "action_type"
@@ -12254,7 +11924,8 @@
                 "enum": [
                   "near.ensure-implicit-account",
                   "near.hub-config",
-                  "firebase-auth.get-firebase-token"
+                  "firebase-auth.get-firebase-token",
+                  "shopify.generate-multipass-token"
                 ]
               }
             }
@@ -12282,19 +11953,6 @@
                   }
                 },
                 "additionalProperties": false
-              }
-            }
-          },
-          {
-            "required": [
-              "action_type"
-            ],
-            "properties": {
-              "action_type": {
-                "type": "string",
-                "enum": [
-                  "near.hub-config"
-                ]
               }
             }
           },
@@ -12530,6 +12188,10 @@
           "last_sign_in": {
             "type": "string",
             "description": "Which method this account last used to sign in."
+          },
+          "redirect_url": {
+            "type": "string",
+            "description": "The original redirect URL"
           }
         }
       },
@@ -12611,21 +12273,6 @@
           }
         }
       },
-      "MyUserMeta": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "last_passkey_registration_prompt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "patternProperties": {
-          "^automation_.*$": {
-            "type": "string"
-          }
-        }
-      },
       "MyUserMetaBody": {
         "type": "object",
         "additionalProperties": false,
@@ -12643,229 +12290,6 @@
             "readOnly": true
           }
         }
-      },
-      "MobileAppPage": {
-        "required": [
-          "id",
-          "name",
-          "platform",
-          "version_id",
-          "view_hierarchy",
-          "app_id",
-          "created_at",
-          "created_by"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "platform": {
-            "type": "string",
-            "enum": [
-              "android",
-              "ios"
-            ]
-          },
-          "version_id": {
-            "type": "string"
-          },
-          "version_name": {
-            "type": "string"
-          },
-          "view_hierarchy": {
-            "$ref": "#/components/schemas/MobileAppPageViewHierarchy"
-          },
-          "screenshot_url": {
-            "type": "string",
-            "format": "uri",
-            "readOnly": true,
-            "x-rownd-modifiers": [
-              {
-                "name": "rewriteAssetUrl",
-                "phase": "response"
-              }
-            ]
-          },
-          "app_id": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "created_by": {
-            "type": "string"
-          }
-        }
-      },
-      "MobileAppPageList": {
-        "properties": {
-          "total_results": {
-            "type": "integer"
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MobileAppPage"
-            }
-          }
-        }
-      },
-      "MobileAppPageViewHierarchy": {
-        "properties": {
-          "item": {
-            "type": "string"
-          },
-          "children": {
-            "type": "object",
-            "additionalProperties": true
-          },
-          "depth": {
-            "type": "number"
-          },
-          "frame": {
-            "type": "object",
-            "required": [
-              "frame",
-              "x",
-              "y",
-              "width",
-              "height"
-            ],
-            "properties": {
-              "frame": {
-                "type": "string"
-              },
-              "x": {
-                "type": "number"
-              },
-              "y": {
-                "type": "number"
-              },
-              "width": {
-                "type": "number"
-              },
-              "height": {
-                "type": "number"
-              }
-            }
-          },
-          "name": {
-            "type": "string"
-          },
-          "layer": {
-            "type": "string"
-          }
-        }
-      },
-      "MobileAppPageCreateRequest": {
-        "required": [
-          "name",
-          "platform",
-          "view_hierarchy_string_base64",
-          "screenshot_base64",
-          "screenshot_mime_type"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "platform": {
-            "type": "string",
-            "enum": [
-              "android",
-              "ios"
-            ]
-          },
-          "version_id": {
-            "type": "string"
-          },
-          "version_name": {
-            "type": "string"
-          },
-          "view_hierarchy_string_base64": {
-            "type": "string"
-          },
-          "screenshot_base64": {
-            "type": "string"
-          },
-          "screenshot_mime_type": {
-            "type": "string"
-          }
-        }
-      },
-      "MobileAppPageUpdateRequest": {
-        "$ref": "#/components/schemas/MobileAppPage"
-      },
-      "MobileAppVersion": {
-        "required": [
-          "id",
-          "name",
-          "platform",
-          "app_id",
-          "created_at",
-          "created_by"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "platform": {
-            "type": "string",
-            "enum": [
-              "android",
-              "ios"
-            ]
-          },
-          "app_id": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "created_by": {
-            "type": "string"
-          }
-        }
-      },
-      "MobileAppVersionList": {
-        "properties": {
-          "total_results": {
-            "type": "integer"
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MobileAppVersion"
-            }
-          }
-        }
-      },
-      "MobileAppVersionCreateRequest": {
-        "required": [
-          "name",
-          "platform"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "platform": {
-            "type": "string",
-            "enum": [
-              "android",
-              "ios"
-            ]
-          }
-        }
-      },
-      "MobileAppVersionUpdateRequest": {
-        "$ref": "#/components/schemas/MobileAppVersion"
       },
       "OAuth2ProviderDefinition": {
         "type": "object",
@@ -12887,6 +12311,36 @@
             "format": "json_schema",
             "additionalProperties": true
           }
+        }
+      },
+      "AppUserDataState": {
+        "readOnly": true,
+        "type": "string",
+        "enum": [
+          "enabled",
+          "disabled"
+        ],
+        "description": "The user's state",
+        "default": "enabled"
+      },
+      "AppUserDataData": {
+        "description": "User profile data",
+        "additionalProperties": true,
+        "x-rownd-modifiers": [
+          {
+            "name": "generateUserDataObjectUrls",
+            "phase": "response"
+          },
+          {
+            "name": "maskEncryptedValues",
+            "phase": "response"
+          }
+        ],
+        "example": {
+          "user_id": "user_a7b53gwdaml5jt7t71442nt7",
+          "email": "gary@foo.com",
+          "first_name": "Gary",
+          "last_name": "Jackson"
         }
       },
       "Group": {
@@ -12925,6 +12379,11 @@
             "default": "invite_only",
             "example": "invite_only"
           },
+          "meta": {
+            "description": "An object containing additional metadata for the group",
+            "additionalProperties": true,
+            "nullable": true
+          },
           "created_at": {
             "$ref": "#/components/schemas/CreatedAt"
           },
@@ -12939,18 +12398,14 @@
           }
         }
       },
-      "GroupList": {
-        "properties": {
-          "total_results": {
-            "type": "integer"
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Group"
-            }
-          }
-        }
+      "GroupMemberState": {
+        "type": "string",
+        "enum": [
+          "active",
+          "invite_pending",
+          "invite_rejected"
+        ],
+        "description": "The state of the group member. A member that has been invited will not go into the `active`\nstate until they accept the invitation.\n"
       },
       "GroupMember": {
         "required": [
@@ -13005,6 +12460,423 @@
           }
         }
       },
+      "UserGroup": {
+        "required": [
+          "group",
+          "member"
+        ],
+        "properties": {
+          "group": {
+            "$ref": "#/components/schemas/Group",
+            "description": "The group"
+          },
+          "member": {
+            "$ref": "#/components/schemas/GroupMember",
+            "description": "The group member"
+          }
+        }
+      },
+      "MyUserMeta": {
+        "additionalProperties": false,
+        "properties": {
+          "last_passkey_registration_prompt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "patternProperties": {
+          "^automation_.*$": {
+            "type": "string"
+          }
+        }
+      },
+      "AppUserDataConnectionMap": {
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "connection_record_id": {
+              "type": "string"
+            },
+            "fields": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "in_sync": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AppUserData": {
+        "properties": {
+          "rownd_user": {
+            "readOnly": true,
+            "type": "string",
+            "description": "The user's ID",
+            "example": "user_a7b53gwdaml5jt7t71442nt7"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AppUserDataState"
+          },
+          "auth_level": {
+            "readOnly": true,
+            "type": "string",
+            "description": "The user's authentication level",
+            "example": "verified"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AppUserDataData"
+          },
+          "verified_data": {
+            "readOnly": true,
+            "type": "object",
+            "additionalProperties": true,
+            "description": "User profile data that has been verified",
+            "example": {
+              "email": "gary@foo.com",
+              "phone_number": "+19199993333"
+            }
+          },
+          "groups": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserGroup"
+            },
+            "description": "Groups in which the user is a member"
+          },
+          "meta": {
+            "readOnly": true,
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "created": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "modified": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "first_sign_in": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "first_sign_in_method": {
+                    "type": "string"
+                  },
+                  "last_sign_in": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "last_sign_in_method": {
+                    "type": "string"
+                  },
+                  "last_active": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              },
+              {
+                "$ref": "#/components/schemas/MyUserMeta"
+              }
+            ]
+          },
+          "connection_map": {
+            "readOnly": true,
+            "$ref": "#/components/schemas/AppUserDataConnectionMap"
+          }
+        }
+      },
+      "AppUserDataList": {
+        "properties": {
+          "total_results": {
+            "type": "number",
+            "readOnly": true,
+            "description": "The number of results"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppUserData"
+            },
+            "description": "The list of user profiles"
+          }
+        }
+      },
+      "UserUpsertError": {
+        "properties": {
+          "statusCode": {
+            "type": "number"
+          },
+          "error": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "example": "E_USER_UPDATE_FAILED"
+          },
+          "message": {
+            "type": "string"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "field_errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "AppUserStateUpdateRequest": {
+        "required": [
+          "state"
+        ],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled"
+            ]
+          }
+        }
+      },
+      "MobileAppPageCapture": {
+        "properties": {
+          "id": {
+            "readOnly": true,
+            "type": "string",
+            "description": "The page capture ID",
+            "example": "capture_r6ohcga3lvkf6hgk9sq1j5qd"
+          },
+          "page_id": {
+            "type": "string",
+            "description": "The page ID",
+            "example": "page_t0ubtyix1f3dx985tvjk6ibe"
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "android",
+              "ios"
+            ],
+            "description": "The platform on which the capture was created",
+            "example": "android"
+          },
+          "screenshot_url": {
+            "readOnly": true,
+            "type": "string",
+            "format": "uri",
+            "x-rownd-modifiers": [
+              {
+                "name": "rewriteAssetUrl",
+                "phase": "response"
+              }
+            ],
+            "description": "The absolute URL of the page screenshot resource",
+            "example": "https://storage.rownd.io/account1/screenshot-abc.png"
+          },
+          "screenshot_height": {
+            "type": "number",
+            "description": "The height of the screenshot in pixels",
+            "example": 1920
+          },
+          "screenshot_width": {
+            "type": "number",
+            "description": "The width of the screenshot in pixels",
+            "example": 760
+          },
+          "screen_structure": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "The view hierarchy and metadata of the app on the specific page"
+          },
+          "rule_set": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "The set of rules that when evaluated to `true` uniquely identify the page. This\nruleset is evaluated against the `screen_structure`.\n"
+          },
+          "captured_on_app_version": {
+            "type": "string",
+            "description": "The release version of the app"
+          },
+          "captured_on_sdk_version": {
+            "type": "string",
+            "description": "The Rownd mobile SDK version"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Metadata associated with the page capture"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "created_by": {
+            "$ref": "#/components/schemas/CreatedBy"
+          },
+          "app_id": {
+            "type": "string",
+            "description": "The Rownd app ID",
+            "example": null
+          }
+        }
+      },
+      "MobileAppPage": {
+        "properties": {
+          "id": {
+            "readOnly": true,
+            "type": "string",
+            "description": "The page ID",
+            "example": "page_t0ubtyix1f3dx985tvjk6ibe"
+          },
+          "name": {
+            "type": "string",
+            "description": "The page name",
+            "example": "My Page"
+          },
+          "app_id": {
+            "readOnly": true,
+            "type": "string",
+            "description": "The Rownd app ID",
+            "example": null
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "created_by": {
+            "$ref": "#/components/schemas/CreatedBy"
+          },
+          "captures": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MobileAppPageCapture"
+            }
+          }
+        }
+      },
+      "MobileAppPageList": {
+        "properties": {
+          "total_results": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MobileAppPage"
+            }
+          }
+        }
+      },
+      "MobileAppPageCreateRequest": {
+        "required": [
+          "name"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MobileAppPage"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {}
+            }
+          }
+        ]
+      },
+      "MobileAppPageCaptureList": {
+        "properties": {
+          "total_results": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MobileAppPageCapture"
+            }
+          }
+        }
+      },
+      "MobileAppPageCaptureCreateRequest": {
+        "required": [
+          "platform",
+          "screenshot_height",
+          "screenshot_width",
+          "screen_structure",
+          "screenshot_base64",
+          "screenshot_mime_type",
+          "captured_on_app_version",
+          "captured_on_sdk_version"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MobileAppPageCapture"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "platform": {},
+              "screenshot_height": {},
+              "screenshot_width": {},
+              "screen_structure": {},
+              "rule_set": {},
+              "captured_on_app_version": {},
+              "captured_on_sdk_version": {},
+              "screenshot_base64": {
+                "type": "string",
+                "description": "The screenshot binary content encoded in base64"
+              },
+              "screenshot_mime_type": {
+                "type": "string",
+                "description": "The screenshot MIME type",
+                "example": "image/png"
+              }
+            }
+          }
+        ]
+      },
+      "MobileAppPageCaptureUpdateRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MobileAppPageCapture"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "rule_set": {}
+            }
+          }
+        ]
+      },
+      "GroupList": {
+        "properties": {
+          "total_results": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Group"
+            }
+          }
+        }
+      },
       "GroupMemberList": {
         "properties": {
           "total_results": {
@@ -13016,35 +12888,6 @@
               "$ref": "#/components/schemas/GroupMember"
             }
           }
-        }
-      },
-      "GroupMemberState": {
-        "type": "string",
-        "enum": [
-          "active",
-          "invite_pending",
-          "invite_rejected"
-        ],
-        "description": "The state of the group member. A member that has been invited will not go into the `active`\nstate until they accept the invitation.\n"
-      },
-      "AppUserDataData": {
-        "description": "User profile data",
-        "additionalProperties": true,
-        "x-rownd-modifiers": [
-          {
-            "name": "generateUserDataObjectUrls",
-            "phase": "response"
-          },
-          {
-            "name": "maskEncryptedValues",
-            "phase": "response"
-          }
-        ],
-        "example": {
-          "user_id": "user_a7b53gwdaml5jt7t71442nt7",
-          "email": "gary@foo.com",
-          "first_name": "Gary",
-          "last_name": "Jackson"
         }
       },
       "GroupInvite": {
@@ -13146,22 +12989,6 @@
           }
         }
       },
-      "UserGroup": {
-        "required": [
-          "group",
-          "member"
-        ],
-        "properties": {
-          "group": {
-            "$ref": "#/components/schemas/Group",
-            "description": "The group"
-          },
-          "member": {
-            "$ref": "#/components/schemas/GroupMember",
-            "description": "The group member"
-          }
-        }
-      },
       "UserGroupList": {
         "properties": {
           "total_results": {
@@ -13172,6 +12999,116 @@
             "items": {
               "$ref": "#/components/schemas/UserGroup"
             }
+          }
+        }
+      },
+      "group": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AppID"
+          },
+          {
+            "$ref": "#/components/parameters/GroupID"
+          }
+        ],
+        "get": {
+          "operationId": "application_group_get",
+          "description": "Platform API for retrieving a group",
+          "tags": [
+            "groups"
+          ],
+          "security": [
+            {
+              "appKey": [],
+              "appSecret": []
+            },
+            {
+              "hubAccessTokenForRowndApi": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Group created successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Group"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "operationId": "application_group_update",
+          "description": "Platform API for updating a group",
+          "tags": [
+            "groups"
+          ],
+          "security": [
+            {
+              "appKey": [],
+              "appSecret": []
+            },
+            {
+              "hubAccessTokenForRowndApi": []
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Group"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Group created successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Group"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "operationId": "application_group_delete",
+          "description": "Platform API for deleting a group",
+          "tags": [
+            "groups"
+          ],
+          "security": [
+            {
+              "appKey": [],
+              "appSecret": []
+            },
+            {
+              "hubAccessTokenForRowndApi": []
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Group deleted successfully"
+            }
+          }
+        }
+      },
+      "MagicLinkCreateResponse": {
+        "properties": {
+          "link": {
+            "type": "string",
+            "description": "The magic link URL",
+            "example": "https://rownd.link/c8fLG0a"
+          },
+          "app_user_id": {
+            "type": "string",
+            "description": "The user ID specified during creation or the resolved user ID if one of the directives\nwas specified (e.g. `'__default__'`)\n",
+            "example": "user_fmpsrdqfcqzyicf3msor42e8"
           }
         }
       },
@@ -13214,183 +13151,8 @@
         },
         "additionalProperties": true
       },
-      "MagicLinkCreateResponse": {
-        "properties": {
-          "link": {
-            "type": "string",
-            "description": "The magic link URL",
-            "example": "https://rownd.link/c8fLG0a"
-          },
-          "app_user_id": {
-            "type": "string",
-            "description": "The user ID specified during creation or the resolved user ID if one of the directives\nwas specified (e.g. `'__default__'`)\n",
-            "example": "user_fmpsrdqfcqzyicf3msor42e8"
-          }
-        }
-      },
-      "AppUserDataConnectionMap": {
-        "additionalProperties": {
-          "type": "object",
-          "properties": {
-            "connection_record_id": {
-              "type": "string"
-            },
-            "fields": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "object",
-                "properties": {
-                  "in_sync": {
-                    "type": "boolean"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "AppUserData": {
-        "properties": {
-          "rownd_user": {
-            "readOnly": true,
-            "type": "string",
-            "description": "The user's ID",
-            "example": "user_a7b53gwdaml5jt7t71442nt7"
-          },
-          "data": {
-            "$ref": "#/components/schemas/AppUserDataData"
-          },
-          "verified_data": {
-            "readOnly": true,
-            "type": "object",
-            "additionalProperties": true,
-            "description": "User profile data that has been verified",
-            "example": {
-              "email": "gary@foo.com",
-              "phone_number": "+19199993333"
-            }
-          },
-          "groups": {
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserGroup"
-            },
-            "description": "Groups in which the user is a member"
-          },
-          "meta": {
-            "readOnly": true,
-            "allOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "created": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "modified": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "first_sign_in": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "first_sign_in_method": {
-                    "type": "string"
-                  },
-                  "last_sign_in": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "last_sign_in_method": {
-                    "type": "string"
-                  },
-                  "last_active": {
-                    "type": "string",
-                    "format": "date-time"
-                  }
-                }
-              },
-              {
-                "$ref": "#/components/schemas/MyUserMeta"
-              }
-            ]
-          },
-          "connection_map": {
-            "readOnly": true,
-            "$ref": "#/components/schemas/AppUserDataConnectionMap"
-          },
-          "redacted": {
-            "readOnly": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "revoke_after": {
-            "readOnly": true,
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "retain_until": {
-            "readOnly": true,
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "UserUpsertError": {
-        "properties": {
-          "statusCode": {
-            "type": "number"
-          },
-          "error": {
-            "type": "string"
-          },
-          "code": {
-            "type": "string",
-            "example": "E_USER_UPDATE_FAILED"
-          },
-          "message": {
-            "type": "string"
-          },
-          "messages": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "field_errors": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "AppUserDataList": {
-        "properties": {
-          "total_results": {
-            "type": "number",
-            "readOnly": true,
-            "description": "The number of results"
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AppUserData"
-            },
-            "description": "The list of user profiles"
-          }
-        }
+      "MobileAppPageUpdateRequest": {
+        "$ref": "#/components/schemas/MobileAppPage"
       }
     }
   }
