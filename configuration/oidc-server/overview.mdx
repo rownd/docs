@@ -5,7 +5,111 @@ sidebarTitle: "OIDC Server"
 
 # Setting Up Rownd's OIDC Server
 
-Rownd provides OpenID Connect (OIDC) server capabilities that allow you to use Rownd as an identity provider for your applications. This guide explains how to set up and configure the OIDC server.
+## Table of Contents
+1. [Setup Methods](#setup-methods)
+   - [Using the Rownd Platform](#using-the-rownd-platform)
+   - [Using the API](#using-the-api)
+2. [Configuration Options](#configuration-options)
+3. [OIDC Configuration Discovery](#oidc-configuration-discovery)
+4. [OIDC Endpoints](#oidc-endpoints)
+5. [Response Format](#response-format)
+
+## Setup Methods
+
+### Using the Rownd Platform
+
+You can set up an OIDC client directly through the Rownd platform at app.rownd.io:
+
+1. Navigate to your application settings
+2. Select "OIDC Configuration" from the menu
+3. Click "Create New OIDC Client"
+4. Fill out the configuration form:
+
+#### Required Fields
+- **Name**: A display name for your OIDC client (required)
+- **Allowed Origins**: The domains that are allowed to make requests to the OIDC server (required). You can add more than one. 
+  - Example: `https://example.com`
+- **Redirect URIs**: Where users will be redirected after authentication (required). You can add more than one.
+  - Example: `https://example.com/callback`
+
+#### Optional Fields
+- **Description**: A brief description of your OIDC client
+- **Post Logout URIs**: Where users will be redirected after logging out
+  - Example: `https://example.com/logout`
+- **Logo URI**: URL to your logo image for light mode
+- **Dark Mode Logo URI**: URL to your logo image for dark mode
+
+<Note>
+Make sure to save your client credentials (client_id and secret) after creation, as the secret cannot be retrieved later.
+</Note>
+
+### Using the API
+
+To create or update an OIDC client configuration via the API, you'll need your Rownd application credentials.
+
+#### Required Headers
+| Header | Description |
+|--------|-------------|
+| `x-rownd-app-key` | Your Rownd application key |
+| `x-rownd-app-secret` | Your Rownd application secret |
+
+#### API Endpoints
+- Create: `POST https://api.rownd.io/applications/{app-id}/oidc-clients`
+- Update: `PUT https://api.rownd.io/applications/{app-id}/oidc-clients/{client-id}`
+
+#### cURL Example
+
+```bash
+# Create new OIDC client
+curl -X POST 'https://api.rownd.io/applications/{app-id}/oidc-clients' \
+-H 'x-rownd-app-key: YOUR_APP_KEY' \
+-H 'x-rownd-app-secret: YOUR_APP_SECRET' \
+-H 'Content-Type: application/json' \
+-d '{
+  "name": "Example OIDC Provider",
+  "description": "Example OIDC Provider",
+  "config": {
+    "allowed_origins": [
+      "https://example.com"
+    ],
+    "redirect_uris": [
+      "https://example.com/callback"
+    ],
+    "post_logout_uris": [
+      "https://example.com/logout"
+    ],
+    "logo_uri": "https://storage.rownd.io/logo-example.png",
+    "logo_dark_mode_uri": "https://storage.rownd.io/logo-dark-example.png"
+  }
+}'
+
+# Update existing OIDC client
+curl -X PUT 'https://api.rownd.io/applications/{app-id}/oidc-clients/{client-id}' \
+-H 'x-rownd-app-key: YOUR_APP_KEY' \
+-H 'x-rownd-app-secret: YOUR_APP_SECRET' \
+-H 'Content-Type: application/json' \
+-d '{
+  "name": "Updated OIDC Provider",
+  "description": "Updated OIDC Provider",
+  "config": {
+    "allowed_origins": [
+      "https://example.com"
+    ],
+    "redirect_uris": [
+      "https://example.com/callback"
+    ],
+    "post_logout_uris": [
+      "https://example.com/logout"
+    ],
+    "logo_uri": "https://storage.rownd.io/logo-example.png",
+    "logo_dark_mode_uri": "https://storage.rownd.io/logo-dark-example.png"
+  }
+}'
+```
+
+<Note>
+Replace `YOUR_APP_KEY`, `YOUR_APP_SECRET`, and `{app-id}` with your actual Rownd application credentials and ID. For the update request, also replace `{client-id}` with your OIDC client ID.
+</Note>
 
 ## Configuration
 
@@ -117,6 +221,27 @@ Both POST and PUT requests will return a response with the following structure:
 Store the `client_id` and `secret` securely as they will be needed for all subsequent OIDC operations.
 </Note>
 
+## OIDC Configuration Discovery
+
+Rownd provides a standard OpenID Configuration discovery endpoint that returns a complete list of OIDC specifications and endpoints for your application.
+
+### Discovery Endpoint
+
+```http
+GET api.rownd.io/oidc/{app_id}/.well-known/openid-configuration
+```
+
+Replace `{app_id}` with your Rownd application ID to get the complete OIDC configuration for your app. For example:
+```
+https://api.rownd.io/oidc/app_wj43asd4ywn790plclbhux6a/.well-known/openid-configuration
+```
+
+This endpoint returns a JSON document containing all supported OIDC features, endpoints, and capabilities of your Rownd OIDC server, following the OpenID Connect Discovery specification.
+
+<Note>
+The discovery endpoint is publicly accessible and does not require authentication. It's commonly used by OIDC clients to automatically configure themselves.
+</Note>
+
 ## OIDC Endpoints
 
 Rownd provides three main OIDC endpoints, all accessible at `https://api.rownd.io/oidc/{app-id}/`:
@@ -201,3 +326,58 @@ async function exchangeCode(code) {
 5. Implement proper error handling for all OIDC endpoints
 
 Need help? Contact our [support team](mailto:support@rownd.io) for assistance with your OIDC implementation.
+
+### Uploading OIDC Client Logos
+
+You can upload custom logos for your OIDC client that will be displayed in light and dark modes. Logos can be uploaded using the following API endpoint.
+
+#### Logo Upload Endpoint
+
+```http
+PUT /application/{app-id}/oidc_clients/{client-id}/logo/{type}
+```
+
+#### Parameters
+| Parameter | Description |
+|-----------|-------------|
+| `app` | Your Rownd application ID |
+| `client` | Your OIDC client ID |
+| `type` | Either 'light' or 'dark' for the respective display modes |
+
+#### Required Headers
+| Header | Description |
+|--------|-------------|
+| `x-rownd-app-key` | Your Rownd application key |
+| `x-rownd-app-secret` | Your Rownd application secret |
+| `x-rownd-filename` | The filename of your logo |
+
+<Note>
+Only PNG and SVG file formats are supported for logo uploads.
+</Note>
+
+#### cURL Example
+
+```bash
+# Upload light mode logo
+curl -X PUT 'https://api.rownd.io/application/{app-id}/oidc_clients/{client-id}/logo/light' \
+-H 'x-rownd-app-key: YOUR_APP_KEY' \
+-H 'x-rownd-app-secret: YOUR_APP_SECRET' \
+-H 'x-rownd-filename: logo.png' \
+-H 'Content-Type: image/png' \
+--data-binary '@/path/to/your/logo.png'
+
+# Upload dark mode logo
+curl -X PUT 'https://api.rownd.io/application/{app-id}/oidc_clients/{client-id}/logo/dark' \
+-H 'x-rownd-app-key: YOUR_APP_KEY' \
+-H 'x-rownd-app-secret: YOUR_APP_SECRET' \
+-H 'x-rownd-filename: logo-dark.svg' \
+-H 'Content-Type: image/svg+xml' \
+--data-binary '@/path/to/your/logo-dark.svg'
+```
+
+<Warning>
+Ensure your logo files meet the following requirements:
+- File format: PNG or SVG only
+- Recommended dimensions: At least 512x512 pixels for optimal display
+- File size: Keep files under 5MB for best performance
+</Warning>
