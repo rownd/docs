@@ -316,6 +316,17 @@
             "api-reference/groups/platform/members/member-delete",
             "api-reference/groups/platform/members/member-list"
           ]
+        },
+        {
+          "group": "OpenID Clients",
+          "icon": "openid",
+          "pages": [
+            "api-reference/oidc/clients/list",
+            "api-reference/oidc/clients/create",
+            "api-reference/oidc/clients/read",
+            "api-reference/oidc/clients/update",
+            "api-reference/oidc/clients/delete"
+          ]
         }
       ]
     },
