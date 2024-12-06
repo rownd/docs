@@ -2316,6 +2316,24 @@
       }
     },
     "/applications/{app}/automations/{automation}": {
+      "parameters": [
+        {
+          "name": "app",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        },
+        {
+          "name": "automation",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
       "get": {
         "operationId": "application_automation_get",
         "description": "Get a specific automation",
@@ -3832,6 +3850,236 @@
                       "$ref": "#/components/schemas/group"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applications/{app}/oidc-clients": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AppID"
+        },
+        {
+          "$ref": "#/components/parameters/PageSizeMax1000"
+        },
+        {
+          "$ref": "#/components/parameters/After"
+        },
+        {
+          "$ref": "#/components/parameters/Sort"
+        }
+      ],
+      "get": {
+        "operationId": "application_oidc_clients_list",
+        "description": "Platform API for retrieving OIDC clients for an application",
+        "tags": [
+          "oidc"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OIDC clients retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OIDCClientList"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "application_oidc_client_create",
+        "description": "Platform API for creating an OIDC client for an application",
+        "tags": [
+          "oidc"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OIDCClientCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OIDC client created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OIDCClient"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applications/{app}/oidc-clients/{client}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AppID"
+        },
+        {
+          "$ref": "#/components/parameters/OIDCClientID"
+        }
+      ],
+      "get": {
+        "operationId": "application_oidc_client_get",
+        "description": "Platform API for retrieving an OIDC client for an application",
+        "tags": [
+          "oidc"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OIDC client retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OIDCClient"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "application_oidc_client_update",
+        "description": "Platform API for updating an OIDC client for an application",
+        "tags": [
+          "oidc"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OIDCClientUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OIDC client updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OIDCClient"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "application_oidc_client_delete",
+        "description": "Platform API for deleting an OIDC client for an application",
+        "tags": [
+          "oidc"
+        ],
+        "responses": {
+          "204": {
+            "description": "OIDC client deleted successfully"
+          }
+        }
+      }
+    },
+    "/applications/{app}/oidc-clients/{client}/logo/{type}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AppID"
+        },
+        {
+          "$ref": "#/components/parameters/OIDCClientID"
+        },
+        {
+          "$ref": "#/components/parameters/FileName"
+        },
+        {
+          "$ref": "#/components/parameters/OIDCClientLogoType"
+        }
+      ],
+      "put": {
+        "operationId": "application_oidc_client_logo_update",
+        "description": "Platform API for updating the logo for an OIDC client",
+        "tags": [
+          "oidc"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "image/png": {
+              "schema": {
+                "type": "object",
+                "format": "binary"
+              }
+            },
+            "image/svg": {
+              "schema": {
+                "type": "object",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OIDC client logo updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OIDCClient"
                 }
               }
             }
@@ -6155,8 +6403,7 @@
                     "enum": [
                       "auth",
                       "shorten"
-                    ],
-                    "description": "Determines whether this link will identify a user and allow them to sign in\nautomatically or whether it will just act as a simple redirect. An `auth`\nlink should only be sent to a single user, whereas a `shorten` link can\nbe sent to many users if desired, since it does not carry an authentication\npayload.\n"
+                    ]
                   },
                   "verification_type": {
                     "type": "string",
@@ -6169,7 +6416,7 @@
                   "data": {
                     "type": "object",
                     "additionalProperties": true,
-                    "description": "Data to add to the user's profile. These properties must exist in the Profile Data\nportion of the Rownd application. If properties such as email, phone, etc identify\nan existing user, the user will be auto-matched regardless of the user_id value.\n",
+                    "description": "Data to add to the user's profile",
                     "example": {
                       "email": "gary@foo.com",
                       "first_name": "Gary"
@@ -6177,7 +6424,7 @@
                   },
                   "redirect_url": {
                     "type": "string",
-                    "description": "The absolute URL or relative path to send your user after sign-in. If the URL is\nrelative, it will be appended to your application's default redirect URL as defined\nin your Rownd application settings. If no default redirect is set, the magic link\ncreation will fail.\n",
+                    "description": "The absolute URL or relative path to send your user after sign-in",
                     "example": "/somewhere/in/my/app#"
                   },
                   "user_id": {
@@ -6187,13 +6434,13 @@
                   },
                   "expiration": {
                     "type": "string",
-                    "description": "A human-readable string representing the duration for which a magic link is valid.\nExamples of valid values include `1h`, `2d`, `3w`, `1m`, etc. May not exceed `30d`.\nDefaults to `30d`.",
-                    "example": "30d",
+                    "description": "A string representing the duration for which a magic link is valid.",
+                    "example": "90d",
                     "pattern": "^(\\d+|\\d+\\.\\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)$"
                   },
                   "group_to_join": {
                     "type": "string",
-                    "description": "The ID of a group which the user will auto-join upon completing sign-in. The group\nmust have an `'open'` admission policy.\n"
+                    "description": "ID of a group to which the user will join upon completing sign-in. The group\nmust have an admission policy of `'open'`.`\n"
                   }
                 }
               }
@@ -8107,7 +8354,7 @@
         "description": "Page ID"
       },
       "MobileAppPageCaptureID": {
-        "name": "version",
+        "name": "capture",
         "in": "path",
         "schema": {
           "type": "string"
@@ -8150,11 +8397,45 @@
         "required": true,
         "description": "Group Invite ID"
       },
+      "OIDCClientID": {
+        "name": "client",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "OIDC Client ID"
+      },
+      "FileName": {
+        "name": "x-rownd-filename",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "The filename of the image to be uploaded"
+      },
+      "OIDCClientLogoType": {
+        "name": "type",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark"
+          ]
+        },
+        "description": "The type of logo to be uploaded"
+      },
       "InviteID": {
         "$ref": "#/components/parameters/GroupInviteID"
       },
       "MemberID": {
         "$ref": "#/components/parameters/GroupMemberID"
+      },
+      "LogoType": {
+        "$ref": "#/components/parameters/OIDCClientLogoType"
       }
     },
     "schemas": {
@@ -9837,7 +10118,8 @@
         "required": [
           "rules",
           "triggers",
-          "actions"
+          "actions",
+          "template"
         ],
         "additionalProperties": false,
         "properties": {
@@ -9856,6 +10138,25 @@
               "web"
             ],
             "default": "web"
+          },
+          "platforms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "android",
+                    "ios",
+                    "web"
+                  ]
+                },
+                "enabled": {
+                  "type": "boolean"
+                }
+              }
+            }
           },
           "template": {
             "type": "string",
@@ -9919,6 +10220,41 @@
             "items": {
               "type": "object",
               "$ref": "#/components/schemas/AutomationAction"
+            }
+          },
+          "scenarios": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "event",
+                    "scope"
+                  ]
+                },
+                "rules": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/AutomationOrRule"
+                      },
+                      {
+                        "$ref": "#/components/schemas/AutomationRule"
+                      }
+                    ]
+                  }
+                },
+                "triggers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/AutomationTrigger"
+                  }
+                }
+              }
             }
           },
           "order": {
@@ -10504,79 +10840,11 @@
           }
         }
       },
-      "ApplicationCredential": {
-        "required": [
-          "name"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "client_id": {
-            "type": "string",
-            "readOnly": true
-          },
-          "secret": {
-            "type": "string",
-            "readOnly": true
-          },
-          "expires": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "form": {
-            "type": "string",
-            "description": "ID of the applicable form"
-          },
-          "form_url": {
-            "type": "string",
-            "readOnly": true
-          },
-          "application": {
-            "type": "string",
-            "readOnly": true
-          },
-          "application_url": {
-            "type": "string",
-            "readOnly": true
-          },
-          "app_variant_id": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string",
-            "readOnly": true
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "readOnly": true
-          }
-        }
-      },
       "ApplicationUpdatedBy": {
         "properties": {
           "updated_by": {
             "type": "string",
             "description": "User identifier who last updated the application"
-          }
-        }
-      },
-      "ApplicationCredentialList": {
-        "properties": {
-          "total_results": {
-            "type": "integer"
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ApplicationCredential"
-            }
           }
         }
       },
@@ -11925,7 +12193,8 @@
                   "near.ensure-implicit-account",
                   "near.hub-config",
                   "firebase-auth.get-firebase-token",
-                  "shopify.generate-multipass-token"
+                  "shopify.generate-multipass-token",
+                  "squadup.list-tickets"
                 ]
               }
             }
@@ -12313,6 +12582,69 @@
           }
         }
       },
+      "ApplicationCredential": {
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the application credential",
+            "example": "Production API Key"
+          },
+          "client_id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Unique identifier for the credential"
+          },
+          "secret": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Secret key used for authentication"
+          },
+          "expires": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Expiration date and time of the credential",
+            "example": "2024-12-31T23:59:59Z"
+          },
+          "application": {
+            "type": "string",
+            "readOnly": true,
+            "description": "ID of the application this credential belongs to",
+            "example": "app_k3y1qwerty12345"
+          },
+          "app_variant_id": {
+            "type": "string",
+            "description": "ID of the application variant",
+            "example": "variant_fgy1qw367fty121lm"
+          },
+          "oidc_client_configuration_id": {
+            "type": "string",
+            "description": "ID of the OIDC client configuration",
+            "example": "oidcc_k3y1qwerty12345"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          }
+        }
+      },
+      "ApplicationCredentialList": {
+        "properties": {
+          "total_results": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationCredential"
+            }
+          }
+        }
+      },
       "AppUserDataState": {
         "readOnly": true,
         "type": "string",
@@ -12673,7 +13005,8 @@
             "type": "string",
             "enum": [
               "android",
-              "ios"
+              "ios",
+              "web"
             ],
             "description": "The platform on which the capture was created",
             "example": "android"
@@ -12815,14 +13148,7 @@
       },
       "MobileAppPageCaptureCreateRequest": {
         "required": [
-          "platform",
-          "screenshot_height",
-          "screenshot_width",
-          "screen_structure",
-          "screenshot_base64",
-          "screenshot_mime_type",
-          "captured_on_app_version",
-          "captured_on_sdk_version"
+          "platform"
         ],
         "allOf": [
           {
@@ -13095,6 +13421,185 @@
             "204": {
               "description": "Group deleted successfully"
             }
+          }
+        }
+      },
+      "OIDCClientConfigurationConfig": {
+        "additionalProperties": true,
+        "properties": {
+          "allowed_origins": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Allowed origins for the OIDC client",
+            "example": [
+              "https://example.com"
+            ]
+          },
+          "redirect_uris": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Redirect URIs supported by the OIDC client",
+            "example": [
+              "https://example.com/callback"
+            ]
+          },
+          "post_logout_uris": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Post logout URIs for the OIDC client",
+            "example": [
+              "https://example.com/logout"
+            ]
+          },
+          "logo_uri": {
+            "type": "string",
+            "description": "URI of the logo for the OIDC client",
+            "example": "https://storage.rownd.io/logo-oidc-client-app_1234_oidcc_5667-filename.png",
+            "x-rownd-modifiers": [
+              {
+                "name": "rewriteAssetUrl",
+                "phase": "response"
+              }
+            ]
+          },
+          "logo_dark_mode_uri": {
+            "type": "string",
+            "description": "URI of the logo for the OIDC client in dark mode",
+            "example": "https://storage.rownd.io/logo-oidc-client-app_1234_oidcc_5667-filename.png",
+            "x-rownd-modifiers": [
+              {
+                "name": "rewriteAssetUrl",
+                "phase": "response"
+              }
+            ]
+          },
+          "allowed_scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Scopes supported by the OIDC client",
+            "example": [
+              "openid",
+              "profile",
+              "email"
+            ]
+          },
+          "hub_title": {
+            "type": "string",
+            "description": "Title of the hub",
+            "example": "Sign in to My App with Another App"
+          },
+          "hub_dark_mode": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "auto"
+            ],
+            "description": "Dark mode setting for the hub",
+            "example": "enabled"
+          },
+          "hub_show_logos": {
+            "type": "boolean",
+            "description": "Whether to show the logos in the hub",
+            "example": true
+          }
+        }
+      },
+      "OIDCClient": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the OIDC client",
+            "example": "oidc_client_ck9c1glf0100001l2f7z8z9z9"
+          },
+          "app_id": {
+            "type": "string",
+            "description": "Application identifier associated with the OIDC client",
+            "example": "app_ckl8bcf1g000001l2f7z8z9z9"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the OIDC client",
+            "example": "Example OIDC Provider"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the OIDC client",
+            "example": "Example OIDC Provider"
+          },
+          "config": {
+            "$ref": "#/components/schemas/OIDCClientConfigurationConfig"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "credentials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationCredential"
+            },
+            "description": "Credentials associated with the OIDC client"
+          }
+        }
+      },
+      "OIDCClientList": {
+        "properties": {
+          "total_results": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OIDCClient"
+            }
+          }
+        }
+      },
+      "OIDCClientCreateRequest": {
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the OIDC client",
+            "example": "Example OIDC Provider"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the OIDC client",
+            "example": "Example OIDC Provider"
+          },
+          "config": {
+            "$ref": "#/components/schemas/OIDCClientConfigurationConfig"
+          }
+        }
+      },
+      "OIDCClientUpdateRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the OIDC client",
+            "example": "Example OIDC Provider"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the OIDC client",
+            "example": "Example OIDC Provider"
+          },
+          "config": {
+            "$ref": "#/components/schemas/OIDCClientConfigurationConfig"
           }
         }
       },
