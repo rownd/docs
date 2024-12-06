@@ -20,28 +20,47 @@ sidebarTitle: "OIDC Server"
 
 You can set up an OIDC client directly through the Rownd platform at app.rownd.io:
 
-1. Navigate to your application settings
-2. Select "OIDC Configuration" from the menu
-3. Click "Create New OIDC Client"
-4. Fill out the configuration form:
+**1. Navigate to your application**
 
-#### Required Fields
+**2. Go to the "App Keys" on the left menu and click on "OIDC Clients"**
+
+![OIDC Clients](app-key-oidc-1.png)
+
+**3. Click "Create New OIDC Client"**
+
+**4. Set your OIDC client details** 
+
+
+
+![OIDC Clients](details-oidc.png)
+
+
+#### Fields
 - **Name**: A display name for your OIDC client (required)
-- **Allowed Origins**: The domains that are allowed to make requests to the OIDC server (required). You can add more than one. 
-  - Example: `https://example.com`
 - **Redirect URIs**: Where users will be redirected after authentication (required). You can add more than one.
-  - Example: `https://example.com/callback`
+  - Example: `https://example.com/callback`  
+- **Allowed Scopes**: The scopes that the OIDC client is allowed to request. You can add more than one.
+  - Example: `openid profile email` ; note; you can add additional date fields to Rownd for more finite scopes.
 
-#### Optional Fields
-- **Description**: A brief description of your OIDC client
-- **Post Logout URIs**: Where users will be redirected after logging out
-  - Example: `https://example.com/logout`
-- **Logo URI**: URL to your logo image for light mode
-- **Dark Mode Logo URI**: URL to your logo image for dark mode
+Click "Next"
+
+**5. Retrieve Client Credentials and OIDC Endpoints** 
+You can now retrieve your client credentials and use them to configure your OIDC client.  You can also see the OIDC endpoints.  
 
 <Note>
 Make sure to save your client credentials (client_id and secret) after creation, as the secret cannot be retrieved later.
 </Note>
+
+![OIDC Clients](configure-oidc.png)
+
+**6. OIDC Customizations**
+
+Click on "Customizations" to customize the OIDC modal with a call to action and logos to ensure your users stay in context. 
+
+![OIDC Clients](customize-screen-oidc.png)
+
+
+
 
 ### Using the API
 
