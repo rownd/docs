@@ -59,6 +59,7 @@
       "group": "Welcome",
       "pages": [
         "welcome/overview",
+        "welcome/rownd-features",
         "welcome/getting-started",
         {
           "group": "Migrating to Rownd",
@@ -160,6 +161,12 @@
             "magic-links/overview",
             "magic-links/authenticated",
             "magic-links/unauthenticated"
+          ]
+        },
+        {
+          "group": "OpenID Connect",
+          "pages": [
+            "configuration/oidc/overview"
           ]
         },
 

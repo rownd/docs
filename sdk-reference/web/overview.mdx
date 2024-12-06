@@ -2,7 +2,41 @@
 title: "Web SDK Overview"
 sidebarTitle: Overview
 ---
-Whether you've got a website, blog, single-page app, or something else, Rownd integrates with most major frameworks as well as "vanilla" JavaScript. Choose from the list of frameworks below to get started.
+
+## Rownd Web SDK Features
+Rownd's Web SDKs provide robust authentication solutions with seamless integration and exceptional user experiences across various web platforms.
+
+### Web-Optimized UI Components
+
+Pre-built, responsive UI elements that enhance user interaction:
+- **Customizable Modals**: Easily match your brand's look and feel
+- **Adaptive Layouts**: Responsive design for all screen sizes
+- **Smooth Transitions**: Enhance user experience with native-feeling animations
+- **Accessibility Features**: Built-in support for screen readers and keyboard navigation
+
+### No-Code Configuration
+
+Enable your team to make changes without redeploying:
+- **Dynamic Authentication Flow**: Instantly modify sign-in methods and flows
+- **Visual Customization**: Update styles and branding from the dashboard
+- **Feature Toggles**: Enable/disable features without code changes
+- **A/B Testing**: Experiment with different flows without redeploying
+
+### Automated User Journeys
+
+Create engaging onboarding experiences without code:
+- **Trigger Controls**: Define when and where to prompt users
+- **Progressive Profiling**: Collect user information over time
+- **Conditional Flows**: Tailor experiences based on user attributes
+- **Cross-Browser Consistency**: Ensure a unified experience across all browsers
+
+### Developer-Friendly Implementation
+
+Streamlined integration process that aligns with developer workflows:
+- **Comprehensive Documentation**: Detailed setup guides and API references
+- **Sample Projects**: Ready-to-use examples for common scenarios
+- **Version Management**: Ensure compatibility with clear upgrade paths
+- **Technical Support**: Access to expert engineering support
 
 ## Steps for getting started:
 1. [Set up your Rownd account](/welcome/getting-started) (only takes a minute).
@@ -10,23 +44,30 @@ Whether you've got a website, blog, single-page app, or something else, Rownd in
 3. Install Rownd using an SDK.
 4. [Configure customizations](/configuration/overview) and sign-in methods from the Rownd platform.
 
-## Rownd Webapp SDKs
+## Rownd Web SDKs:
+
 <CardGroup>
+    <Card
+        title="React"
+        icon="react"
+        href="/sdk-reference/web/react"
+    >
+        Hooks and Components
+    </Card>
     <Card
         title="Angular"
         icon="angular"
         href="/sdk-reference/web/angular"
-    />
+    >
+        Services and Directives
+    </Card>
     <Card
-        title="JavaScript"
-        icon="js"
-        href="/sdk-reference/web/javascript--browser"
-    />
-    <Card
-        title="Website"
-        icon="browser"
-        href="/sdk-reference/web/javascript--browser"
-    />
+        title="Vue"
+        icon="vuejs"
+        href="/sdk-reference/web/vue"
+    >
+        Components and Plugins
+    </Card>
     <Card
         title="Next.js"
         icon={<svg
@@ -40,38 +81,10 @@ Whether you've got a website, blog, single-page app, or something else, Rownd in
         href="/sdk-reference/web/nextjs"
     />
     <Card
-        title="React"
-        icon="react"
-        href="/sdk-reference/web/react---next-js"
-    />
-    <Card
-        title="Remix"
-        icon={<svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path class="icon-color" stroke-width="0" fill="currentColor" fill-rule="evenodd" d="M15.97 17.2c0-.851 0-1.631-.132-3.295-.164-1.672-1.054-2.519-2.577-2.816 1.804-.23 3.14-1.603 3.14-3.71 0-2.816-1.898-4.579-5.717-4.579H3.601v2.935h6.38c1.687 0 2.53.708 2.53 1.876 0 1.327-.843 1.83-2.53 1.83h-6.38v2.998h6.193c1.335 0 2.062.367 2.179 2.015.088 1.126.077 1.684.067 2.218v.008c-.004.17-.007.337-.007.52h3.938ZM3.6 14.964V17.2h5.011v-1.431c0-.3-.15-.805-.846-.805H3.6Z" clip-rule="evenodd">
-            </path>
-        </svg>}
-        href="/sdk-reference/web/remix"
-    />
-    <Card
-        title="Vue"
-        icon="vuejs"
-        href="/sdk-reference/web/vue"
-    />
-    <Card
-        title="Ruby on Rails"
-        icon={<svg
-                className="h-6 w-6 bg-primary dark:bg-primary-light"
-                style={{
-                    "WebkitMaskImage": "url('/images/ruby-on-rails.svg')",
-                    "WebkitMaskRepeat": "no-repeat",
-                    "WebkitMaskPosition": "center center",
-                }}
-            />}
-        href="/sdk-reference/web/ruby-on-rails"
-    />
-    <Card
-        title="WordPress / WooCommerce"
-        icon="wordpress"
-        href="/sdk-reference/web/wordpress---woocommerce"
-    />
+        title="JavaScript"
+        icon="js"
+        href="/sdk-reference/web/javascript"
+    >
+        Vanilla JS
+    </Card>
 </CardGroup>
