@@ -6,15 +6,22 @@ sidebarTitle: "OIDC Server"
 # Setting Up Rownd's OIDC Server
 
 ## Table of Contents
-1. [Setup Methods](#setup-methods)
-   - [Using the Rownd Platform](#using-the-rownd-platform)
-   - [Using the API](#using-the-api)
-2. [Configuration Options](#configuration-options)
-3. [OIDC Configuration Discovery](#oidc-configuration-discovery)
-4. [OIDC Endpoints](#oidc-endpoints)
-5. [Response Format](#response-format)
 
-## Setup Methods
+1. [Setup Using the Platform](#using-the-rownd-platform)
+
+2. [Setup Using the API](#using-the-api)
+   - [Required Headers](#required-headers)
+   - [API Endpoints](#api-endpoints)
+   - [OIDC Configuration Discovery](#oidc-configuration-discovery)
+   - [OIDC Endpoints](#oidc-endpoints)
+   - [Response Format](#response-format)
+   - [Logo Management](#uploading-oidc-client-logos)
+     - [Upload Requirements](#required-headers-1)
+     - [Logo Parameters](#parameters)
+   - [Advanced Configuration](#advanced-configuration)
+     - [Custom Interaction Endpoint](#custom-interaction-endpoint)
+     - [User Flow Example](#user-flow-example)
+
 
 ### Using the Rownd Platform
 
@@ -58,8 +65,6 @@ Make sure to save your client credentials (client_id and secret) after creation,
 Click on "Customizations" to customize the OIDC modal with a call to action and logos to ensure your users stay in context. 
 
 ![OIDC Clients](customize-screen-oidc.png)
-
-
 
 
 ### Using the API
@@ -400,3 +405,58 @@ Ensure your logo files meet the following requirements:
 - Recommended dimensions: At least 512x512 pixels for optimal display
 - File size: Keep files under 5MB for best performance
 </Warning>
+
+### Advanced Configuration
+
+#### Custom Interaction Endpoint
+
+By default, OIDC authentication flows direct users to a Rownd-hosted URL for sign-in. However, if you have Rownd integrated into your website or application, you can provide a custom interaction endpoint for a more streamlined experience.
+
+When configured, users will be directed to your site/app instead of the default Rownd URL. This provides several benefits:
+- Maintains your branded experience
+- Leverages existing user sessions
+- Reduces authentication steps when users are already logged in
+- Provides a more seamless OIDC consent flow
+
+##### Configuration
+
+Add the `interaction_endpoint` to your OIDC client configuration under the `config` object:
+
+```json
+{
+  "name": "Example OIDC Provider",
+  "description": "Example OIDC Provider",
+  "config": {
+    "allowed_origins": [
+      "https://example.com"
+    ],
+    "redirect_uris": [
+      "https://example.com/callback"
+    ],
+    "post_logout_uris": [
+      "https://example.com/logout"
+    ],
+    "interaction_endpoint": "https://example.com/auth",
+    "logo_uri": "https://storage.rownd.io/logo-example.png",
+    "logo_dark_mode_uri": "https://storage.rownd.io/logo-dark-example.png"
+  }
+}
+```
+
+<Note>
+The interaction endpoint must be a page where Rownd is properly installed and configured. This ensures the authentication flow can properly handle the OIDC consent process.
+</Note>
+
+##### User Flow Example
+
+1. User initiates OIDC sign-in from a third-party application
+2. Instead of going to `hub.rownd.io`, they are redirected to your custom endpoint (e.g., `https://example.com/auth`)
+3. If the user is already signed in on your site:
+   - They only need to approve the OIDC consent
+   - No additional authentication is required
+4. If the user is not signed in:
+   - They'll see your normal Rownd authentication flow
+   - After signing in, they'll be prompted for OIDC consent
+5. After consent, they are redirected back to the original application
+
+This approach can significantly reduce friction in the authentication process, especially for users who frequently interact with your platform.
