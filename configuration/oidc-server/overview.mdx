@@ -1,0 +1,203 @@
+---
+title: "OIDC Server Setup"
+sidebarTitle: "OIDC Server"
+---
+
+# Setting Up Rownd's OIDC Server
+
+Rownd provides OpenID Connect (OIDC) server capabilities that allow you to use Rownd as an identity provider for your applications. This guide explains how to set up and configure the OIDC server.
+
+## Configuration
+
+To create a new OIDC client configuration, send a POST request to `api.rownd.io/applications/{app-id}/oidc-clients` with the following body parameters:
+
+### Request Body Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `name` | The display name of your OIDC client |
+| `description` | A brief description of your OIDC client |
+| `config.allowed_origins` | Array of allowed origins that can make requests to the OIDC server |
+| `config.redirect_uris` | Array of valid URIs where users will be redirected after authentication |
+| `config.post_logout_uris` | Array of valid URIs where users will be redirected after logging out |
+| `config.logo_uri` | URL to the logo image used in light mode |
+| `config.logo_dark_mode_uri` | URL to the logo image used in dark mode |
+
+### Example Request
+
+```json
+{
+  "name": "Example OIDC Provider",
+  "description": "Example OIDC Provider",
+  "config": {
+    "allowed_origins": [
+      "https://example.com"
+    ],
+    "redirect_uris": [
+      "https://example.com/callback"
+    ],
+    "post_logout_uris": [
+      "https://example.com/logout"
+    ],
+    "logo_uri": "https://storage.rownd.io/logo-oidc-client-app_1234_oidcc_5667-filename.png",
+    "logo_dark_mode_uri": "https://storage.rownd.io/logo-oidc-client-app_1234_oidcc_5667-filename.png"
+  }
+}
+```
+
+### Response Format
+
+Both POST and PUT requests will return a response with the following structure:
+
+```json
+{
+  "id": "oidc_client_ck9c1glf0100001l2f7z8z9z9",
+  "app_id": "app_ckl8bcf1g000001l2f7z8z9z9",
+  "name": "Example OIDC Provider",
+  "description": "Example OIDC Provider",
+  "config": {
+    "allowed_origins": [
+      "https://example.com"
+    ],
+    "redirect_uris": [
+      "https://example.com/callback"
+    ],
+    "post_logout_uris": [
+      "https://example.com/logout"
+    ],
+    "logo_uri": "https://storage.rownd.io/logo-oidc-client-app_1234_oidcc_5667-filename.png",
+    "logo_dark_mode_uri": "https://storage.rownd.io/logo-oidc-client-app_1234_oidcc_5667-filename.png"
+  },
+  "created_at": "2024-12-05T23:34:05.709Z",
+  "updated_at": "2024-12-05T23:34:05.709Z",
+  "credentials": [
+    {
+      "name": "Production API Key",
+      "client_id": "string",
+      "secret": "string",
+      "expires": "2024-12-31T23:59:59Z",
+      "application": "app_k3y1qwerty12345",
+      "app_variant_id": "variant_fgy1qw367fty121lm",
+      "oidc_client_configuration_id": "oidcc_k3y1qwerty12345",
+      "created_at": "2024-12-05T23:34:05.709Z",
+      "updated_at": "2024-12-05T23:34:05.709Z"
+    }
+  ]
+}
+```
+
+### Response Fields
+
+| Field | Description |
+|-------|-------------|
+| `id` | Unique identifier for the OIDC client configuration |
+| `app_id` | The Rownd application ID this configuration belongs to |
+| `name` | Display name of the OIDC client |
+| `description` | Description of the OIDC client |
+| `config` | Configuration object containing origins, URIs, and logos |
+| `created_at` | Timestamp of when the configuration was created |
+| `updated_at` | Timestamp of the last update |
+| `credentials` | Array of credential objects containing authentication details |
+
+#### Credentials Object
+
+| Field | Description |
+|-------|-------------|
+| `name` | Name of the credential |
+| `client_id` | The OIDC client ID to use for authentication |
+| `secret` | The client secret to use for authentication |
+| `expires` | Expiration date of the credentials |
+| `application` | Associated Rownd application ID |
+| `app_variant_id` | Variant ID if applicable |
+| `oidc_client_configuration_id` | ID of the OIDC client configuration |
+| `created_at` | Timestamp of when the credentials were created |
+| `updated_at` | Timestamp of the last credentials update |
+
+<Note>
+Store the `client_id` and `secret` securely as they will be needed for all subsequent OIDC operations.
+</Note>
+
+## OIDC Endpoints
+
+Rownd provides three main OIDC endpoints, all accessible at `https://api.rownd.io/oidc/{app-id}/`:
+
+### 1. Authorization Endpoint (`/auth`)
+- Used to authenticate users and obtain authorization
+- Initiates the authentication flow
+- Returns an authorization code that can be exchanged for tokens
+- Supports standard OIDC parameters like `scope`, `response_type`, and `redirect_uri`
+
+### 2. Token Endpoint (`/token`)
+- Exchanges authorization codes for access and ID tokens
+- Supports refresh token requests
+- Requires client authentication using client_id and client_secret
+- Returns JWT tokens containing user information and access rights
+
+### 3. UserInfo Endpoint (`/me`)
+- Provides detailed information about the authenticated user
+- Requires a valid access token
+- Returns user profile data based on the granted scopes
+- Supports standard OIDC claims
+
+## Credentials
+
+After creating an OIDC client configuration, you'll receive credentials in the response:
+
+- `client_id`: Your unique client identifier
+- `client_secret`: Your client secret for secure communication
+
+<Warning>
+Store your client_secret securely! It cannot be recovered if lost and would require generating new credentials.
+</Warning>
+
+## Implementation Flow
+
+1. Configure your OIDC client using the configuration endpoint
+2. Store the returned client_id and client_secret securely
+3. Implement the authorization flow:
+   - Direct users to the `/auth` endpoint for authentication
+   - Handle the callback with the authorization code
+   - Exchange the code for tokens at the `/token` endpoint
+   - Fetch user information from the `/me` endpoint as needed
+
+## Example Implementation
+
+```javascript
+// Example authorization request
+const authUrl = `https://api.rownd.io/oidc/${appId}/auth?` + 
+  `client_id=${clientId}&` +
+  `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+  `response_type=code&` +
+  `scope=openid profile email`;
+
+// Redirect user to authUrl
+
+// After receiving the authorization code in your callback:
+async function exchangeCode(code) {
+  const response = await fetch(`https://api.rownd.io/oidc/${appId}/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      client_id: clientId,
+      client_secret: clientSecret,
+      redirect_uri: redirectUri,
+    }),
+  });
+  
+  return await response.json();
+}
+```
+
+## Best Practices
+
+1. Always use HTTPS for redirect URIs
+2. Implement proper token storage and refresh mechanisms
+3. Validate all tokens on your backend
+4. Keep your client_secret secure and never expose it in client-side code
+5. Implement proper error handling for all OIDC endpoints
+
+Need help? Contact our [support team](mailto:support@rownd.io) for assistance with your OIDC implementation.
