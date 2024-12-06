@@ -1,35 +1,33 @@
 ---
-title: "OIDC Server Setup"
-sidebarTitle: "OIDC Server"
+title: "OpenID Connect Setup"
+sidebarTitle: "Overview"
 ---
-
-# Setting Up Rownd's OIDC Server
 
 ## Table of Contents
 
-1. [Setup Using the Platform](#using-the-rownd-platform)
+1. [Set up using the platform](#using-the-rownd-platform)
 
-2. [Setup Using the API](#using-the-api)
-   - [Required Headers](#required-headers)
-   - [API Endpoints](#api-endpoints)
-   - [OIDC Configuration Discovery](#oidc-configuration-discovery)
-   - [OIDC Endpoints](#oidc-endpoints)
-   - [Response Format](#response-format)
-   - [Logo Management](#uploading-oidc-client-logos)
-     - [Upload Requirements](#required-headers-1)
-     - [Logo Parameters](#parameters)
-   - [Advanced Configuration](#advanced-configuration)
-     - [Custom Interaction Endpoint](#custom-interaction-endpoint)
-     - [User Flow Example](#user-flow-example)
+2. [Setup using the API](#using-the-api)
+   - [Required headers](#required-headers)
+   - [API endpoints](#api-endpoints)
+   - [OIDC configuration discovery](#oidc-configuration-discovery)
+   - [OIDC endpoints](#oidc-endpoints)
+   - [Response format](#response-format)
+   - [Logo management](#uploading-oidc-client-logos)
+     - [Upload requirements](#required-headers-1)
+     - [Logo parameters](#parameters)
+   - [Advanced configuration](#advanced-configuration)
+     - [Custom interaction endpoint](#custom-interaction-endpoint)
+     - [User flow example](#user-flow-example)
 
 
 ### Using the Rownd Platform
 
-You can set up an OIDC client directly through the Rownd platform at app.rownd.io:
+You can set up an OIDC client directly through the [Rownd platform](https://app.rownd.io):
 
 **1. Navigate to your application**
 
-**2. Go to the "App Keys" on the left menu and click on "OIDC Clients"**
+**2. Open the "App Keys" page on the left menu and click on the "OIDC Clients" tab**
 
 ![OIDC Clients](app-key-oidc-1.png)
 
@@ -51,7 +49,7 @@ You can set up an OIDC client directly through the Rownd platform at app.rownd.i
 
 Click "Next"
 
-**5. Retrieve Client Credentials and OIDC Endpoints** 
+**5. Retrieve client credentials and OpenID endpoints** 
 You can now retrieve your client credentials and use them to configure your OIDC client.  You can also see the OIDC endpoints.  
 
 <Note>
@@ -60,9 +58,9 @@ Make sure to save your client credentials (client_id and secret) after creation,
 
 ![OIDC Clients](configure-oidc.png)
 
-**6. OIDC Customizations**
+**6. OIDC customizations**
 
-Click on "Customizations" to customize the OIDC modal with a call to action and logos to ensure your users stay in context. 
+Click on "Customizations" to customize sign-in and consent modals with a call to action and logos that help your users stay in context. 
 
 ![OIDC Clients](customize-screen-oidc.png)
 
@@ -71,13 +69,13 @@ Click on "Customizations" to customize the OIDC modal with a call to action and 
 
 To create or update an OIDC client configuration via the API, you'll need your Rownd application credentials.
 
-#### Required Headers
+#### Required headers
 | Header | Description |
 |--------|-------------|
 | `x-rownd-app-key` | Your Rownd application key |
 | `x-rownd-app-secret` | Your Rownd application secret |
 
-#### API Endpoints
+#### API endpoints
 - Create: `POST https://api.rownd.io/applications/{app-id}/oidc-clients`
 - Update: `PUT https://api.rownd.io/applications/{app-id}/oidc-clients/{client-id}`
 
@@ -136,6 +134,8 @@ Replace `YOUR_APP_KEY`, `YOUR_APP_SECRET`, and `{app-id}` with your actual Rownd
 </Note>
 
 ## Configuration
+
+Refer to the [Rownd OpenID Connect API documentation](/api-reference/oidc/clients) for detailed information on creating and managing OpenID clients.
 
 To create a new OIDC client configuration, send a POST request to `api.rownd.io/applications/{app-id}/oidc-clients` with the following body parameters:
 
@@ -245,7 +245,7 @@ Both POST and PUT requests will return a response with the following structure:
 Store the `client_id` and `secret` securely as they will be needed for all subsequent OIDC operations.
 </Note>
 
-## OIDC Configuration Discovery
+## OpenID Configuration Discovery
 
 Rownd provides a standard OpenID Configuration discovery endpoint that returns a complete list of OIDC specifications and endpoints for your application.
 
@@ -266,7 +266,7 @@ This endpoint returns a JSON document containing all supported OIDC features, en
 The discovery endpoint is publicly accessible and does not require authentication. It's commonly used by OIDC clients to automatically configure themselves.
 </Note>
 
-## OIDC Endpoints
+## OpenID Endpoints
 
 Rownd provides three main OIDC endpoints, all accessible at `https://api.rownd.io/oidc/{app-id}/`:
 
@@ -301,7 +301,7 @@ Store your client_secret securely! It cannot be recovered if lost and would requ
 
 ## Implementation Flow
 
-1. Configure your OIDC client using the configuration endpoint
+1. Configure your OpenID client using the configuration endpoint
 2. Store the returned client_id and client_secret securely
 3. Implement the authorization flow:
    - Direct users to the `/auth` endpoint for authentication
@@ -351,7 +351,7 @@ async function exchangeCode(code) {
 
 Need help? Contact our [support team](mailto:support@rownd.io) for assistance with your OIDC implementation.
 
-### Uploading OIDC Client Logos
+### Uploading OpenID Client Logos
 
 You can upload custom logos for your OIDC client that will be displayed in light and dark modes. Logos can be uploaded using the following API endpoint.
 
@@ -406,11 +406,11 @@ Ensure your logo files meet the following requirements:
 - File size: Keep files under 5MB for best performance
 </Warning>
 
-### Advanced Configuration
+### Advanced configuration
 
-#### Custom Interaction Endpoint
+#### Custom interaction endpoint
 
-By default, OIDC authentication flows direct users to a Rownd-hosted URL for sign-in. However, if you have Rownd integrated into your website or application, you can provide a custom interaction endpoint for a more streamlined experience.
+By default, OpenID authentication flows direct users to a Rownd-hosted URL for sign-in. However, if you have Rownd integrated into your website or application, you can provide a custom interaction endpoint for a more streamlined experience.
 
 When configured, users will be directed to your site/app instead of the default Rownd URL. This provides several benefits:
 - Maintains your branded experience
@@ -444,10 +444,10 @@ Add the `interaction_endpoint` to your OIDC client configuration under the `conf
 ```
 
 <Note>
-The interaction endpoint must be a page where Rownd is properly installed and configured. This ensures the authentication flow can properly handle the OIDC consent process.
+The interaction endpoint must be a page where the Rownd JavaScript snippet is properly installed and configured (a single-page app like React will also work). This ensures the authentication flow can properly handle the OpenID consent process.
 </Note>
 
-##### User Flow Example
+##### User flow example
 
 1. User initiates OIDC sign-in from a third-party application
 2. Instead of going to `hub.rownd.io`, they are redirected to your custom endpoint (e.g., `https://example.com/auth`)

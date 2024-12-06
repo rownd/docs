@@ -164,9 +164,9 @@
           ]
         },
         {
-          "group": "OIDC Server",
+          "group": "OpenID Connect",
           "pages": [
-            "configuration/oidc-server/overview"
+            "configuration/oidc/overview"
           ]
         },
 
