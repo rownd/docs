@@ -173,16 +173,25 @@ Consider implementing analytics to track the ratio of Rownd vs. legacy tokens to
 
 ## Managing Multiple Applications
 
+### User-Centric Design Philosophy
+
+When structuring your applications in Rownd, it's crucial to consider the user's perspective rather than internal organizational boundaries. Users typically don't think in terms of separate applications or systems - they see your brand as a single entity and expect a cohesive experience.
+
+For example:
+- A user doesn't care that your mobile app and web dashboard are separate codebases
+- They expect their profile and preferences to follow them seamlessly
+- Brand recognition matters more than application boundaries
+
 ### Cross-Application User Experience
 
 Rownd's architecture supports a seamless user experience across multiple applications within your brand ecosystem. Users maintain a single identity that spans across all your applications, making transitions between apps smooth and contextual.
 
 ### Sub-Apps and Sub-Brands
 
-You can organize your applications hierarchically using sub-apps or sub-brands:
+While technical implementations might separate applications, organizing by brand usually creates a more natural user experience:
 
 ```javascript
-// Example structure
+// Brand-centric organization
 MainBrand
 ├── WebApps
 │   ├── Webapp_One
@@ -197,3 +206,8 @@ MainBrand
 - **Contextual Transitions**: Preserve user context when moving between apps
 - **Consistent Configuration**: Inherit and override settings at each level
 - **Granular Control**: Manage permissions and features per sub-app while maintaining brand cohesion
+- **Brand Consistency**: Users experience a single, cohesive brand regardless of entry point
+
+<Note>
+When designing your application structure, always ask: "How does my user view this ecosystem?" rather than "How is my technology organized?"
+</Note>
