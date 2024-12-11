@@ -1,0 +1,199 @@
+---
+title: "Best Practices"
+sidebarTitle: "Best Practices"
+---
+
+# Rownd Implementation Best Practices
+
+## Data Bifurcation Strategy
+
+### Why Separate PII Data?
+One of the most effective patterns when implementing Rownd is to separate your user data into two categories:
+1. Personal Identifiable Information (PII) - managed by Rownd
+2. Application-specific data - managed by your application
+
+This separation provides several benefits:
+- **Simplified Compliance**: Rownd handles PII data security and compliance requirements
+- **Focused Development**: Your team can focus on core application features
+- **Reduced Liability**: Minimize your exposure to PII data handling risks
+- **Enhanced Security**: PII data is protected by Rownd's enterprise-grade security
+
+### Implementation Example
+```javascript
+// Rownd manages PII data
+const userProfile = {
+  first_name: "John",
+  last_name: "Doe",
+  email: "john@example.com",
+  phone: "+1234567890"
+};
+
+// Your app manages application-specific data
+const userData = {
+  preferences: { theme: "dark" },
+  gameProgress: { level: 5 },
+  subscriptionTier: "premium"
+};
+```
+
+## Migration Strategies
+
+### Data Migration
+Rownd provides flexible options for migrating existing users:
+
+1. **Using the User API**
+```javascript
+// Example of migrating a user
+await rownd.user.create({
+  data: {
+    email: "user@example.com",
+    first_name: "John",
+    last_name: "Doe"
+  }
+});
+```
+
+2. **Parallel Processing**
+```python
+# Example of parallel user migration
+async def migrate_users(users):
+    tasks = [migrate_user(user) for user in users]
+    await asyncio.gather(*tasks)
+```
+
+<Note>
+For large-scale migrations (100k+ users), contact support@rownd.io for access to bulk migration endpoints.
+</Note>
+
+### Application Migration
+
+#### Token Validation Strategy
+Rownd can help maintain user sessions during migration by validating existing tokens:
+
+1. **Configure Token Validation Endpoint**
+Rownd can validate existing tokens by configuring a token validation endpoint. This endpoint will be used to validate existing tokens and ensure that users are authenticated.
+
+Use the Rownd Token Validator. 
+
+**Token Sorting Implementations**
+
+During migration, your application needs to handle both legacy and Rownd tokens simultaneously. A token sorter helps determine which authentication system should validate the token by examining the token's properties (like the issuer). This ensures a smooth transition period where both authentication systems can coexist without disrupting user sessions.
+
+<Tabs>
+  <Tab title="Node.js">
+```javascript
+const jose = require('jose');
+
+function sortToken(token) {
+  try {
+    const decoded = jose.jwtDecode(token);
+    if (decoded.issuer === 'rownd') {
+      return validateRowndToken(token);
+    } else {
+      return validateLegacyToken(token);
+    }
+  } catch (error) {
+    return false;
+  }
+}
+```
+  </Tab>
+  <Tab title="Go">
+```go
+import "github.com/golang-jwt/jwt"
+
+func sortToken(tokenString string) (bool, error) {
+    token, _ := jwt.Parse(tokenString, nil)
+    if token.Claims.(jwt.MapClaims)["iss"] == "rownd" {
+        return validateRowndToken(tokenString)
+    }
+    return validateLegacyToken(tokenString)
+}
+```
+  </Tab>
+  <Tab title="Python">
+```python
+import jwt
+
+def sort_token(token):
+    try:
+        decoded = jwt.decode(token, options={"verify_signature": False})
+        if decoded.get('iss') == 'rownd':
+            return validate_rownd_token(token)
+        return validate_legacy_token(token)
+    except jwt.InvalidTokenError:
+        return False
+```
+  </Tab>
+  <Tab title=".NET">
+```csharp
+using System.IdentityModel.Tokens.Jwt;
+
+public bool SortToken(string token)
+{
+    var handler = new JwtSecurityTokenHandler();
+    var jwtToken = handler.ReadJwtToken(token);
+    
+    if (jwtToken.Issuer == "rownd")
+        return ValidateRowndToken(token);
+    return ValidateLegacyToken(token);
+}
+```
+  </Tab>
+</Tabs>
+
+#### Mobile App Migration
+When deploying Rownd in mobile applications:
+
+1. **Implement Dual Token Validation**
+```javascript
+function validateAuthToken(token) {
+    // First, try to decode the token
+    const decoded = decodeToken(token);
+    
+    // Route to appropriate validator
+    if (decoded.issuer === 'rownd') {
+        return rowndSDK.validateToken(token);
+    } else {
+        return legacyAuth.validateToken(token);
+    }
+}
+```
+
+2. **Gradual Rollout Strategy**
+- Deploy Rownd SDK alongside existing authentication
+- Validate both token types during transition period
+- Monitor token types to track migration progress
+- Remove legacy validation once migration is complete
+
+<Note>
+Consider implementing analytics to track the ratio of Rownd vs. legacy tokens to monitor migration progress.
+</Note> 
+
+
+## Managing Multiple Applications
+
+### Cross-Application User Experience
+
+Rownd's architecture supports a seamless user experience across multiple applications within your brand ecosystem. Users maintain a single identity that spans across all your applications, making transitions between apps smooth and contextual.
+
+### Sub-Apps and Sub-Brands
+
+You can organize your applications hierarchically using sub-apps or sub-brands:
+
+```javascript
+// Example structure
+MainBrand
+├── WebApps
+│   ├── Webapp_One
+│   └── Webapp_Two
+└── MobileApps
+    ├── MobileApp_One
+    └── MobileApp_Two
+```
+
+### Key Benefits
+- **Unified User Identity**: Users maintain a single profile across all applications
+- **Contextual Transitions**: Preserve user context when moving between apps
+- **Consistent Configuration**: Inherit and override settings at each level
+- **Granular Control**: Manage permissions and features per sub-app while maintaining brand cohesion
