@@ -1,0 +1,699 @@
+---
+title: "Go"
+description: "Rownd SDK for Go"
+icon: go
+---
+
+A comprehensive Go SDK for integrating Rownd authentication, user management, and group management into your applications.
+
+## Installation
+
+```bash
+go get github.com/rownd/client-go/pkg/rownd
+```
+
+## Features
+
+- Token validation and management 
+- User authentication and profile management
+- Group management with member roles and invites
+- HTTP middleware for authentication
+- Comprehensive error handling
+- Configurable caching for JWKS and WKC
+
+## Quick Start
+
+```go
+package main
+
+import (
+    "context"
+    "log"
+    "github.com/rownd/client-go/pkg/rownd"
+)
+
+func main() {
+    // Initialize client with options
+    client, err := rownd.NewClient(
+        rownd.WithAppKey("YOUR_APP_KEY"),
+        rownd.WithAppSecret("YOUR_APP_SECRET"),
+        rownd.WithBaseURL("https://api.rownd.io"),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    ctx := context.Background()
+
+    // Create or update a user
+    user, err := client.Users.CreateOrUpdate(ctx, rownd.CreateOrUpdateUserRequest{
+        Data: map[string]interface{}{
+            "email": "user@example.com",
+            "first_name": "John",
+            "last_name": "Doe",
+        },
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    log.Printf("User ID: %s", user.GetID())
+}
+```
+
+## Quick Start with Examples
+
+### Creating Users
+
+```go
+// Let Rownd generate a UUID
+user, err := client.Users.CreateOrUpdate(ctx, rownd.CreateOrUpdateUserRequest{
+    UserID: "__default__",  // Special value that tells Rownd to generate a user ID. Can be `__rowndid__`, `__uuid__`, `__objectid__`, or `__default__` for your app's configured default behavior.
+    Data: map[string]interface{}{
+        "email": "user@example.com",
+        "first_name": "John",
+        "last_name": "Doe",
+    },
+})
+// Response:
+// user = {
+//     ID: "user_a7b53gwdaml5jt7t71442nt7",
+//     State: "enabled",
+//     AuthLevel: "unverified",
+//     Data: {
+//         "email": "user@example.com",
+//         "first_name": "John",
+//         "last_name": "Doe",
+//         "user_id": "user_a7b53gwdaml5jt7t71442nt7"
+//     }
+// }
+
+// Use your own ID
+user, err := client.Users.CreateOrUpdate(ctx, rownd.CreateOrUpdateUserRequest{
+    UserID: "custom_id_12345",
+    Data: map[string]interface{}{
+        "email": "user@example.com",
+    },
+})
+```
+
+### Looking Up Users
+
+```go
+// Lookup by email
+users, err := client.Users.List(ctx, rownd.ListUsersRequest{
+    Fields: []string{"email", "first_name", "last_name", "user_id"},  // Specify fields to return
+    LookupFilter: []string{"user@example.com"},
+})
+// Response:
+// users = {
+//     TotalResults: 1,
+//     Results: [{
+//         ID: "user_a7b53gwdaml5jt7t71442nt7",
+//         State: "enabled",
+//         AuthLevel: "verified",
+//         Data: {
+//             "email": "user@example.com",
+//             "first_name": "John",
+//             "last_name": "Doe"
+//         },
+//         VerifiedData: {
+//             "email": "user@example.com"
+//         }
+//     }]
+// }
+
+// Pagination example
+users, err := client.Users.List(ctx, rownd.ListUsersRequest{
+    PageSize: ToPtr(10),  // Get 10 results per page
+    After: ToPtr("user_lastid"),  // Start after this user ID
+})
+```
+
+### Group Management Examples
+
+```go
+// Create a group
+group, err := client.Groups.Create(ctx, rownd.CreateGroupRequest{
+    Name: "Engineering Team",
+    AdmissionPolicy: rownd.AdmissionPolicyInviteOnly,
+    Meta: map[string]any{
+        "department": "Engineering",
+        "cost_center": "ENG-123",
+    },
+})
+// Response:
+// group = {
+//     ID: "group_a3l1n2lsnb3q0xbul9enjnh7",
+//     Name: "Engineering Team",
+//     AdmissionPolicy: "invite_only",
+//     Meta: {
+//         "department": "Engineering",
+//         "cost_center": "ENG-123"
+//     },
+//     CreatedAt: "2024-03-01T12:00:00Z",
+//     UpdatedAt: "2024-03-01T12:00:00Z"
+// }
+
+// Create an invite
+invite, err := client.GroupInvites.Create(ctx, rownd.CreateGroupInviteRequest{
+    GroupID: group.ID,
+    Email: "new@example.com",
+    Roles: []string{"member"},
+    RedirectURL: "/welcome",
+})
+// Response:
+// invite = {
+//     Link: "https://app.rownd.io/invite/abc123...",
+//     Invitation: {
+//         ID: "invite_xyz789",
+//         GroupID: "group_a3l1n2lsnb3q0xbul9enjnh7",
+//         Email: "new@example.com",
+//         Roles: ["member"],
+//         State: "pending",
+//         CreatedAt: "2024-03-01T12:01:00Z"
+//     }
+// }
+```
+
+### Token Validation with Claims
+
+```go
+token, err := client.ValidateToken(ctx, "your-jwt-token")
+// Response:
+// token = {
+//     UserID: "user_a7b53gwdaml5jt7t71442nt7",
+//     AccessToken: "original-jwt-token",
+//     Claims: {
+//         Sub: "user_a7b53gwdaml5jt7t71442nt7",
+//         Iss: "https://api.rownd.io",
+//         Aud: ["app:app_xyz123"],
+//         Exp: 1709312400,
+//         Iat: 1709308800,
+//         AppUserID: "user_a7b53gwdaml5jt7t71442nt7",
+//         IsUserVerified: true,
+//         IsAnonymous: false,
+//         AuthLevel: "verified"
+//     }
+// }
+```
+
+### Helpful Utilities
+
+```go
+// Convert values to pointers (useful for optional fields)
+pageSize := rownd.ToPtr(10)
+after := rownd.ToPtr("some_id")
+
+// Get value from pointer with fallback
+value := rownd.ToValue(optionalPtr) // Returns actual value or zero value if nil
+
+// Extract token from context (in HTTP handlers)
+token := rownd.TokenFromCtx(r.Context())
+if token != nil {
+    userID := token.UserID
+    authLevel := token.Claims.AuthLevel
+}
+```
+
+## Authentication & Token Validation
+
+### Token Validation
+```go
+// Validate a token
+token, err := client.ValidateToken(ctx, "your-jwt-token")
+if err != nil {
+    log.Fatal(err)
+}
+
+// Access token claims
+log.Printf("User ID: %s", token.UserID)
+log.Printf("Auth Level: %s", token.Claims.AuthLevel)
+```
+
+### HTTP Middleware
+```go
+import "github.com/rownd/client-go/pkg/rownd/middleware"
+
+// Create middleware handler
+handler, err := rowndmiddleware.NewHandler(client, 
+    rowndmiddleware.WithErrorHandler(func(w http.ResponseWriter, r *http.Request, err error) {
+        http.Error(w, "Unauthorized", http.StatusUnauthorized)
+    }),
+)
+
+// Use middleware
+router.Use(rowndmiddleware.WithAuthentication(handler))
+```
+
+## User Management
+
+### User Operations
+```go
+// Get user
+user, err := client.Users.Get(ctx, rownd.GetUserRequest{
+    UserID: "user_id",
+})
+
+// List/lookup users
+users, err := client.Users.List(ctx, rownd.ListUsersRequest{
+    Fields: []string{"email", "first_name", "last_name"},
+    LookupFilter: []string{"user@example.com"},
+})
+
+// Delete user
+err := client.Users.Delete(ctx, rownd.DeleteUserRequest{
+    UserID: "user_id",
+})
+```
+
+## Group Management
+
+### Groups
+```go
+// Create group
+group, err := client.Groups.Create(ctx, rownd.CreateGroupRequest{
+    Name: "Engineering Team",
+    AdmissionPolicy: rownd.AdmissionPolicyInviteOnly,
+    Meta: map[string]any{
+        "department": "Engineering",
+    },
+})
+
+// List groups
+groups, err := client.Groups.List(ctx, rownd.ListGroupsRequest{})
+
+// Delete group
+err := client.Groups.Delete(ctx, rownd.DeleteGroupRequest{
+    GroupID: "group_id",
+})
+```
+
+### Group Invites
+```go
+// Create invite
+invite, err := client.GroupInvites.Create(ctx, rownd.CreateGroupInviteRequest{
+    GroupID: "group_id",
+    Email: "new@example.com",
+    Roles: []string{"member"},
+    RedirectURL: "/welcome",
+})
+
+// List invites
+invites, err := client.GroupInvites.List(ctx, rownd.ListGroupInvitesRequest{
+    GroupID: "group_id",
+})
+
+// Delete invite
+err := client.GroupInvites.Delete(ctx, rownd.DeleteGroupInviteRequest{
+    GroupID: "group_id",
+    InviteID: "invite_id",
+})
+```
+
+## Group Membership Management
+
+### Understanding Member ID vs User ID
+
+In Rownd's group system, there are two important identifiers:
+- `user_id`: The unique identifier for a Rownd user (e.g., "user_a7b53gwdaml5jt7t71442ng7")
+- `member_id`: The unique identifier for a user's membership in a specific group (e.g., "member_dnn5g4e3q5aptail2gr43kpj")
+
+A single user can be a member of multiple groups, with a different `member_id` for each group membership.
+
+```go
+// Example group member structure
+type GroupMember struct {
+    ID        string   `json:"id"`          // This is the member_id
+    UserID    string   `json:"user_id"`     // This is the user_id
+    Roles     []string `json:"roles"`
+    State     string   `json:"state"`
+    Profile   map[string]interface{} `json:"profile"`
+    GroupID   string   `json:"group_id"`
+}
+```
+
+### Managing Group Members
+
+```go
+// Add a user to a group
+member, err := client.GroupMembers.Create(ctx, rownd.CreateGroupMemberRequest{
+    GroupID: "group_a3l1n2lsnb3q0xbul9enjnh7",
+    UserID: "user_a7b53gwdaml5jt7t71442nt7",
+    Roles: []string{"editor", "viewer"},
+})
+// Response:
+// member = {
+//     ID: "member_dnn5g4e3q6aptail2gr43kpj",    // The member_id
+//     UserID: "user_a7b53gwdaml5jt7t71442nt7",  // The user_id
+//     Roles: ["editor", "viewer"],
+//     State: "active",
+//     Profile: {
+//         "email": "user@example.com",
+//         "first_name": "John"
+//     },
+//     GroupID: "group_a3l1n2lsnb3q0xbul9enjnh7"
+// }
+
+// Update a member's roles using member_id
+updatedMember, err := client.GroupMembers.Update(ctx, rownd.UpdateGroupMemberRequest{
+    GroupID: "group_a3l1n2lsnb3q0xbul9enjnh7",
+    MemberID: "member_dnn5g4e3q6aptail2gr43kpj",  // Use member_id, not user_id
+    Roles: []string{"admin"},
+})
+
+// List group members
+members, err := client.GroupMembers.List(ctx, rownd.ListGroupMembersRequest{
+    GroupID: "group_a3l1n2lsnb3q0xbul9enjnh7",
+})
+// Response:
+// members = {
+//     TotalResults: 2,
+//     Results: [{
+//         ID: "member_dnn5g4e3q6aptail2gr43kpj",
+//         UserID: "user_a7b53gwdaml5jt7t71442nt7",
+//         Roles: ["admin"],
+//         State: "active",
+//         Profile: {
+//             "email": "user@example.com"
+//         }
+//     }, {
+//         ID: "member_kll8h7g2p9qbxyzw4m5njth8",
+//         UserID: "user_b8c64hwdaml5kt8u82553ou8",
+//         Roles: ["viewer"],
+//         State: "active",
+//         Profile: {
+//             "email": "another@example.com"
+//         }
+//     }]
+// }
+
+// Remove a member from a group using member_id
+err := client.GroupMembers.Delete(ctx, rownd.DeleteGroupMemberRequest{
+    GroupID: "group_a3l1n2lsnb3q0xbul9enjnh7",
+    MemberID: "member_dnn5g4e3q6aptail2gr43kpj",  // Use member_id, not user_id
+})
+```
+
+### Important Notes About Group Membership
+
+1. **Member ID vs User ID**
+   - Use `member_id` when managing a specific membership (updating roles, removing from group)
+   - Use `user_id` when adding a new member to a group
+   - A user (`user_id`) can have multiple memberships (`member_id`s) across different groups
+
+2. **Group Ownership**
+   - Groups must always have at least one owner
+   - When removing the last owner, transfer ownership first
+   - Example of transferring ownership:
+   ```go
+   // Transfer ownership before removing the last owner
+   _, err = client.GroupMembers.Update(ctx, rownd.UpdateGroupMemberRequest{
+       GroupID: "group_id",
+       MemberID: "new_owner_member_id",
+       Roles: []string{"owner", "member"},
+   })
+   ```
+
+3. **Member States**
+   - `active`: Normal membership
+   - `suspended`: Temporarily restricted access
+   - `invited`: Pending acceptance of invitation
+
+4. **Common Role Types**
+   - `owner`: Full administrative control
+   - `admin`: Can manage members and content
+   - `editor`: Can modify content
+   - `viewer`: Read-only access
+   - Custom roles can be defined as needed
+
+## Group Ownership and Member Management Rules
+
+### Group Ownership Rules
+
+1. **Automatic Owner Assignment**
+   - The first member added to a group automatically receives the "owner" role
+   - Example of first member creation:
+   ```go
+   // First member automatically becomes owner
+   member, err := client.GroupMembers.Create(ctx, rownd.CreateGroupMemberRequest{
+       GroupID: "group_id",
+       UserID: "user_id",
+       Roles: []string{"member"},  // "owner" will be automatically added
+   })
+   // Response:
+   // member = {
+   //     ID: "member_abc123",
+   //     UserID: "user_id",
+   //     Roles: ["owner", "member"],  // Note: "owner" was automatically added
+   //     State: "active"
+   // }
+   ```
+
+2. **Owner Requirements**
+   - Every group must maintain at least one owner at all times
+   - Attempting to remove the last owner will result in an error
+   ```go
+   // This will fail if it's the last owner
+   err := client.GroupMembers.Delete(ctx, rownd.DeleteGroupMemberRequest{
+       GroupID: "group_id",
+       MemberID: "last_owner_member_id",  // Will return error if last owner
+   })
+   ```
+
+3. **Group Deletion Requirements**
+   - A group must be deleted before removing its last member
+   - Correct order of operations:
+   ```go
+   // Correct order: Delete group first, which removes all members
+   err := client.Groups.Delete(ctx, rownd.DeleteGroupRequest{
+       GroupID: "group_id",
+   })
+
+   // Incorrect: Will fail if trying to remove last member while group exists
+   err := client.GroupMembers.Delete(ctx, rownd.DeleteGroupMemberRequest{
+       GroupID: "group_id",
+       MemberID: "last_member_id",  // Will return error
+   })
+   ```
+
+### Best Practices for Owner Management
+
+1. **Transferring Ownership**
+   ```go
+   // First, add owner role to another member
+   _, err = client.GroupMembers.Update(ctx, rownd.UpdateGroupMemberRequest{
+       GroupID: "group_id",
+       MemberID: "new_owner_member_id",
+       Roles: []string{"owner", "member"},
+   })
+   if err != nil {
+       return err
+   }
+
+   // Then, you can safely remove owner role from the previous owner
+   _, err = client.GroupMembers.Update(ctx, rownd.UpdateGroupMemberRequest{
+       GroupID: "group_id",
+       MemberID: "old_owner_member_id",
+       Roles: []string{"member"},
+   })
+   ```
+
+2. **Checking Owner Status**
+   ```go
+   members, err := client.GroupMembers.List(ctx, rownd.ListGroupMembersRequest{
+       GroupID: "group_id",
+   })
+   
+   // Count owners
+   ownerCount := 0
+   for _, member := range members.Results {
+       for _, role := range member.Roles {
+           if role == "owner" {
+               ownerCount++
+               break
+           }
+       }
+   }
+   
+   // Ensure there's at least one owner
+   if ownerCount == 0 {
+       log.Fatal("Group must have at least one owner")
+   }
+   ```
+
+3. **Group Cleanup Process**
+   ```go
+   // Proper group cleanup sequence
+   func cleanupGroup(ctx context.Context, client *rownd.Client, groupID string) error {
+       // 1. First, delete the group (this will remove all members)
+       err := client.Groups.Delete(ctx, rownd.DeleteGroupRequest{
+           GroupID: groupID,
+       })
+       if err != nil {
+           return fmt.Errorf("failed to delete group: %w", err)
+       }
+       
+       // No need to manually delete members - they are automatically removed
+       return nil
+   }
+   ```
+
+## Error Handling
+
+The SDK provides structured error types for better error handling:
+
+```go
+if err != nil {
+    switch e := err.(type) {
+    case *rownd.Error:
+        switch e.Kind {
+        case rownd.ErrAuthentication:
+            log.Printf("Authentication error: %v", e)
+        case rownd.ErrValidation:
+            log.Printf("Validation error: %v", e)
+        case rownd.ErrAPI:
+            log.Printf("API error: %v", e)
+        case rownd.ErrNetwork:
+            log.Printf("Network error: %v", e)
+        case rownd.ErrNotFound:
+            log.Printf("Not found error: %v", e)
+        }
+    case *rownd.MultiError:
+        log.Printf("Multiple errors occurred: %v", e)
+    default:
+        log.Printf("Unknown error: %v", err)
+    }
+}
+```
+
+## Configuration Options
+
+### Client Options
+```go
+client, err := rownd.NewClient(
+    rownd.WithAppKey("key"),
+    rownd.WithAppSecret("secret"),
+    rownd.WithBaseURL("https://api.rownd.io"),
+    rownd.WithWKCCacheDuration(time.Hour),
+    rownd.WithJWKsCacheDuration(time.Hour),
+)
+```
+
+### Request Options
+```go
+client.Users.Get(ctx, request, 
+    rownd.RequestWithHeader("X-Custom-Header", "value"),
+)
+```
+
+## Testing
+
+Run all tests:
+```bash
+go test ./...
+```
+
+Run specific tests:
+```bash
+go test -v ./... -run TestRowndUsers
+```
+
+Run with timeout:
+```bash
+go test -v ./... -timeout 30s
+```
+
+## Types Reference
+
+### Auth Levels
+```go
+const (
+    AuthLevelInstant    AuthLevel = "instant"
+    AuthLevelUnverified AuthLevel = "unverified"
+    AuthLevelGuest      AuthLevel = "guest"
+    AuthLevelVerified   AuthLevel = "verified"
+)
+```
+
+### Group Admission Policies
+```go
+const (
+    AdmissionPolicyInviteOnly AdmissionPolicy = "invite_only"
+    AdmissionPolicyOpen       AdmissionPolicy = "open"
+)
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Environment Setup
+
+### Using Environment Variables
+
+Create a `.env` file in your project root:
+
+```env
+# .env
+ROWND_APP_KEY=key_bd81v4usfn4c9wh6i83c13ak
+ROWND_APP_SECRET=ras_32769e81.0.002bc537079f78d4bc890214fd85c63b313c0
+ROWND_APP_ID=app_xkbuml48qs3tyxxjjpaxeemv
+ROWND_BASE_URL=https://api.rownd.io
+```
+
+Load environment variables in your code:
+
+```go
+package main
+
+import (
+    "github.com/joho/godotenv"
+    "github.com/rownd/client-go/pkg/rownd"
+    "log"
+    "os"
+)
+
+func main() {
+    // Load .env file
+    if err := godotenv.Load(); err != nil {
+        log.Printf("Warning: .env file not found")
+    }
+
+    // Initialize client with environment variables
+    client, err := rownd.NewClient(
+        rownd.WithAppKey(os.Getenv("ROWND_APP_KEY")),
+        rownd.WithAppSecret(os.Getenv("ROWND_APP_SECRET")),
+        rownd.WithBaseURL(os.Getenv("ROWND_BASE_URL")),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+```
+
+### Environment Files
+
+1. Add `.env` to your `.gitignore`:
+```gitignore
+# .gitignore
+.env
+```
+
+2. For testing, create a separate `.env.test`:
+```env
+# .env.test
+ROWND_TEST_APP_KEY=test_key_here
+ROWND_TEST_APP_SECRET=test_secret_here
+ROWND_TEST_APP_ID=test_app_id_here
+ROWND_TEST_BASE_URL=https://api.rownd.io
+```
+
+3. Load different env files based on environment:
+```go
+func loadEnv() {
+    env := os.Getenv("GO_ENV")
+    if env == "test" {
+        godotenv.Load(".env.test")
+    }
+}
+```

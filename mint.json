@@ -105,8 +105,8 @@
         {
           "group": "Automations",
           "pages": [
-            "configuration/automations/overview",
-            "configuration/automations/sign-in-prompt"
+            "configuration/Automations/overview",
+            "configuration/Automations/sign-in-prompt"
           ]
         },
         {
@@ -230,6 +230,7 @@
         "sdk-reference/web/nextjs",
         "sdk-reference/web/remix",
         "sdk-reference/web/angular",
+        "sdk-reference/web/go",
         "sdk-reference/web/vue",
         "sdk-reference/web/wordpress---woocommerce",
         "sdk-reference/web/ruby-on-rails"
