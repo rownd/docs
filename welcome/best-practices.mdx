@@ -3,8 +3,6 @@ title: "Best Practices"
 sidebarTitle: "Best Practices"
 ---
 
-# Rownd Implementation Best Practices
-
 ## Data Bifurcation Strategy
 
 ### Why Separate PII Data?
@@ -43,13 +41,29 @@ Rownd provides flexible options for migrating existing users:
 
 1. **Using the User API**
 ```javascript
-// Example of migrating a user
+// Using the Rownd SDK
 await rownd.user.create({
   data: {
     email: "user@example.com",
     first_name: "John",
     last_name: "Doe"
   }
+});
+
+// Using the REST API
+await fetch(`https://api.rownd.io/me/applications/${appId}/data`, {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer <user_jwt>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    data: {
+      email: "user@example.com",
+      first_name: "John",
+      last_name: "Doe"
+    }
+  })
 });
 ```
 
@@ -139,26 +153,7 @@ public bool SortToken(string token)
     return ValidateLegacyToken(token);
 }
 ```
-  </Tab>
-</Tabs>
 
-#### Mobile App Migration
-When deploying Rownd in mobile applications:
-
-1. **Implement Dual Token Validation**
-```javascript
-function validateAuthToken(token) {
-    // First, try to decode the token
-    const decoded = decodeToken(token);
-    
-    // Route to appropriate validator
-    if (decoded.issuer === 'rownd') {
-        return rowndSDK.validateToken(token);
-    } else {
-        return legacyAuth.validateToken(token);
-    }
-}
-```
 
 2. **Gradual Rollout Strategy**
 - Deploy Rownd SDK alongside existing authentication
@@ -206,8 +201,10 @@ MainBrand
 - **Contextual Transitions**: Preserve user context when moving between apps
 - **Consistent Configuration**: Inherit and override settings at each level
 - **Granular Control**: Manage permissions and features per sub-app while maintaining brand cohesion
-- **Brand Consistency**: Users experience a single, cohesive brand regardless of entry point
+- **Brand Consistency**: Users experience a single, cohesive brand regardless of entry point.
 
 <Note>
 When designing your application structure, always ask: "How does my user view this ecosystem?" rather than "How is my technology organized?"
 </Note>
+
+
