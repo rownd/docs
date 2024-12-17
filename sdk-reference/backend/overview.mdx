@@ -13,6 +13,43 @@ Ensure secure access to your backend resources with comprehensive token manageme
 - **Token Refresh**: Automatically handle token expiration and renewal
 - **Custom Claims**: Add and manage custom claims for user tokens
 
+### Understanding Rownd Tokens
+
+Rownd uses JWT (JSON Web Tokens) for authentication. Here's an example token payload:
+
+```json
+json
+{
+"jti": "e5aded8f-4950-4215-9a45-dc3e7x8575e90",
+"aud": [
+"app:app_v8q15ahdmpx3wqnbm6j19grlx",
+"app_variant:cm4swjkos008x5bfc8x48d70xu"
+],
+"sub": "user_o7jyzlzbga2uhly698ba8a1s",
+"iat": 1734467046,
+"exp": 1734470646,
+"iss": "https://api.rownd.io",
+"https://auth.rownd.io/app_user_id": "user_o7jyzlzbga2uhly698ba8a1s",
+"https://auth.rownd.io/is_verified_user": true,
+"https://auth.rownd.io/auth_level": "verified"
+}
+```
+
+Standard JWT claims:
+- **jti**: Unique identifier for this token 
+- **aud**: Array of audiences this token is intended for (includes Rownd app ID and app variant ID if applicable); 
+- **sub**: Subject identifier (Rownd user ID)
+- **iat**: Timestamp when the token was issued
+- **exp**: Timestamp when the token expires
+- **iss**: Token issuer (Rownd API)
+
+Rownd-specific claims:
+- **https://auth.rownd.io/app_user_id**: User's unique identifier in Rownd
+- **https://auth.rownd.io/is_verified_user**: Boolean indicating if the user is verified
+- **https://auth.rownd.io/auth_level**: User's authentication level (e.g., "verified")
+
+
+
 ### Seamless Integration
 
 Integrate Rownd's backend capabilities with your existing infrastructure:
