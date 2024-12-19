@@ -23,8 +23,8 @@ The Rownd SDK for JavaScript enables seamless user authentication and profile ma
 
 2.  Add the snippet to your website. If you're using a CMS (e.g., WordPress,
     Webflow, Wix, etc.), you can typically add the snippet through the
-    "settings" portion of their editors.  
-    
+    "settings" portion of their editors.
+
      If you're testing locally or want to add the snippet directly to your site code,
     add the snippet to your main layout or template HTML file. Ideally, add the snippet
     just before the closing `</body>` tag.
@@ -210,36 +210,79 @@ The Rownd Hub emits various events when state changes occur. For example,
 initial authentication, updates to user data, etc. You can listen for these
 event changes and react to them.
 
-#### `auth`
-The `auth` event fires any time the user moves from an
-unauthenticated state to an authenticated state. It will also fire any time the
-access token is refreshed.
 
-```jsx
-rownd.events.addEventListener("auth", (evt) => {
-  const { access_token, user_id, app_id } = evt.detail;
-});
-```
+#### `sign_in_completed`
+
+This event fires when a user has completed the sign in process.
+
+<ResponseField name="method" type="string" required="true">
+The method used to sign in. Can be one of `"google"`, `"apple"`, `"phone"`, `"email"`, `"passkey"`, or `"anonymous"`.
+</ResponseField>
+<ResponseField name="user_type" type="string" required="true">
+The type of user that signed in. Can be either `"new_user"` or `"existing_user"`.
+</ResponseField>
+<ResponseField name="app_variant_user_type" type="string" optional>
+The type of user that signed in for the current app variant. Can be either `"new_user"` or `"existing_user"`.
+<Info>`app_variant_user_type` will be released in early 2025</Info>
+</ResponseField>
+
+
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener("sign_in_completed", (evt) => {
+    const { method, user_type, app_variant_user_type } = evt.detail;
+  });
+  ```
+</Accordion>
+
+#### `auth`
+This event fires any time the user moves from an unauthenticated state to an authenticated state. It will also fire any time the access token is refreshed.
+
+<ResponseField name="access_token" type="string" required="true">
+The user's access token that can be used to authenticate API requests.
+</ResponseField>
+<ResponseField name="user_id" type="string" required="true">
+The unique identifier for the authenticated user.
+</ResponseField>
+<ResponseField name="app_id" type="string" required="true">
+The ID of the Rownd application.
+</ResponseField>
+
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener("auth", (evt) => {
+    const { access_token, user_id, app_id } = evt.detail;
+  });
+  ```
+</Accordion>
 
 #### `sign_out`
 This event fires whenever a user is signed out.
 
-```jsx
-rownd.events.addEventListener('sign_out', () => {
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener('sign_out', () => {
     // do something now that the user has signed out
-});
-```
+  });
+  ```
+</Accordion>
 
 #### `user_data`
-This evenf fires any time a user's profile data changes. This could fire due to calls to `rownd.user.set()`, `rowns.user.setValue()`, changes to profile data in the Rownd Hub UI, or due to data changes when authenticating.
+This event fires any time a user's profile data changes. This could fire due to calls to `rownd.user.set()`, `rowns.user.setValue()`, changes to profile data in the Rownd Hub UI, or due to data changes when authenticating.
 
-```jsx
-rownd.events.addEventListener("user_data", (evt) => {
-  const { data } = evt.detail;
-  console.log("first_name:", data.first_name);
-});
-```
+<ResponseField name="data" type="object" required="true">
+The user's updated profile data.
+</ResponseField>
+
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener("user_data", (evt) => {
+    const { data } = evt.detail;
+    console.log("first_name:", data.first_name);
+  });
+  ```
+</Accordion>
 
 ### Hooks
 
-With the JavaScript SDK installed, you can use all of the HTML hooks described in the [HTML Hooks](/sdk-reference/web/html) documentation. 
+With the JavaScript SDK installed, you can use all of the HTML hooks described in the [HTML Hooks](/sdk-reference/web/html) documentation.
