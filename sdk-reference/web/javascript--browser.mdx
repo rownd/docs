@@ -235,6 +235,23 @@ The type of user that signed in for the current app variant. Can be either `"new
   ```
 </Accordion>
 
+#### `sign_in_failed`
+
+This event fires when a user's sign in attempt fails.
+
+<ResponseField name="reason" type="string" required="true">
+The reason the sign in failed.
+</ResponseField>
+
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener("sign_in_failed", (evt) => {
+    const { reason } = evt.detail;
+    console.log("Sign in failed:", reason);
+  });
+  ```
+</Accordion>
+
 #### `auth`
 This event fires any time the user moves from an unauthenticated state to an authenticated state. It will also fire any time the access token is refreshed.
 
