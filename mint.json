@@ -247,6 +247,7 @@
       "pages": [
         "sdk-reference/backend/overview",
         "sdk-reference/web/node-js",
+        "sdk-reference/web/go",
         "sdk-reference/web/wordpress---woocommerce",
         "sdk-reference/web/ruby-on-rails",
         "sdk-reference/web/django--python",
