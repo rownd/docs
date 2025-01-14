@@ -232,26 +232,26 @@
             "sdk-reference/web/javascript--browser"
           ]
         },
-        "sdk-reference/web/html",
-        "sdk-reference/web/react---next-js",
-        "sdk-reference/web/nextjs",
-        "sdk-reference/web/remix",
         "sdk-reference/web/angular",
+        "sdk-reference/web/html",
+        "sdk-reference/web/nextjs",
+        "sdk-reference/web/react---next-js",
+        "sdk-reference/web/remix",
+        "sdk-reference/web/ruby-on-rails",
         "sdk-reference/web/vue",
-        "sdk-reference/web/wordpress---woocommerce",
-        "sdk-reference/web/ruby-on-rails"
+        "sdk-reference/web/wordpress---woocommerce"
       ]
     },
     {
       "group": "Backend / Server",
       "pages": [
         "sdk-reference/backend/overview",
-        "sdk-reference/web/node-js",
-        "sdk-reference/web/go",
-        "sdk-reference/web/wordpress---woocommerce",
-        "sdk-reference/web/ruby-on-rails",
         "sdk-reference/web/django--python",
-        "sdk-reference/web/net-core"
+        "sdk-reference/web/go",
+        "sdk-reference/web/node-js",
+        "sdk-reference/web/net-core",
+        "sdk-reference/web/ruby-on-rails",
+        "sdk-reference/web/wordpress---woocommerce"
       ]
     },
     {

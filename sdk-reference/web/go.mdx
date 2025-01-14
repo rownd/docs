@@ -1,8 +1,8 @@
 
 
 ---
-title: "Rownd GO SDK"
-sidebarTitle: "GO SDK"
+title: "Go"
+sidebarTitle: "Go"
 icon: golang
 ---
 
@@ -21,9 +21,9 @@ go get github.com/rownd/client-go/pkg/rownd
 - Group management with member roles and invites
 - HTTP middleware for authentication
 - Comprehensive error handling
-- Configurable caching for JWKS and WKC
+- Configurable caching for JWKs and WKC
 
-## Quick Start
+## Quick start
 
 ```go
 package main
@@ -62,12 +62,12 @@ func main() {
 }
 ```
 
-## Quick Start with Examples
+## Quick start with examples
 
-### Creating Users
+### Creating users
 
 ```go
-// Let Rownd generate a UUID
+// Let Rownd generate an ID
 user, err := client.Users.CreateOrUpdate(ctx, rownd.CreateOrUpdateUserRequest{
     UserID: "__default__",  // Special value that tells Rownd to generate a user ID. Can be `__rowndid__`, `__uuid__`, `__objectid__`, or `__default__` for your app's configured default behavior.
     Data: map[string]interface{}{
@@ -98,7 +98,7 @@ user, err := client.Users.CreateOrUpdate(ctx, rownd.CreateOrUpdateUserRequest{
 })
 ```
 
-### Looking Up Users
+### Searching for users
 
 ```go
 // Lookup by email
@@ -131,7 +131,7 @@ users, err := client.Users.List(ctx, rownd.ListUsersRequest{
 })
 ```
 
-### Group Management Examples
+### Group management examples
 
 ```go
 // Create a group
@@ -177,7 +177,7 @@ invite, err := client.GroupInvites.Create(ctx, rownd.CreateGroupInviteRequest{
 // }
 ```
 
-### Token Validation with Claims
+### Token validation with claims
 
 ```go
 token, err := client.ValidateToken(ctx, "your-jwt-token")
@@ -199,7 +199,7 @@ token, err := client.ValidateToken(ctx, "your-jwt-token")
 // }
 ```
 
-### Helpful Utilities
+### Helpful utilities
 
 ```go
 // Convert values to pointers (useful for optional fields)
@@ -217,9 +217,9 @@ if token != nil {
 }
 ```
 
-## Authentication & Token Validation
+## Authentication & token validation
 
-### Token Validation
+### Token validation
 ```go
 // Validate a token
 token, err := client.ValidateToken(ctx, "your-jwt-token")
@@ -232,7 +232,7 @@ log.Printf("User ID: %s", token.UserID)
 log.Printf("Auth Level: %s", token.Claims.AuthLevel)
 ```
 
-### HTTP Middleware
+### HTTP middleware
 ```go
 import "github.com/rownd/client-go/pkg/rownd/middleware"
 
@@ -247,9 +247,9 @@ handler, err := rowndmiddleware.NewHandler(client,
 router.Use(rowndmiddleware.WithAuthentication(handler))
 ```
 
-## User Management
+## User management
 
-### User Operations
+### User operations (CRUD)
 ```go
 // Get user
 user, err := client.Users.Get(ctx, rownd.GetUserRequest{
@@ -268,7 +268,7 @@ err := client.Users.Delete(ctx, rownd.DeleteUserRequest{
 })
 ```
 
-## Group Management
+## Group management
 
 ### Groups
 ```go
@@ -290,7 +290,7 @@ err := client.Groups.Delete(ctx, rownd.DeleteGroupRequest{
 })
 ```
 
-### Group Invites
+### Group invites
 ```go
 // Create invite
 invite, err := client.GroupInvites.Create(ctx, rownd.CreateGroupInviteRequest{
@@ -312,9 +312,9 @@ err := client.GroupInvites.Delete(ctx, rownd.DeleteGroupInviteRequest{
 })
 ```
 
-## Group Membership Management
+## Group membership management
 
-### Understanding Member ID vs User ID
+### The difference between Group IDs and User IDs
 
 In Rownd's group system, there are two important identifiers:
 - `user_id`: The unique identifier for a Rownd user (e.g., "user_a7b53gwdaml5jt7t71442ng7")
@@ -334,7 +334,7 @@ type GroupMember struct {
 }
 ```
 
-### Managing Group Members
+### Managing group members
 
 ```go
 // Add a user to a group
@@ -396,7 +396,7 @@ err := client.GroupMembers.Delete(ctx, rownd.DeleteGroupMemberRequest{
 })
 ```
 
-### Important Notes About Group Membership
+### Important notes about group membership
 
 1. **Member ID vs User ID**
    - Use `member_id` when managing a specific membership (updating roles, removing from group)
@@ -428,11 +428,11 @@ err := client.GroupMembers.Delete(ctx, rownd.DeleteGroupMemberRequest{
    - `viewer`: Read-only access
    - Custom roles can be defined as needed
 
-## Group Ownership and Member Management Rules
+## Group ownership and member management rules
 
-### Group Ownership Rules
+### Group ownership rules
 
-1. **Automatic Owner Assignment**
+1. **Automatic owner assignment**
    - The first member added to a group automatically receives the "owner" role
    - Example of first member creation:
    ```go
@@ -451,7 +451,7 @@ err := client.GroupMembers.Delete(ctx, rownd.DeleteGroupMemberRequest{
    // }
    ```
 
-2. **Owner Requirements**
+2. **Owner requirements**
    - Every group must maintain at least one owner at all times
    - Attempting to remove the last owner will result in an error
    ```go
@@ -462,8 +462,8 @@ err := client.GroupMembers.Delete(ctx, rownd.DeleteGroupMemberRequest{
    })
    ```
 
-3. **Group Deletion Requirements**
-   - A group must be deleted before removing its last member
+3. **Group deletion requirements**
+   - A group must have at least one member. To remove all members, delete the group.
    - Correct order of operations:
    ```go
    // Correct order: Delete group first, which removes all members
@@ -478,69 +478,7 @@ err := client.GroupMembers.Delete(ctx, rownd.DeleteGroupMemberRequest{
    })
    ```
 
-### Best Practices for Owner Management
-
-1. **Transferring Ownership**
-   ```go
-   // First, add owner role to another member
-   _, err = client.GroupMembers.Update(ctx, rownd.UpdateGroupMemberRequest{
-       GroupID: "group_id",
-       MemberID: "new_owner_member_id",
-       Roles: []string{"owner", "member"},
-   })
-   if err != nil {
-       return err
-   }
-
-   // Then, you can safely remove owner role from the previous owner
-   _, err = client.GroupMembers.Update(ctx, rownd.UpdateGroupMemberRequest{
-       GroupID: "group_id",
-       MemberID: "old_owner_member_id",
-       Roles: []string{"member"},
-   })
-   ```
-
-2. **Checking Owner Status**
-   ```go
-   members, err := client.GroupMembers.List(ctx, rownd.ListGroupMembersRequest{
-       GroupID: "group_id",
-   })
-   
-   // Count owners
-   ownerCount := 0
-   for _, member := range members.Results {
-       for _, role := range member.Roles {
-           if role == "owner" {
-               ownerCount++
-               break
-           }
-       }
-   }
-   
-   // Ensure there's at least one owner
-   if ownerCount == 0 {
-       log.Fatal("Group must have at least one owner")
-   }
-   ```
-
-3. **Group Cleanup Process**
-   ```go
-   // Proper group cleanup sequence
-   func cleanupGroup(ctx context.Context, client *rownd.Client, groupID string) error {
-       // 1. First, delete the group (this will remove all members)
-       err := client.Groups.Delete(ctx, rownd.DeleteGroupRequest{
-           GroupID: groupID,
-       })
-       if err != nil {
-           return fmt.Errorf("failed to delete group: %w", err)
-       }
-       
-       // No need to manually delete members - they are automatically removed
-       return nil
-   }
-   ```
-
-## Error Handling
+## Error handling
 
 The SDK provides structured error types for better error handling:
 
@@ -568,9 +506,9 @@ if err != nil {
 }
 ```
 
-## Configuration Options
+## Configuration options
 
-### Client Options
+### Client options
 ```go
 client, err := rownd.NewClient(
     rownd.WithAppKey("key"),
@@ -581,7 +519,7 @@ client, err := rownd.NewClient(
 )
 ```
 
-### Request Options
+### Request options
 ```go
 client.Users.Get(ctx, request, 
     rownd.RequestWithHeader("X-Custom-Header", "value"),
@@ -605,9 +543,9 @@ Run with timeout:
 go test -v ./... -timeout 30s
 ```
 
-## Types Reference
+## Types reference
 
-### Auth Levels
+### Auth levels
 ```go
 const (
     AuthLevelInstant    AuthLevel = "instant"
@@ -617,7 +555,7 @@ const (
 )
 ```
 
-### Group Admission Policies
+### Group admission policies
 ```go
 const (
     AdmissionPolicyInviteOnly AdmissionPolicy = "invite_only"
@@ -625,13 +563,9 @@ const (
 )
 ```
 
-## License
+## Environment setup
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Environment Setup
-
-### Using Environment Variables
+### Using environment variables
 
 Create a `.env` file in your project root:
 
@@ -699,3 +633,7 @@ func loadEnv() {
     }
 }
 ```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
