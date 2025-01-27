@@ -224,7 +224,7 @@ Access application configuration:
 ```jsx
 function AppConfigExample() {
   const { getAppConfig } = useRownd();
-
+  
   useEffect(() => {
     async function fetchConfig() {
       const config = await getAppConfig();
@@ -330,7 +330,7 @@ function UserProfileManager() {
   const hasVerifiedPhone = verified_data.phone_number === data.phone_number;
 
   return (
-        <div>
+    <div>
       <h2>User Profile</h2>
       
       {/* Basic Information */}
@@ -956,7 +956,7 @@ function RowndReduxSync() {
    ```
 
 2. **Handle Loading States**
-```jsx
+   ```jsx
    if (user.is_loading) {
      return <div>Updating profile...</div>;
    }
@@ -1004,7 +1004,7 @@ function RowndReduxSync() {
    ```tsx
    // Frontend - Efficient API calls
    function UserDataComponent() {
-const { getAccessToken } = useRownd();
+     const { getAccessToken } = useRownd();
 
      const fetchUserData = async () => {
        const token = await getAccessToken();
@@ -1104,7 +1104,7 @@ function ProfilePictureUpload() {
     }
   };
 
-return (
+  return (
     <input 
       type="file" 
       accept="image/*" 
@@ -1184,7 +1184,7 @@ While the React SDK provides programmatic control, you can also use HTML data at
 ```tsx
 // Example combining React and HTML hooks
 function AuthenticationExample() {
-return (
+  return (
     <div>
       {/* Trigger sign-in modal */}
       <button data-rownd-sign-in-trigger>
@@ -1433,7 +1433,7 @@ function AccountSection() {
   return (
     <div className="account-section">
       {!is_authenticated && (
-<div>
+        <div>
           <h3>Please sign in to manage your account</h3>
           <button 
             data-rownd-sign-in-trigger
@@ -1490,7 +1490,7 @@ function AccountSection() {
    function UserMenu() {
      const { manageAccount } = useRownd();
      
-  return (
+     return (
        <menu>
          <li>Dashboard</li>
          <li>
