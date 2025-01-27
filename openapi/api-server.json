@@ -2054,6 +2054,46 @@
         }
       }
     },
+    "/applications/{app}/users/{user}/signout": {
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AppID"
+          },
+          {
+            "$ref": "#/components/parameters/UserID"
+          }
+        ],
+        "operationId": "application_user_signout",
+        "tags": [
+          "applications"
+        ],
+        "x-required-role": [
+          "editor",
+          "admin",
+          "owner"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sign_out_all": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "User signout successful"
+          }
+        }
+      }
+    },
     "/applications/{app}/forms": {
       "parameters": [
         {
@@ -5107,6 +5147,46 @@
         }
       }
     },
+    "/me/applications/{app}/signout": {
+      "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AppID"
+          }
+        ],
+        "operationId": "my_application_signout",
+        "security": [
+          {
+            "hubAccessToken": []
+          }
+        ],
+        "tags": [
+          "me"
+        ],
+        "x-required-role": [
+          "none"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sign_out_all": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "User signout successful"
+          }
+        }
+      }
+    },
     "/me/applications/{app}/data": {
       "parameters": [
         {
@@ -5764,6 +5844,12 @@
                       "enum": [
                         "instant_user"
                       ]
+                    },
+                    "user_type": {
+                      "type": "string",
+                      "enum": [
+                        "instant_user"
+                      ]
                     }
                   }
                 }
@@ -5899,7 +5985,10 @@
                       "type": "string"
                     },
                     "user_type": {
-                      "type": "string"
+                      "$ref": "#/components/schemas/UserType"
+                    },
+                    "app_variant_user_type": {
+                      "$ref": "#/components/schemas/UserType"
                     },
                     "fingerprint": {
                       "type": "object",
@@ -5979,6 +6068,9 @@
                     },
                     "user_type": {
                       "$ref": "#/components/schemas/UserType"
+                    },
+                    "app_variant_user_type": {
+                      "$ref": "#/components/schemas/UserType"
                     }
                   }
                 }
@@ -6045,6 +6137,9 @@
                       "type": "string"
                     },
                     "user_type": {
+                      "$ref": "#/components/schemas/UserType"
+                    },
+                    "app_variant_user_type": {
                       "$ref": "#/components/schemas/UserType"
                     },
                     "intent": {
@@ -6403,7 +6498,24 @@
                     "enum": [
                       "auth",
                       "shorten"
-                    ]
+                    ],
+                    "description": "Determines whether this link will identify a user and allow them to sign in\nautomatically or whether it will just act as a simple redirect. An `auth`\nlink should only be sent to a single user, whereas a `shorten` link can\nbe sent to many users if desired, since it does not carry an authentication\npayload.\n"
+                  },
+                  "redirect_url": {
+                    "type": "string",
+                    "description": "The absolute URL or relative path to send your user after sign-in. If the URL is\nrelative, it will be appended to your application's default redirect URL as defined\nin your Rownd application settings. If no default redirect is set, the magic link\ncreation will fail.\n",
+                    "example": "/somewhere/in/my/app#"
+                  },
+                  "expiration": {
+                    "type": "string",
+                    "description": "A human-readable string representing the duration for which a magic link is valid.\nExamples of valid values include `1h`, `2d`, `3w`, `1m`, etc. May not exceed `30d`.\nDefaults to `30d`.",
+                    "example": "30d",
+                    "pattern": "^(\\d+|\\d+\\.\\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)$"
+                  },
+                  "link_data": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "description": "A dictionary of key-value pairs to store with the magic link. These values will be\nreturned in the magic link response and can be used to store any additional data\nyou need to associate with the link.\n\nDo not store sensitive data in this field, as it can be read by anyone who has the link.\nFetching the link with `Accept: application/json` will return the redirect link along with\nthe `link_meta` field. In mobile SDKs, this is returned to you as part of the payload to\nyour magic link delegate/callback.\n"
                   },
                   "verification_type": {
                     "type": "string",
@@ -6416,31 +6528,20 @@
                   "data": {
                     "type": "object",
                     "additionalProperties": true,
-                    "description": "Data to add to the user's profile",
+                    "description": "Data to add to the user's profile. These properties must exist in the Profile Data\nportion of the Rownd application. If properties such as email, phone, etc identify\nan existing user, the user will be auto-matched regardless of the user_id value.\n",
                     "example": {
                       "email": "gary@foo.com",
                       "first_name": "Gary"
                     }
-                  },
-                  "redirect_url": {
-                    "type": "string",
-                    "description": "The absolute URL or relative path to send your user after sign-in",
-                    "example": "/somewhere/in/my/app#"
                   },
                   "user_id": {
                     "type": "string",
                     "description": "Specify a user ID. If the user already exists, include their user ID. Otherwise,\nuse one of `'__default__'`, `'__uuid__'`, or `'__objectid__'`. These special values\ntell Rownd to generate an ID in the provided format, or use the application's\ndefault user ID format.\n",
                     "default": "__default__"
                   },
-                  "expiration": {
-                    "type": "string",
-                    "description": "A string representing the duration for which a magic link is valid.",
-                    "example": "90d",
-                    "pattern": "^(\\d+|\\d+\\.\\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)$"
-                  },
                   "group_to_join": {
                     "type": "string",
-                    "description": "ID of a group to which the user will join upon completing sign-in. The group\nmust have an admission policy of `'open'`.`\n"
+                    "description": "The ID of a group which the user will auto-join upon completing sign-in. The group\nmust have an `'open'` admission policy.\n"
                   }
                 }
               }
@@ -7156,6 +7257,12 @@
                     },
                     "refresh_token": {
                       "type": "string"
+                    },
+                    "user_type": {
+                      "$ref": "#/components/schemas/UserType"
+                    },
+                    "app_variant_user_type": {
+                      "$ref": "#/components/schemas/UserType"
                     }
                   }
                 }
@@ -12461,6 +12568,15 @@
           "redirect_url": {
             "type": "string",
             "description": "The original redirect URL"
+          },
+          "link_data": {
+            "type": "object",
+            "description": "The data associated with the magic link",
+            "additionalProperties": true
+          },
+          "magic_link": {
+            "type": "string",
+            "description": "The self reference to this link"
           }
         }
       },
@@ -12654,6 +12770,17 @@
         ],
         "description": "The user's state",
         "default": "enabled"
+      },
+      "AppUserDataAttributes": {
+        "type": "object",
+        "description": "User profile attributes",
+        "default": {},
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       },
       "AppUserDataData": {
         "description": "User profile data",
@@ -12859,6 +12986,9 @@
             "type": "string",
             "description": "The user's authentication level",
             "example": "verified"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/AppUserDataAttributes"
           },
           "data": {
             "$ref": "#/components/schemas/AppUserDataData"
@@ -13509,6 +13639,11 @@
           "hub_show_logos": {
             "type": "boolean",
             "description": "Whether to show the logos in the hub",
+            "example": true
+          },
+          "is_pkce_supported": {
+            "type": "boolean",
+            "description": "Whether PKCE is supported for the OIDC client",
             "example": true
           }
         }

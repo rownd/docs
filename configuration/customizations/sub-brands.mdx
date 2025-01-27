@@ -6,9 +6,13 @@ description: "Sub-brands allow you to manage users across all your varying apps,
 Introducing sub-brands, one of Rownd’s latest and greatest features focused on allowing you to expand your portfolio without partitioning where you manage your users. Sub-brands are extremely unique, easy to use, and can save you and your development team so much time.
 
 
-#### What are sub brands?
+#### What are sub-brands?
 
-A sub-brand is a variation of your Rownd application. Sub-brands can have their own theme, customizations, and even associated automations. All sub-brands share users with the base app, which means that users maintain their account and profile information across the sub-brands they are signed into. Sub-brands allow you to see which apps and brands your users have interacted with, without having to use multiple Rownd apps
+A sub-brand is a variation of your Rownd application. Sub-brands can have their own theme, customizations, and even associated automations. All sub-brands share users with the base app, which means that users maintain their account and profile information across the sub-brands they are signed into. Sub-brands allow you to see which apps and brands your users have interacted with, without having to use multiple Rownd apps.
+
+When you add a user to a sub-brand or they sign into one of your apps that uses a specific sub-brand, an attribute called `rownd:app_variants` is added to their profile with a list of any sub-brands with which the user has interacted. You can also manage these attributes to add or remove a user from a sub-brand.
+
+Additionally, when the user signs in or out of a sub-branded app, their profile metadata will include a map of each sub-brand containing the sign-in method used and the last time they signed in.
 
 
 #### Why might you enable sub-brands?

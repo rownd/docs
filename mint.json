@@ -122,6 +122,7 @@
           "group": "User accounts",
           "pages": [
             "configuration/user-accounts/overview",
+            "configuration/user-accounts/user-profiles",
             "configuration/user-accounts/hub-user-profiles",
             "configuration/user-accounts/platform-user-table",
             "configuration/user-accounts/progressive-profiles",
