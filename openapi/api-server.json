@@ -12774,12 +12774,23 @@
       "AppUserDataAttributes": {
         "type": "object",
         "description": "User profile attributes",
-        "default": {},
         "additionalProperties": {
           "type": "array",
           "items": {
             "type": "string"
           }
+        },
+        "example": {
+          "rownd:app_variants": [
+            "app_variant_1",
+            "app_variant_2"
+          ],
+          "myapp:subscription_status": [
+            "active"
+          ],
+          "myapp:loyalty_points": [
+            "100"
+          ]
         }
       },
       "AppUserDataData": {
