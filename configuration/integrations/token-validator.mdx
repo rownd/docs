@@ -42,6 +42,23 @@ In the near future, we'll also support the following configurations:
 
 If none of the above configurations match your specific use case, please let us know.
 
+#### Reponding to requests from the token validator
+When implementing an API for the token validator to call, the response should be a flat JSON object with properties
+that match the configuration you supplied to the token validator setup above. For example, if you configured the token validator to extract a `userId` and `email` from the response, the response should look like this:
+
+```json
+{
+  "userId": "1234567890",
+  "email": "juliet@rose.com"
+}
+```
+
+You can also include additional properties in the response, which will be stored in the user's profile in Rownd if they match the profile schema configured within Rownd.
+
+<Note>Providing a user ID in your API response is optional. If none is provided, Rownd will generate a new user ID. If the user ID is present, Rownd will use it instead, which may be helpful if you're trying to map users to an existing system.</Note>
+
+#### Handling cases where the token is invalid or the user isn't found
+If the token Rownd passes to your API does not match an existing user, you should return either a 400 or a 404 status code, which will cause Rownd to abort the token exchange.
 
 ### Firebase setup
 
