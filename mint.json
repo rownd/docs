@@ -272,27 +272,6 @@
       "group": "App-Scoped Endpoints",
       "pages": [
         {
-          "group": "Magic Links",
-          "icon": "link",
-          "pages": [
-            "api-reference/authentication/create-magic-link"
-          ]
-        },
-        {
-          "group": "User Profiles",
-          "icon": "address-card",
-          "pages": [
-            "api-reference/user-profiles/app/insert-update",
-            "api-reference/user-profiles/app/get-user-data",
-            "api-reference/user-profiles/app/update-patch",
-            "api-reference/user-profiles/app/delete",
-            "api-reference/user-profiles/app/list-user-profiles",
-            "api-reference/user-profiles/app/retrieve-field",
-            "api-reference/user-profiles/app/update-field",
-            "api-reference/user-profiles/app/get-sample-data"
-          ]
-        },
-        {
           "group": "Groups",
           "icon": "user-group",
           "pages": [
@@ -327,6 +306,13 @@
           ]
         },
         {
+          "group": "Magic Links",
+          "icon": "link",
+          "pages": [
+            "api-reference/authentication/create-magic-link"
+          ]
+        },
+        {
           "group": "OpenID Clients",
           "icon": "openid",
           "pages": [
@@ -336,22 +322,33 @@
             "api-reference/oidc/clients/update",
             "api-reference/oidc/clients/delete"
           ]
+        },
+        {
+          "group": "User Profiles",
+          "icon": "address-card",
+          "pages": [
+            "api-reference/user-profiles/app/insert-update",
+            "api-reference/user-profiles/app/get-user-data",
+            "api-reference/user-profiles/app/update-patch",
+            "api-reference/user-profiles/app/delete",
+            "api-reference/user-profiles/app/list-user-profiles",
+            "api-reference/user-profiles/app/retrieve-field",
+            "api-reference/user-profiles/app/update-field",
+            "api-reference/user-profiles/app/get-sample-data"
+          ]
+        },
+        {
+          "group": "User Sessions",
+          "icon": "user-clock",
+          "pages": [
+            "api-reference/user-sessions/app/revoke-user-sessions"
+          ]
         }
       ]
     },
     {
       "group": "User-Scoped Endpoints",
       "pages": [
-        {
-          "group": "User Profiles",
-          "icon": "address-card",
-          "pages": [
-            "api-reference/user-profiles/user/get-user-data",
-            "api-reference/user-profiles/user/update-put",
-            "api-reference/user-profiles/user/retrieve-field",
-            "api-reference/user-profiles/user/update-field"
-          ]
-        },
         {
           "group": "Groups",
           "icon": "user-group",
@@ -384,6 +381,16 @@
             "api-reference/groups/user/members/member-update",
             "api-reference/groups/user/members/member-delete",
             "api-reference/groups/user/members/member-list"
+          ]
+        },
+        {
+          "group": "User Profiles",
+          "icon": "address-card",
+          "pages": [
+            "api-reference/user-profiles/user/get-user-data",
+            "api-reference/user-profiles/user/update-put",
+            "api-reference/user-profiles/user/retrieve-field",
+            "api-reference/user-profiles/user/update-field"
           ]
         }
       ]

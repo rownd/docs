@@ -1084,7 +1084,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ApplicationVariant"
+                "$ref": "#/components/schemas/ApplicationVariantCreateRequest"
               }
             }
           }
@@ -1306,6 +1306,176 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/applications/{app}/domains": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AppID"
+        },
+        {
+          "$ref": "#/components/parameters/PageSizeMax1000"
+        },
+        {
+          "$ref": "#/components/parameters/After"
+        },
+        {
+          "$ref": "#/components/parameters/Sort"
+        }
+      ],
+      "get": {
+        "operationId": "application_domains_list",
+        "description": "Platform API for retrieving application domains",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application domains retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDomainList"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "application_domain_create",
+        "description": "Platform API for creating an application domain",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationDomainCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Application domain created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDomain"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/applications/{app}/domains/{domain}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AppID"
+        },
+        {
+          "$ref": "#/components/parameters/ApplicationDomainID"
+        }
+      ],
+      "get": {
+        "operationId": "application_domain_get",
+        "description": "Platform API for retrieving an application domain",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application domain retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDomain"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "application_domain_update",
+        "description": "Platform API for updating an application domain",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationDomainUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Application domain updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDomain"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "application_domain_delete",
+        "description": "Platform API for deleting an application domain",
+        "tags": [
+          "domains"
+        ],
+        "responses": {
+          "204": {
+            "description": "Application domain deleted successfully"
           }
         }
       }
@@ -2065,8 +2235,18 @@
           }
         ],
         "operationId": "application_user_signout",
+        "description": "Revokes all tokens for the specified user causing them to be signed out on all devices.",
         "tags": [
           "applications"
+        ],
+        "security": [
+          {
+            "appKey": [],
+            "appSecret": []
+          },
+          {
+            "hubAccessTokenForRowndApi": []
+          }
         ],
         "x-required-role": [
           "editor",
@@ -2773,6 +2953,50 @@
         "responses": {
           "204": {
             "description": "Successfully deleted mobile app page capture"
+          }
+        }
+      }
+    },
+    "/applications/{app}/automations/mobile/magic": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/AppID"
+        }
+      ],
+      "post": {
+        "operationId": "mobile_app_tagging_magic_create",
+        "description": "Create a magic link for mobile app tagging",
+        "tags": [
+          "automations"
+        ],
+        "security": [
+          {
+            "hubAccessTokenForRowndApi": []
+          }
+        ],
+        "x-required-roles": [
+          "editor"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MobileAppTaggingMagicCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created mobile app page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MobileAppTaggingMagicCreateResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -5555,10 +5779,6 @@
                 "properties": {
                   "redirect_url": {
                     "type": "string"
-                  },
-                  "subdomain": {
-                    "type": "string",
-                    "description": "This is a special property for generating Platform magic links with a Specific\nsubdomain. This is currently used to generate a magic deep link for pairing a\ndevice during mobile tagging."
                   }
                 }
               }
@@ -6718,6 +6938,20 @@
                 "phone",
                 "email"
               ]
+            }
+          },
+          {
+            "name": "redirected",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-original-host",
+            "in": "header",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -8354,32 +8588,6 @@
         "required": true,
         "description": "Rownd application ID"
       },
-      "Fields": {
-        "name": "fields",
-        "in": "query",
-        "schema": {
-          "type": "string",
-          "description": "Comma-separated list of fields to include in the profile data",
-          "example": "email,first_name"
-        }
-      },
-      "LookupFilter": {
-        "name": "lookup_filter",
-        "in": "query",
-        "schema": {
-          "type": "string"
-        },
-        "description": "Return resources that match this filter"
-      },
-      "IDFilter": {
-        "name": "id_filter",
-        "in": "query",
-        "schema": {
-          "type": "string"
-        },
-        "description": "A comma-separated list of resource IDs to filter by",
-        "example": "user_a7b53gwdaml5jt7t71442nt7"
-      },
       "PageSizeMax1000": {
         "name": "page_size",
         "in": "query",
@@ -8407,6 +8615,41 @@
           ]
         },
         "description": "Which direction to sort the results"
+      },
+      "ApplicationDomainID": {
+        "name": "domain",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Application domain ID"
+      },
+      "Fields": {
+        "name": "fields",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "description": "Comma-separated list of fields to include in the profile data",
+          "example": "email,first_name"
+        }
+      },
+      "LookupFilter": {
+        "name": "lookup_filter",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "description": "Return resources that match this filter"
+      },
+      "IDFilter": {
+        "name": "id_filter",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "description": "A comma-separated list of resource IDs to filter by",
+        "example": "user_a7b53gwdaml5jt7t71442nt7"
       },
       "UserID": {
         "name": "user",
@@ -9460,6 +9703,11 @@
               "support_email": {
                 "type": "string",
                 "description": "email for customer support"
+              },
+              "include_rownd_in_reply_to": {
+                "type": "boolean",
+                "description": "Include Rownd's support team in the reply-to email address",
+                "default": true
               }
             }
           },
@@ -11008,6 +11256,34 @@
             "items": {
               "$ref": "#/components/schemas/ApplicationVariant"
             }
+          }
+        }
+      },
+      "ApplicationVariantCreateRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The app variant name"
+          },
+          "description": {
+            "type": "string",
+            "description": "The app variant description"
+          },
+          "app_id": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The ID of the app to which the variant is associated"
+          },
+          "config": {
+            "type": "object",
+            "description": "An object containing app config overrides",
+            "$ref": "#/components/schemas/ApplicationConfig"
+          },
+          "subdomain": {
+            "type": "string",
+            "description": "The subdomain for the variant",
+            "example": "test-app"
           }
         }
       },
@@ -12761,6 +13037,194 @@
           }
         }
       },
+      "CustomDomain": {
+        "required": [
+          "id",
+          "domain",
+          "status",
+          "verification"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the custom domain",
+            "example": "ckl8bcf1g000001l2f7z8z9z9"
+          },
+          "domain": {
+            "type": "string",
+            "description": "The domain of the custom domain",
+            "example": "magic.myapp.com"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the custom domain verification",
+            "enum": [
+              "pending",
+              "ready",
+              "disabled",
+              "blocked"
+            ],
+            "example": "pending"
+          },
+          "verification": {
+            "type": "object",
+            "properties": {
+              "methods": {
+                "type": "array",
+                "description": "The methods used to verify the custom domain",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "value",
+                    "name"
+                  ],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "The type of the verification method",
+                      "enum": [
+                        "txt",
+                        "cname"
+                      ]
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the verification record",
+                      "example": "_rownd-verification=1234567890"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the verification record",
+                      "example": "_rownd-verification.myapp.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ApplicationDomain": {
+        "required": [
+          "id",
+          "app_id",
+          "purpose",
+          "subdomain"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the application domain",
+            "example": "domain_ckl8bcf1g000001l2f7z8z9z9"
+          },
+          "app_id": {
+            "type": "string",
+            "description": "The ID of the app that the application domain belongs to",
+            "example": "app_m7nnoueenvqmv2hr1txvazbz"
+          },
+          "app_variant_id": {
+            "type": "string",
+            "description": "The ID of the app variant that the application domain belongs to",
+            "example": "variant_kib1qt1t5wfj5nzqmtwq2vcq"
+          },
+          "purpose": {
+            "type": "string",
+            "description": "The purpose of the application domain",
+            "enum": [
+              "links",
+              "auth"
+            ]
+          },
+          "subdomain": {
+            "type": "string",
+            "description": "The subdomain of the application domain",
+            "example": "myapp-1234"
+          },
+          "custom_domain": {
+            "$ref": "#/components/schemas/CustomDomain"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          }
+        }
+      },
+      "ApplicationDomainList": {
+        "properties": {
+          "total_results": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationDomain"
+            }
+          }
+        }
+      },
+      "ApplicationDomainCreateRequest": {
+        "required": [
+          "purpose"
+        ],
+        "properties": {
+          "app_variant_id": {
+            "type": "string",
+            "description": "The ID of the app variant that the application domain belongs to",
+            "example": "variant_kib1qt1t5wfj5nzqmtwq2vcq"
+          },
+          "subdomain": {
+            "type": "string",
+            "description": "The subdomain of the application domain",
+            "example": "myapp-1234"
+          },
+          "custom_domain": {
+            "type": "object",
+            "required": [
+              "domain"
+            ],
+            "properties": {
+              "domain": {
+                "type": "string",
+                "description": "The custom domain of the application domain",
+                "example": "magic.myapp.com"
+              }
+            }
+          },
+          "purpose": {
+            "type": "string",
+            "description": "The purpose of the application domain",
+            "enum": [
+              "links",
+              "auth"
+            ]
+          }
+        }
+      },
+      "ApplicationDomainUpdateRequest": {
+        "properties": {
+          "subdomain": {
+            "type": "string",
+            "description": "The subdomain of the application domain",
+            "example": "yourapp"
+          },
+          "custom_domain": {
+            "type": "object",
+            "required": [
+              "domain"
+            ],
+            "properties": {
+              "domain": {
+                "type": "string",
+                "description": "The custom domain of the application domain",
+                "example": "magic.myapp.com"
+              }
+            }
+          }
+        }
+      },
       "AppUserDataState": {
         "readOnly": true,
         "type": "string",
@@ -13330,6 +13794,22 @@
             }
           }
         ]
+      },
+      "MobileAppTaggingMagicCreateRequest": {
+        "properties": {
+          "app_variant_id": {
+            "type": "string",
+            "description": "The ID of the application variant to create a magic link for"
+          }
+        }
+      },
+      "MobileAppTaggingMagicCreateResponse": {
+        "properties": {
+          "link": {
+            "type": "string",
+            "description": "The magic link to use for mobile app tagging"
+          }
+        }
       },
       "GroupList": {
         "properties": {
