@@ -1,59 +1,119 @@
 ---
-title: "Email customization"
+title: "Pre-built UI"
 description:
-  "Customize the content and style of Rownd sign-in and verification emails"
+  "Rownd provides a comprehensive set of pre-built UI components that are fully customizable to align with your company's branding and user experience requirements. These components are optimized for both web and mobile platforms, reducing development effort while maintaining flexibility."
 ---
 
-#### Elements you can customize
+## UI Components
 
-- **Email logo:** Your uploaded app logo will appear here by default, but you
-  can upload an email-specific image in the email customizations area.
+Each of the following sections outlines a specific UI element, its purpose, and customization options.
 
-- **Email subject line:** The default email subject is:
-  > Verify and sign in
-  
-  You can edit this to be more personalized to your brand or style.
+You can modify these UI components in the Design tab within the Rownd platform:
+- In the **Design page**
+  - **Theme tab:** Apply global branding, including colors, typography, and logos.
+  - **Customize UI tab:** Adjust content, wording, and visibility settings.
+- **Sign-in Methods tab:** Configure authentication method order and visibility.
 
-  <Info>
-  Remember that this email is important to ensure that your users
-    successfully verify and sign in to your website or app. The email subject
-    should clearly communicate the purpose of the message to encourage your
-    users to open it and continue.
-  </Info>
+![Customize UI tab in Platform](/images/prebuilt-ui-customize-UI-tab.png)
 
-- **Email content**: The default email body is:
-  > Press the button below to sign
-  in and to verify this is your email address.
-  
-  You can edit this to be more personalized to your brand or style.
+### Sign-in Method Modal
+This modal appears when a user attempts to sign in. It provides authentication options based on the methods configured in your Rownd platform.
 
-- **Button text**: Verification emails consist of a button the user must press
-  to sign in and verify their email address. The default button text is:
-  > Verify and sign in
-  
-  You can change this to be more personalized to your brand and style.
+**Customizable elements:**
+- Order and visibility of sign-in methods (Sign-in Methods tab)
+- Content and wording (Customize UI tab)
+- Branding, including logos and colors (Theme tab)
 
-#### How to customize
+![Sign-in modal examples](/images/prebuilt-ui-sign-in-modal.png)
 
-1. In the Rownd dashboard, navigate to the **Design** tab from the left navigation.
-2. Select the **Emails and screens** tab on this page.
-3. Ensure **Verify email** is selected from the dropdown menu.
-4. Edit and change email settings with the options on the left side of the screen.
-5. Preview your changes using the example email on the right side of the screen.
-6. Press **Save** at the top of the page before leaving. Your updates will be applied to the sign-in email messages sent when users attempt to sign in.
 
-<div style={{position: "relative", paddingBottom: "67.9245283018868%", height: 0}}><iframe src="https://www.loom.com/embed/bd5d3f2eabe44e97a8d4952ed0c86488" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style={{
-    "height": "100%",
-    "left": "0px",
-    "position": "absolute",
-    "top": "0px",
-    "width": "100%"
-}}></iframe></div>
+### Profile
+The Rownd Profile enables users to manage their account information without requiring custom development. It consists of the following sections:
 
-<Info>
-Updates you've made in the [Global style](/configuration/customizations/global-style) section will also be reflected here.
-</Info>
+- **Account Information**: Displays enabled sign-in methods, allowing users to update their email, phone number, or connect accounts like Google.
+- **Personal Information**: Stores non-authentication data, such as names and addresses. Fields can be customized from the Profile Data tab. Users can edit data unless marked as app-owned.
+- **Preferences**: Displays the account ID (for support), a "Sign out of all sessions" option (which signs users out of all devices), and an "Account deletion" feature.
 
-#### Email "from" address
+*Future updates will include session management, passkey management, and more.*
 
-If you prefer to have Rownd verification emails sent from an email address on your own domain (e.g., `hello@mycompany.com`), we can configure that for you. Send an email to [support@rownd.io](mailto:support@rownd.io?subject=From%20email%20address%20change) with the subject line **From email address change**. We'll process your request in about one business day and reply with further instructions to finalize the setup.
+**Customizable elements:**
+- Fields in Account Information (Sign-in Methods tab)
+- Fields in Personal Information (Profile Data tab)
+- Branding and styling (Theme tab)
+
+![Profile examples](/images/prebuilt-ui-profile.png)
+
+
+### Verification Modal
+This modal appears when users need to verify their email or phone number during sign-in.
+
+**Customizable elements:**
+- Title and failure messages (Customize UI tab)
+- Branding and visual elements (Theme tab)
+
+![Verification modal examples](/images/prebuilt-ui-verification-modal.png)
+
+
+### Verification Screen
+After users verify their phone number or email, they briefly see this screen before being redirected to your app or website.
+
+**Customizable elements:**
+- Currently, this screen inherits Theme settings.
+- Future updates will allow content customization in the Customize UI tab.
+
+![Verification screen examples](/images/prebuilt-ui-verification-screen.png)
+
+
+### Rownd Verification Email
+Users receive this email to verify their email address during sign-in.
+
+**Customizable elements:**
+- Language and wording (Customize UI tab)
+- Company logo. colors,and corner radius (Theme tab)
+
+> **Note:** If you prefer to have Rownd verification emails sent from an email address on your own domain (e.g., hello@mycompany.com), we can configure that for you. Send an email to support@rownd.io with the subject line From email address change. We’ll process your request in about one business day and reply with further instructions to finalize the setup.
+
+![Rownd email examples](/images/prebuilt-ui-email.png)
+
+
+### Mobile Redirect Screen
+When a user without your mobile app clicks a sign-in link on a mobile device, this screen directs them to download the app.
+
+**Customizable elements:**
+- App store logo and branding (Theme tab)
+- Content and wording (Customize UI tab)
+
+![Mobile app redirect screen examples](/images/prebuilt-ui-mobile-redirect-screen.png)
+
+
+### Rownd Hub Widget
+The Rownd Hub is an optional widget that provides a quick-access entry point for authentication and profile management.
+
+**Customizable elements:**
+- Visibility (Customize UI tab)
+- Branding and design (Theme tab)
+
+*The Hub can be useful for testing on web apps and websites.*
+
+![Hub examples](/images/prebuilt-ui-hub.png) 
+
+
+### Automations UI
+Certain UI elements are triggered through Automations in Rownd. These include:
+
+- Passkey modals
+- Prompts for additional user information
+
+**Customizable elements:**
+- Wording adjustments
+- Ordering of fields 
+- Branding (Theme tab)
+
+![Automation UI examples](/images/prebuilt-ui-automation-ui.png) 
+
+--------
+
+Rownd’s pre-built UI components provide a powerful, flexible solution for authentication and user account management, saving significant development time. With extensive customization options, businesses can maintain brand consistency while leveraging secure, optimized UI elements across web and mobile platforms.
+
+
+
