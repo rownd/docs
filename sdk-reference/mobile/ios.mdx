@@ -149,9 +149,49 @@ While most customizations are handled via the [Rownd dashboard](https://app.rown
 
 The `RowndCustomizations` class exists to facilitate these customizations. It provides the following properties that may be subclassed or overridden.
 
-- `sheetBackgroundColor: UIColor` (default: `light: .white`, `dark: .systemGray6`; requires subclassing) - Allows changing the background color underlaying the bottom sheet that appears when signing in, managing the user account, etc.
-- `sheetCornerBorderRadius: CGFloat` (default: `25.0`) - Modifies the curvature radius of the bottom sheet corners.
-- `loadingAnimation: Lottie.Animation` (default: nil) - Replace Rownd's use of the system default loading spinner (i.e., `UIActivityIndicatorView` or `ProgressView`) with a custom animation. Any animation compatible with [Lottie](https://airbnb.design/lottie/) should work, but will be scaled to fit a 1:1 aspect ratio (usually with a `CGRect` frame width/height of `100`)
+* `sheetBackgroundColor: UIColor`
+
+   (default: 
+
+  `light: .white`
+
+  , 
+
+  `dark: .systemGray6`
+
+  ; requires subclassing) - Allows changing the background color underlaying the bottom sheet that appears when signing in, managing the user account, etc.
+
+* `sheetCornerBorderRadius: CGFloat`
+
+   (default: 
+
+  `25.0`
+
+  ) - Modifies the curvature radius of the bottom sheet corners.
+
+* `loadingAnimation: Lottie.Animation`
+
+   (default: nil) - Replace Rownd's use of the system default loading spinner (i.e., 
+
+  `UIActivityIndicatorView`
+
+   or 
+
+  `ProgressView`
+
+  ) with a custom animation. Any animation compatible with 
+
+  [Lottie](https://airbnb.design/lottie/)
+
+   should work, but will be scaled to fit a 1:1 aspect ratio (usually with a 
+
+  `CGRect`
+
+   frame width/height of 
+
+  `100`
+
+  )
 
 To apply customizations, we recommend subclassing the `RowndCustomizations` class. Here's an example:
 
@@ -180,15 +220,50 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 ```
 
 ### Usage within app extensions
+
 It's possible to access the Rownd state from within an app extension, like a widget. You'll need to include the Rownd package in the extension's dependencies and set up an app group for data sharing between the app and the extension. Without the app group, extensions will not be able to sync with your app's authentication state.
 
 Follow these steps to configure your app and extension to work with Rownd:
-1. Add an [app group](https://developer.apple.com/documentation/xcode/configuring-app-groups) entitlement to both your app and any extensions that will use Rownd.
-   This app group **must** be named like this: `<prefix>.io.rownd.sdk`. For example, if you work at a company with the acme.com domain, your app group might look like this: `com.acme.app.io.rownd.sdk`. Rownd will store its data in this app group. Your app should store data in a separate app group to prevent any collisions.
 
-2. In your app's `AppDelegate` file as well as your extension's entry point, set the app group prefix you defined above via `Rownd.config.appGroupPrefix = "<prefix>"` (e.g., `Rownd.config.appGroupPrefix = "com.acme.app"`)
+1. Add an 
 
-3. In your extension, call `Rownd.configure()` prior to accessing authentication state. Here's an example:
+   [app group](https://developer.apple.com/documentation/xcode/configuring-app-groups)
+
+    entitlement to both your app and any extensions that will use Rownd.
+   This app group 
+
+   **must**
+
+    be named like this: 
+
+   `<prefix>.io.rownd.sdk`
+
+   . For example, if you work at a company with the acme.com domain, your app group might look like this: 
+
+   `com.acme.app.io.rownd.sdk`
+
+   . Rownd will store its data in this app group. Your app should store data in a separate app group to prevent any collisions.
+
+2. In your app's 
+
+   `AppDelegate`
+
+    file as well as your extension's entry point, set the app group prefix you defined above via 
+
+   `Rownd.config.appGroupPrefix = "<prefix>"`
+
+    (e.g., 
+
+   `Rownd.config.appGroupPrefix = "com.acme.app"`
+
+   )
+
+3. In your extension, call 
+
+   `Rownd.configure()`
+
+    prior to accessing authentication state. Here's an example:
+
    ```swift
     Task {
         Rownd.config.appGroupPrefix = "group.rowndexample"
@@ -202,27 +277,28 @@ Follow these steps to configure your app and extension to work with Rownd:
    ```
 
 <Note>
-If you're building widgets that need access to Rownd auth state, you should listen for Rownd auth events and notify `WidgetCenter` that widgets may need updating any time the state changes. That way, they'll re-render while your app is in the foreground and will show an accurate state. Here's a simple example:
-```swift
-import Foundation
-import Combine
-import WidgetKit
-import Rownd
+  If you're building widgets that need access to Rownd auth state, you should listen for Rownd auth events and notify `WidgetCenter` that widgets may need updating any time the state changes. That way, they'll re-render while your app is in the foreground and will show an accurate state. Here's a simple example:
 
-class SomeClass {
-    private var authState = Rownd.getInstance().state().subscribe { $0.auth }
-    private var cancellables = Set<AnyCancellable>()
+  ```swift
+  import Foundation
+  import Combine
+  import WidgetKit
+  import Rownd
 
-    init() {
-        self.authState
-            .$current
-            .sink { [weak self] state in
-                WidgetCenter.shared.reloadAllTimelines()
-            }
-            .store(in: &cancellables)
-    }
-}
-```
+  class SomeClass {
+      private var authState = Rownd.getInstance().state().subscribe { $0.auth }
+      private var cancellables = Set<AnyCancellable>()
+
+      init() {
+          self.authState
+              .$current
+              .sink { [weak self] state in
+                  WidgetCenter.shared.reloadAllTimelines()
+              }
+              .store(in: &cancellables)
+      }
+  }
+  ```
 </Note>
 
 ### Events
@@ -262,53 +338,52 @@ Once the event handler is registered, it will receive events as they occur. The 
 Here's a list of events that the Rownd SDK emits and the corresponding data that should be present in the event data dictionary. Remember to write your code defensively, as the data dictionary may be missing keys in some cases.
 
 <table>
-    <tr>
-        <th>Event</th>
-        <th>Type</th>
-        <th>Payload</th>
-    </tr>
-    <tr>
-        <td>User started signing in</td>
-        <td>`.signInStarted`</td>
-        <td>
+  <tr>
+    <th>Event</th>
+    <th>Type</th>
+    <th>Payload</th>
+  </tr>
 
-        ```javascript
-        {
-            method: "google" | "apple" | "phone" | "email" | "passkey" | etc;
-        }
-        ```
-        </td>
-    </tr>
+  <tr>
+    <td>User started signing in</td>
+    <td>`.signInStarted`</td>
 
-    <tr>
-        <td>User signed in successfully</td>
-        <td>`.signInCompleted`</td>
-        <td>
+    <td>
+      ```javascript
+      {
+          method: "google" | "apple" | "phone" | "email" | "passkey" | etc;
+      }
+      ```
+    </td>
+  </tr>
 
-        ```javascript
-        {
-            method: "google" | "apple" | "phone" | "email" | "passkey" | etc,
-            user_type: "new_user" | "existing_user",
-            app_variant_user_type: "new_user" | "existing_user" | optional
-        }
-        ```
+  <tr>
+    <td>User signed in successfully</td>
+    <td>`.signInCompleted`</td>
 
-        </td>
-    </tr>
+    <td>
+      ```javascript
+      {
+          method: "google" | "apple" | "phone" | "email" | "passkey" | etc,
+          user_type: "new_user" | "existing_user",
+          app_variant_user_type: "new_user" | "existing_user" | optional
+      }
+      ```
+    </td>
+  </tr>
 
-    <tr>
-        <td>User sign in failed</td>
-        <td>`.signInFailed`</td>
-        <td>
+  <tr>
+    <td>User sign in failed</td>
+    <td>`.signInFailed`</td>
 
-        ```javascript
-        {
-            reason: String;
-        }
-        ```
-
-        </td>
-    </tr>
+    <td>
+      ```javascript
+      {
+          reason: String;
+      }
+      ```
+    </td>
+  </tr>
 </table>
 
 ### API reference
@@ -320,28 +395,76 @@ In addition to the state observable APIs, Rownd provides imperative APIs that yo
 Opens the Rownd sign-in dialog for authentication.
 
 #### Rownd.requestSignIn(RowndSignInOptions(postSignInRedirect: "https://my-domain.com")) -> Void
+
 #### Rownd.requestSignIn(RowndSignInOptions(postSignInRedirect: "https://my-domain.com", intent: .signIn)) -> Void
 
 Opens the Rownd sign-in dialog for authentication, as above. When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for `postSignInRedirect`. If this is a [Universal Link](https://developer.apple.com/ios/universal-links/), it will redirect the user back to your app.
 
 #### Rownd.requestSignIn(with: RowndSignInHint) -> Void
+
 #### Rownd.requestSignIn(with: RowndSignInHint, signInOptions: RowndSignInOptions?) -> Void
 
 Requests a sign-in, but with a specific authentication provider (e.g., Sign in with Apple). Rownd treats this information as a hint. If the specified authentication provider is enabled within your Rownd app configuration, it will be honored. If not, Rownd will fall back to the default flow.
 
 Supported values:
 
-- `.appleId` - Prompt user to sign in with their Apple ID
-- `.google` - Prompt user to sign in with their Google account
-- `.passkey` - Prompt user to sign in with a passkey if they've previously set one up
-- `.guest` - Sign in the user anonymously as a guest.
+* `.appleId`
+
+   \- Prompt user to sign in with their Apple ID
+
+* `.google`
+
+   \- Prompt user to sign in with their Google account
+
+* `.passkey`
+
+   \- Prompt user to sign in with a passkey if they've previously set one up
+
+* `.guest`
+
+   \- Sign in the user anonymously as a guest.
 
 #### RowndSignInOptions
 
 Some of the `requestSignIn()` methods accept an optional `RowndSignInOptions` parameter. This class contains the following properties:
 
-- `postSignInRedirect: String?` (not recommended) - When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for `postSignInRedirect`. If this is a [Universal Link](https://developer.apple.com/ios/universal-links/), it will redirect the user back to your app. If you don't set this value, the user will be redirected to your app's subdomain as configured in the Rownd dashboard.
-- `intent: RowndSignInIntent?` - This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are `.signIn` or `.signUp`. If you don't set this value, the user will be presented with the unified sign-in/sign-up flow.
+* `postSignInRedirect: String?`
+
+   (not recommended) - When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for 
+
+  `postSignInRedirect`
+
+  . If this is a 
+
+  [Universal Link](https://developer.apple.com/ios/universal-links/)
+
+  , it will redirect the user back to your app. If you don't set this value, the user will be redirected to your app's subdomain as configured in the Rownd dashboard.
+
+* `intent: RowndSignInIntent?`
+
+   \- This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are 
+
+  `.signIn`
+
+   or 
+
+  `.signUp`
+
+  . If you don't set this value, the user will be presented with the unified sign-in/sign-up flow.
+
+### Rownd.signOut() -> Void
+
+Clears the user's access token, removes the user's profile data, and returns the user to a completely unauthenticated state.
+
+### Rownd.signOut(scope: RowndSignoutScope) -> Void
+
+Revokes all tokens for the specified user causing them to be signed out on all devices.
+
+Supported values:
+
+* `.all`
+
+   \- All devices
 
 #### Rownd.getAccessToken() async throws -> String?
 
