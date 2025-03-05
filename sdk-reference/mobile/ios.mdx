@@ -121,6 +121,8 @@ You can subscribe to any state object that Rownd supports. Here's a list of avai
 ```swift
 public struct AuthState {
     public var accessToken: String?     // Current, valid access token for the user (valid for one hour)
+    public var isAuthenticated: Bool    // Whether the user is currently authenticated
+    public var isAccessTokenValid: Bool // Whether the current access token is valid
     public var isVerifiedUser: Bool?    // Whether the current user has verified at least one identifier (e.g., email)
     public var hasPreviouslySignedIn: Bool    // Whether the app has been previously signed in before
 }
@@ -137,9 +139,11 @@ public struct UserState {
 
 ### Getting an access token
 
-Whenever your app needs to make an authenticated request to your backend, you'll need to get an access token. You can do this by calling `await Rownd.getAccessToken()`. If the user is not authenticated, this function will return `nil`.
+Whenever your app needs to make an authenticated request to your backend, you'll need to get an access token. You can do this by calling `await Rownd.getAccessToken(throwIfMissing: true)`. If the user is not authenticated, this function will throw an `AuthenticationError.noAccessTokenPresent` error.
 
-If there is an issue fetching the access token (e.g., during a token refresh), an error will be thrown. Network failures are currently not retried (though this behavior may change in the future). Currently, we suggest retrying once in the event of an error and otherwise notifying the user to try again later, check their connection, etc.
+If there is an issue fetching the access token (e.g., during a token refresh), an `AuthenticationError.serverError` or `AuthenticationError.networkConnectionFailure` error will be thrown. Server and network failures are automatically retried before throwing an error.
+
+If the user is signed in, but the refresh token is expired, invalidated, or has been used previously, the user will be signed out and the function will throw an `AuthenticationError.invalidRefreshToken` error.
 
 See the [API reference](#rownd-getaccesstoken-token-string-async-string) for more information.
 
@@ -316,6 +320,7 @@ class RowndEventHandler: RowndEventHandlerDelegate {
         switch event.event {
         case .signInCompleted:
             let userType = event.data?["user_type"]
+            let appVariantUserType = event.data?["app_variant_user_type"]
             break
 
         default:
@@ -466,22 +471,50 @@ Supported values:
 
    \- All devices
 
-#### Rownd.getAccessToken() async throws -> String?
+### Rownd.signOut() -> Void
+
+Clears the user's access token, removes the user's profile data, and returns the user to a completely unauthenticated state.
+
+### Rownd.signOut(scope: RowndSignoutScope) -> Void
+
+Revokes all tokens for the specified user causing them to be signed out on all devices.
+
+Supported values:
+
+- `.all` - All devices
+
+### Rownd.getAccessToken(throwIfMissing: Bool = false) async throws -> String?
 
 Assuming a user is signed-in, returns a valid access token, refreshing the current one if needed.
-If an access token cannot be returned due to a temporary condition (e.g., inaccessible network), this function will `throw`.
-If an access token cannot be returned because the refresh token is invalid, `nil` will be returned and the Rownd state
-will sign out the user.
+
+By default, this function will return `nil` if an access token cannot be returned, either because the user is not signed in or because the refresh token is invalid.
+
+If an access token cannot be returned due to a temporary condition (e.g., inaccessible network), this function will throw an `AuthenticationError` indicating the failure reason (e.g., server or network error).
+
+You may also set `throwIfMissing` to `true` to force an error to be thrown if an access token cannot be returned. This will provide more granular reasons for the failure. The possible error cases for `AuthenticationError` are:
+
+- `.noAccessTokenPresent` - the user is not signed in
+- `.invalidRefreshToken(details: String)` - the refresh token was invalid (e.g., the token was expired, revoked, or a previous exchange failed to complete successfully). The user will be signed out.
+- `.networkConnectionFailure(details: String)` - a network condition prevented the token from being refreshed, even after several retries and should be re-attempted later
+- `.serverError(details: String)` - an error occurred on the server and you should try again later
 
 Example:
 
 ```swift
     do {
-        let accessToken = try await Rownd.getAccessToken()
+        let accessToken = try await Rownd.getAccessToken(throwIfMissing: true)
     } catch {
-        // Alert the user that they should try again due to some recoverable error
+        switch error {
+        case AuthenticationError.noAccessTokenPresent:
+            // The user is not signed in
+        case AuthenticationError.invalidRefreshToken(let details):
+            // The refresh token was invalid. Request that the user sign in again.
+        case AuthenticationError.networkConnectionFailure(let details),
+             AuthenticationError.serverError(let details):
+            // Alert the user that they should try again due to some recoverable error
+            print("Server error occurred: \(details)")
+        }
     }
-}
 ```
 
 #### Rownd.getAccessToken(\_ token: String) async -> String?
