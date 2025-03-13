@@ -77,6 +77,7 @@
       "pages": [
         "configuration/overview",
         "configuration/applications",
+        "configuration/app-credentials",
         {
           "group": "Authentication methods",
           "pages": [
@@ -94,41 +95,6 @@
           ]
         },
         {
-          "group": "Mobile",
-          "pages": [
-            "configuration/mobile/overview",
-            "configuration/mobile/ios",
-            "configuration/mobile/android",
-            "configuration/mobile/mobile-app-settings"
-          ]
-        },
-        "configuration/app-credentials",
-        {
-          "group": "Automations",
-          "pages": [
-            "configuration/automations/overview",
-            "configuration/automations/sign-in-prompt"
-          ]
-        },
-        {
-          "group": "Customizations",
-          "pages": [
-            "configuration/customizations/global-style",
-            "configuration/customizations/email-customization",
-            "configuration/customizations/sub-brands"
-          ]
-        },
-        {
-          "group": "User accounts",
-          "pages": [
-            "configuration/user-accounts/overview",
-            "configuration/user-accounts/user-profiles",
-            "configuration/user-accounts/platform-user-table",
-            "configuration/user-accounts/progressive-profiles",
-            "configuration/user-accounts/groups"
-          ]
-        },
-        {
           "group": "Automations",
           "pages": [
             "configuration/automations/overview",
@@ -140,6 +106,14 @@
           "pages": [
             "configuration/cross-domain/overview",
             "configuration/cross-domain/implementation"
+          ]
+        },
+        {
+          "group": "Customizations",
+          "pages": [
+            "configuration/customizations/global-style",
+            "configuration/customizations/email-customization",
+            "configuration/customizations/sub-brands"
           ]
         },
         {
@@ -164,12 +138,30 @@
           ]
         },
         {
+          "group": "Mobile",
+          "pages": [
+            "configuration/mobile/overview",
+            "configuration/mobile/ios",
+            "configuration/mobile/android",
+            "configuration/mobile/mobile-app-settings"
+          ]
+        },
+        {
           "group": "OpenID Connect",
           "pages": [
             "configuration/oidc/overview"
           ]
         },
-
+        {
+          "group": "User accounts",
+          "pages": [
+            "configuration/user-accounts/overview",
+            "configuration/user-accounts/user-profiles",
+            "configuration/user-accounts/platform-user-table",
+            "configuration/user-accounts/progressive-profiles",
+            "configuration/user-accounts/groups"
+          ]
+        },
         {
           "group": "Web3",
           "pages": [
