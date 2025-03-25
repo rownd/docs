@@ -6,7 +6,7 @@ icon: r
 
 ### Installation
 
-Simply run `npm install @rownd/react` or `yarn add @rownd/react`.
+Simply run `npm install @rownd/remix` or `yarn add @rownd/remix`.
 
 ### Setup
 
@@ -19,7 +19,7 @@ likely before other providers:
 root.tsx
 ```jsx
 ...
-import { RemixRowndProvider } from '@rownd/react/remix';
+import { RemixRowndProvider } from '@rownd/remix';
 ...
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -49,7 +49,7 @@ function with your server's request handler `handleRequest`:
 entry.server.ts
 ```jsx
 ...
-import { withRowndHandleRequest } from '@rownd/react/remix';
+import { withRowndHandleRequest } from '@rownd/remix/server';
 ...
 
 export default withRowndHandleRequest(function handleRequest(
@@ -74,9 +74,12 @@ import { useLoaderData } from '@remix-run/react';
 
 import {
   withRowndRequireSignIn,
-  withRowndLoader,
   useRownd,
-} from '@rownd/react/remix';
+} from '@rownd/remix';
+
+import {
+  withRowndLoader,
+} from '@rownd/remix/server';
 
 export const loader = withRowndLoader(async function (
   { context, request }: LoaderFunctionArgs,
@@ -114,7 +117,222 @@ function Fallback() {
 export default withRowndRequireSignIn(Index, useLoaderData, Fallback);
 ```
 
-### API reference
+### Client-side API reference
 
-Please see the [React SDK](/sdk-reference/web/react---next-js#api-reference) for details on
-Rownd Client React API's.
+Please see the [React SDK](sdk-reference/web/react---next-js) for details on Rownd Client React API's.
+
+
+Most API methods are made available via the Rownd Provider and its associated
+`useRownd` React hook. Unless otherwise noted, we're assuming that you're using
+hooks.
+
+#### requestSignIn()
+
+Trigger the Rownd sign in dialog
+
+```jsx
+const { requestSignIn } = useRownd();
+
+requestSignIn({
+  auto_sign_in: false, // optional
+  identifier: "me@company.com" || "+19105551212", // optional
+});
+```
+
+- `auto_sign_in: boolean` \- when `true`, automatically trigger a sign-in
+  attempt _if_ `identifier` is included or an email address or phone number has
+  already been set in the user data.
+
+- `identifier: string` \- an email address or phone number (in E164 format) to
+  which a verification message may be sent. If the Rownd app is configured to
+  allow unverified users, then sign-in will complete without verification if the
+  user has not signed in previously.
+
+#### signOut()
+
+Sign out the user and clear their profile, returning them to a completely
+unauthenticated state.
+
+```jsx
+const { signOut } = useRownd();
+signOut();
+```
+
+#### getAccessToken()
+
+Retrieves the active, valid access token for the current user.
+
+```jsx
+const { getAccessToken } = useRownd();
+
+let accessToken = await getAccessToken({
+  waitForToken: false,
+});
+```
+
+- `waitForToken: boolean` \- when `true`, if no access token is present or if
+  it's expired, the promise will not resolve until a valid token is available.
+  While unlikely, this could result in waiting forever.
+
+**is_initializing**
+
+`is_initializing` will be `true` until the Hub has fully loaded, recalled its
+state, and resolved the current user's authentication status. This usually takes
+only a few milliseconds, but if you make decisions that depend on the
+`is_authenticated` flag while `is_initializing` is still `true`, your code/logic
+may not work as you expect.
+
+```jsx
+const { is_initializing } = useRownd();
+
+if (is_initializing) {
+  // return loading state or null
+}
+```
+
+#### is_authenticated
+
+```jsx
+const { is_authenticated } = useRownd();
+
+return (
+  <>
+    {is_authenticated && <ProtectedRoute />}
+    {!is_authenticated && <PublicRoute />}
+  </>
+);
+```
+
+#### access_token
+
+Represents the current access token for the user.
+
+```jsx
+const { access_token } = useRownd();
+
+useEffect(() => {
+    axios({
+        method: 'post',
+        url: '/api/sessions'
+        headers: {
+            authorization: `Bearer ${access_token}`
+        }
+    }).then(console.log);
+}, [access_token]);
+```
+
+#### user
+
+Represents information about the current user, specifically their profile
+information. In the example below, we use the existing data to display the
+current value of `first_name` in a form field, update a local copy of that data
+as the user changes it, and then save the changes to Rownd once the user submits
+the form.
+
+```jsx
+const { user, setUser } = useRownd();
+
+const [profile, setProfile] = useState(user.data);
+
+return (
+  <form onSubmit={() => setUser(profile)}>
+    <label htmlFor="first_name">
+      <input
+        id="first_name"
+        type="text"
+        value={profile?.first_name}
+        onInput={(evt) => setProfile({ ...profile, first_name: evt.target.value })}
+      />
+    </label>
+    <button type="submit">Save</button>
+  </form>
+);
+```
+
+#### setUser
+
+The `setUser` function allows you to update a user's profile information within the Rownd platform. You can modify user attributes such as `first_name`, `last_name`, and other properties by passing an object with the relevant fields.
+
+```jsx
+const { setUser } = useRownd();
+
+setUser({
+  first_name: "Alice",
+  last_name: "Ranier",
+});
+```
+
+#### setUserValue
+
+The `setUserValue` function allows you to update a specific attribute of the user's profile within the Rownd platform. Instead of passing an entire user object, you can update individual fields by specifying the key (attribute name) and value.
+
+```jsx
+const { setUserValue } = useRownd();
+
+setUserValue("first_name", "Alice");
+```
+
+#### manageAccount()
+
+The `manageAccount()` function allows users to view and update their profile information within the Rownd platform. This function opens the user’s account management interface, where they can review and modify personal details such as their name, email, and other profile attributes.
+
+```jsx
+const { manageAccount } = useRownd();
+
+<Button onClick={() => manageAccount()}>Manage Account</Button>;
+```
+
+#### passkeys
+
+Rownd offers passkey-based authentication, allowing users to create and authenticate using a secure passkey. The `register` function starts the process of creating a new passkey for the user, while the `authenticate` function validates an existing passkey to authenticate the user.
+
+```jsx
+const { passkeys } = useRownd();
+
+<div>
+  <Button onClick={() => passkeys.register()}>Register Passkey</Button>
+  <Button onClick={() => passkeys.authenticate()}>Authenticate with Passkey</Button>
+</div>;
+```
+
+#### RequireSignIn
+
+The `RequireSignIn` component is a wrapper that triggers the sign-in process when the component it wraps is rendered. It ensures that the user is signed in before accessing the content of the wrapped component. If the user is not authenticated, the sign-in process will automatically begin when the component mounts.
+
+```jsx
+const App = () => {
+  return (
+    <RequireSignIn>
+      <h1>Home page<h1/>
+    </RequireSignIn>
+  );
+};
+```
+
+#### SignedIn
+
+The `SignedIn` component is used to conditionally render its children only when the user is authenticated. If the user is not signed in, the wrapped content will not be displayed.
+
+```jsx
+const App = () => {
+  return (
+    <SignedIn>
+      <ProtectedContent />
+    </SignedIn>
+  );
+};
+```
+
+#### SignedOut
+
+The `SignedOut` component is the counterpart to `SignedIn`. It renders its children only when the user is not authenticated. If the user is signed in, the wrapped content will not be displayed.
+
+```jsx
+const App = () => {
+  return (
+    <SignedOut>
+      <LoginPrompt />
+    </SignedOut>
+  );
+};
+```
