@@ -130,11 +130,13 @@
           ]
         },
         {
-          "group": "Magic links",
+          "group": "Smart links",
           "pages": [
             "magic-links/overview",
+            "magic-links/platform",
             "magic-links/authenticated",
             "magic-links/unauthenticated"
+ 
           ]
         },
         {

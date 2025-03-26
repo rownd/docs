@@ -1,0 +1,109 @@
+---
+title: "Creating Smart Links in the Rownd Platform"
+sidebarTitle: "Platform Guide"
+---
+
+Rownd's platform offers a user-friendly interface for creating and managing Smart Links without writing any code. This guide will walk you through the process of creating and customizing Smart Links directly in the Rownd dashboard.
+
+## Accessing Smart Links
+
+1. Log into your Rownd dashboard
+2. Navigate to the **Smart Links** section in the left sidebar
+3. This will display your existing Smart Links and provide options to create new ones
+
+## Creating a New Smart Link
+
+To create a new Smart Link:
+
+1. Click on **Smart Links** in the navigation menu
+2. Click the "New smart link" button or equivalent option
+3. You'll be presented with a multi-step form to configure your link
+
+### Step 1: Link Details (Required)
+
+![Creating a New Smart Link](/magic-links/images/new-smart-link.png)
+
+First, you'll need to provide basic information about your link:
+
+- **Link name**: A descriptive name to help you identify the purpose of this link in your dashboard
+- **Link domain**: Select from your available domains (e.g., `<your-subdomain>.rownd.link`)
+- **Link alias** : By default, an auto-generated string will be used. In the future, you will be able to edit it. 
+
+### Step 2: Link Customization (Optional)
+
+The customization section offers three tabs with different options:
+
+#### Analytics Tags
+
+Analytics tags help you track and filter performance data for your links.
+
+1. Select the **Analytics tags** tab
+2. Add parameters that you want to track (e.g., `campaign`, `source`, `medium`)
+3. Enter values for each parameter
+4. Toggle "Include in URL" to have these parameters appear in the final URL (useful for additional analytics tracking)
+5. Click "Add parameter pair" if you need more parameters
+
+#### Redirects
+
+The redirects tab allows you to control where users are sent when they click your link.
+
+1. Select the **Redirects** tab
+2. Set your **Default redirect** URL by entering the page or URL destination
+3. You can optionally check "Web only link" if you want the link to always redirect to a web page, even if the user has your app installed
+
+Rownd utilizes the latest in Universal link standards. If you have mobile apps that are Universal/Deep link compatible, you do not need to do anything special to use Rownd Smart Links.  You can, however, edit specific app destinations by clicking on advanced. 
+
+#### Link Preview
+
+Link previews control how your link appears when shared on social media and messaging platforms.
+
+1. Select the **Link preview** tab
+2. Optionally import metadata from an existing URL by entering it in the "Import from URL" field
+3. Customize the following fields:
+   - **Title**: The headline that appears in previews
+   - **Description**: A brief description of the link destination
+   - **Override preview image URL**: Add a custom image URL to display with your link
+
+![Link Preview Customization](/magic-links/images/link-preview.png)
+
+### Step 3: Finalize and Create
+
+1. Review your link settings
+2. Click "Next" to proceed
+3. On the review screen, click "Create Link Now" to generate your Smart Link
+
+## Managing Existing Smart Links
+
+After creating Smart Links, you can:
+
+- View analytics on link performance
+- Edit link settings
+- Delete links you no longer need
+- Copy links to share them
+
+## Use Cases for Platform-Created Smart Links
+
+### User Onboarding
+
+Create Smart Links for email campaigns that automatically sign users in and direct them to your onboarding flow.
+
+### App Download Campaigns
+
+Generate Smart Links that detect the user's device and direct them to the appropriate app store or web experience.
+
+### Re-engagement Campaigns
+
+Create links for re-engagement emails that authenticate users and take them directly to specific content in your app.
+
+### Marketing Campaigns
+
+Use analytics tags to track the performance of different marketing channels and campaigns.
+
+## Best Practices
+
+- **Use descriptive names**: Name your links in a way that clearly indicates their purpose and campaign
+- **Keep analytics consistent**: Establish a naming convention for your parameters and values
+- **Test your links**: Always test your links on different devices and platforms before using them in production
+- **Monitor performance**: Regularly check link analytics to optimize your campaigns (coming soon)
+
+Smart Links created through the platform provide the same security and cross-platform capabilities as those created via the API, but with the convenience of a visual interface.

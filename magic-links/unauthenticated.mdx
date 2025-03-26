@@ -3,19 +3,19 @@ title: "Unauthenticated links"
 sidebarTitle: "Unauthenticated links"
 ---
 
-Unauthenticated magic links are a powerful tool for directing users to specific content or features within your app or website. These links can be shared publicly and do not require the user to sign in, making them ideal for marketing campaigns, promotions, or general content sharing.
+Unauthenticated smart links are a powerful tool for directing users to specific content or features within your app or website. These links can be shared publicly and do not require the user to sign in, making them ideal for marketing campaigns, promotions, or general content sharing.
 
-When a user clicks on an unauthenticated magic link, they are directed to the specified destination within your app or site. This can be particularly useful for driving traffic to specific pages, promoting new features, or sharing content with a wider audience.
+When a user clicks on an unauthenticated smart link, they are directed to the specified destination within your app or site. This can be particularly useful for driving traffic to specific pages, promoting new features, or sharing content with a wider audience.
 
-To create unauthenticated magic links, you can use the Rownd API, which allows you to customize the link's behavior and target destination. This flexibility ensures that you can tailor the user experience to meet your specific needs while maintaining a high level of security.
+To create unauthenticated smart links, you can use the Rownd API, which allows you to customize the link's behavior and target destination. This flexibility ensures that you can tailor the user experience to meet your specific needs while maintaining a high level of security.
 
-## Creating unauthenticated magic links
+## Creating unauthenticated smart links
 
-Here's an example of creating an unauthenticated magic link using the Rownd API. In this example, we're specifying a redirect URL. When someone accesses the link, they'll be directed to the specified URL without an authentication payload attached. If they've previously authenticated and still have a valid session, that session will continue.
+Here's an example of creating an unauthenticated smart link using the Rownd API. In this example, we're specifying a redirect URL. When someone accesses the link, they'll be directed to the specified URL without an authentication payload attached. If they've previously authenticated and still have a valid session, that session will continue.
 
 **Request**
 ```bash
-POST https://api.rownd.io/hub/auth/magic
+POST https://api.rownd.io/hub/auth/smart
 Content-Type: application/json
 X-Rownd-App-Key: YOUR_APP_KEY
 X-Rownd-App-Secret: YOUR_APP_SECRET
