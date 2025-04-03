@@ -108,12 +108,6 @@ import { cookies } from 'next/headers';
 | `withRowndMiddleware` | Higher-order function for Next.js middleware to handle authentication | `middleware: NextMiddleware` | `NextMiddleware` | See middleware example below |
 | `withRowndRequireSignIn` | Higher-order function to protect routes/pages/API handlers | `handler: Function, cookies: ReadonlyRequestCookies` | `Function` | See protected routes example below |
 
-### Constants
-
-| Constant | Description | Value | Usage |
-|----------|-------------|--------|-------|
-| `ROWND_TOKEN_CALLBACK_PATH` | Path for handling Rownd token callbacks | `/api/rownd-token-callback` | Used in middleware matcher config |
-
 ### Example Usage
 
 ```typescript
