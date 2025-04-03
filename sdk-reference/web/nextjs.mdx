@@ -92,7 +92,6 @@ import {
   getAccessToken,
   isAuthenticated,
   getRowndUserId,
-  ROWND_TOKEN_CALLBACK_PATH
 } from '@rownd/next/server';
 import { cookies } from 'next/headers';
 ```
@@ -114,7 +113,7 @@ import { cookies } from 'next/headers';
 // Middleware setup
 export const config = {
   matcher: [
-    ROWND_TOKEN_CALLBACK_PATH,  // Required for token handling
+    '/api/rownd-token-callback',  // Required for token handling
     '/protected/:path*'         // Your protected routes
   ]
 };
