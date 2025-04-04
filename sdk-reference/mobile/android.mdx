@@ -4,27 +4,29 @@ description: "Rownd bindings for Android"
 icon: "android"
 ---
 
-The Rownd SDK for Android provides authentication, account and user profile management, deep linking, encryption and more for native Android applications.
+The Rownd SDK for Android provides authentication, account and user profile management, deep linking, and more for native Android applications.
 
 Using the Rownd platform, you can easily bring the same authentication that's on your website to your mobile apps. Or if you only authenticate users on your mobile apps, you can streamline the authentication process using Rownd's passwordless sign-in links, enabling you to seamlessly authenticate users from an app link sent to their email or phone number.
 
-Once a user is authenticated, you can retrieve and update their profile information on the fly using native APIs. Leverage Rownd's pre-built mobile app components to give users profile management tools. Additionally, you can manage encryption of data on-device before sending it back to Rownd or your own backend.
+Once a user is authenticated, you can retrieve and update their profile information on the fly using native APIs. Leverage Rownd's pre-built mobile app components to give users profile management tools.
 
 ## Installation
 
 In Android Studio, open your app's module-level `build.gradle` file and add the following dependency:
 
 ```
-implementation 'io.rownd:android:2.4.1'
+implementation 'io.rownd:android:3.0.2'
 ```
 
 After adding, run a Gradle sync and the Rownd SDK/API should be available within your IDE.
 
 ### ProGuard config
 
-If you're using ProGuard to shrink, obfuscate, and/or optimize your app ([and you should!](https://developer.android.com/studio/build/shrink-code)), you'll need to add the following rules to your `proguard-rules.pro` file.
+Rownd's Android SDK includes a `consumer-rules.pro` file, which should automatically augment your app's own proguard/r2 config.
 
-```
+If you're using ProGuard to shrink, obfuscate, and/or optimize your app ([and you should!](https://developer.android.com/studio/build/shrink-code)), and you're noticing minification or runtime errors after installing Rownd, you may need to add the following rules to your `proguard-rules.pro` file.
+
+```proguard
 -if @kotlinx.serialization.Serializable class **
 -keepclassmembers class <1> {
    static <1>$Companion Companion;
@@ -97,7 +99,7 @@ You can use this StateFlow in both older-style XML layouts as well as Android Je
 ### Using state in XML layout
 
 ```xml
-// my_layout.xml
+<!-- my_layout.xml -->
 
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
@@ -211,55 +213,13 @@ While most customizations are handled via the [Rownd dashboard](https://app.rown
 
 The `RowndCustomizations` class exists to facilitate these customizations. It provides the following properties that may be subclassed or overridden.
 
-* `sheetBackgroundColor: Color?`
+* `sheetBackgroundColor: Color?` (default: `null`) - Allows setting a single color for Rownd-provided bottom sheet interfaces regardless of system theme. Use this or `dynamicSheetBackgroundColor`, but not both.
 
-  (default:
+* `dynamicSheetBackgroundColor: Color` (default: `light: #ffffff`, `dark: #1c1c1e`; requires subclassing) - Allows changing the background color underlying the bottom sheet that appears when signing in, managing the user account, etc. Based on the system color scheme.
 
-  `null`
+* `sheetCornerBorderRadius: Dp` (default: `25.dp`) - Modifies the curvature radius of the bottom sheet's top corners.
 
-  ) - Allows setting a single color for Rownd-provided bottom sheet interfaces regardless of system theme. Use this or
-
-  `dynamicSheetBackgroundColor`
-
-  , but not both.
-
-* `dynamicSheetBackgroundColor: Color`
-
-  (default:
-
-  `light: #ffffff`
-
-  ,
-
-  `dark: #1c1c1e`
-
-  ; requires subclassing) - Allows changing the background color underlaying the bottom sheet that appears when signing in, managing the user account, transferring encryption keys, etc. based on the system color scheme.
-
-* `sheetCornerBorderRadius: Dp`
-
-  (default:
-
-  `25.dp`
-
-  ) - Modifies the curvature radius of the bottom sheet's top corners.
-
-* `loadingAnimation: Int`
-
-  (default: null) - Replace Rownd's use of the system default loading spinner (i.e.,
-
-  `ProgressBar`
-
-  ) with a custom animation. Any animation resource compatible with
-
-  [Lottie](https://airbnb.design/lottie/)
-
-  should work, but will be scaled to fit a 1:1 aspect ratio (usually with a frame width/height of
-
-  `100`
-
-  ) This should be a value like
-
-  `R.raw.my_animation`
+* `loadingAnimation: Int` (default: null) - Replace Rownd's use of the system default loading spinner (i.e., `ProgressBar`) with a custom animation. Any animation resource compatible with [Lottie](https://airbnb.design/lottie/) should work, but will be scaled to fit a 1:1 aspect ratio (usually with a frame width/height of `100 Dp`) This should be a value like `R.raw.my_animation`
 
 To apply customizations, we recommend subclassing the `RowndCustomizations` class. Here's an example:
 
@@ -273,8 +233,8 @@ class AppCustomizations(app: Application) : RowndCustomizations() {
 
     override val dynamicSheetBackgroundColor: Color
     get() {
-            val uiMode = app.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            return if (uiMode == Configuration.UI_MODE_NIGHT_YES) {
+            val uiMode = AppCompatDelegate.getDefaultNightMode()
+            return if (uiMode == AppCompatDelegate.MODE_NIGHT_YES) {
                 Color(0xff123456)
             } else {
                 Color(0xfffedcba)
@@ -322,21 +282,13 @@ Initiates a sign-in using the method specified by the `with` argument, bypassing
 
 Supported options:
 
-* `RowndSignInHint.Google`
+* `RowndSignInHint.Google` - Prompt user to sign in with their Google account
 
-  \- Prompt user to sign in with their Google account
+* `RowndSignInHint.OneTap` - Prompt user to sign into their account with Google One Tap
 
-* `RowndSignInHint.OneTap`
+* `RowndSignInHint.Passkey` - Prompt user to sign in with a passkey if they've previously set one up
 
-  \- Prompt user to sign into their account with Google One Tap
-
-* `RowndSignInHint.Passkey`
-
-  \- Prompt user to sign in with a passkey if they've previously set one up
-
-* `RowndSignInHint.Guest`
-
-  \- Sign in the user anonymously as a guest.
+* `RowndSignInHint.Guest` - Sign in the user anonymously as a guest.
 
 Example:
 
@@ -348,29 +300,9 @@ Rownd.requestSignIn(with = RowndSignInHint.Google)
 
 Opens the Rownd sign-in dialog for authentication, as before, but allows passing additional context options as shown below.
 
-* `intent: RowndSignInIntent`
+* `intent: RowndSignInIntent` - This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are `.SignIn` or `.SignUp`. If you don’t set this value, the user will be presented with the unified sign-in/sign-up flow. Please reach out to [support@rownd.io](mailto:support@rownd.io) to enable.
 
-  \- This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are
-
-  `.SignIn`
-
-  or
-
-  `.SignUp`
-
-  . If you don’t set this value, the user will be presented with the unified sign-in/sign-up flow. Please reach out to
-
-  [support@rownd.io](mailto:support@rownd.io)
-
-  to enable.
-
-* `postSignInRedirect: String`
-
-  (Not recommended) - If you've followed the steps to enable Android App Links, the redirect will be handled automatically. When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for postSignInRedirect. If this is an
-
-  [Android App Link](https://developer.android.com/training/app-links)
-
-  , it will redirect the user back to your app.
+* `postSignInRedirect: String` (Not recommended) - If you've followed the steps to enable Android App Links, the redirect will be handled automatically. When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for postSignInRedirect. If this is an [Android App Link](https://developer.android.com/training/app-links), it will redirect the user back to your app.
 
 Example:
 
@@ -400,17 +332,33 @@ Supported options:
   The following user profile APIs technically accept `Any` as the value of a field. However, that value **must** be serializable using [Kotlin's Serialization](https://kotlinlang.org/docs/serialization.html) library. If the value is not serializable out of the box, you'll need to provide your own serializer implementation as described in the Kotlin documentation.
 </Info>
 
-### suspend Rownd.getAccessToken(): String?
+### suspend Rownd.getAccessToken(throwIfMissing: Boolean = false): String?
 
 Assuming a user is signed-in, returns a valid access token, refreshing the current one if needed.
-If an access token cannot be returned due to a temporary condition (e.g., inaccessible network), this function will `throw`.
-If an access token cannot be returned because the refresh token is invalid, `null` will be returned and the Rownd state
-will sign out the user.
+
+By default, this function will return `null` if an access token cannot be returned, either because the user is not signed in or because the refresh token is invalid.
+
+If an access token cannot be returned due to a temporary condition (e.g., inaccessible network), this function will throw a `RowndException` indicating the failure reason (e.g., server or network error).
+
+You may also set `throwIfMissing` to `true` to force an error to be thrown if an access token cannot be returned. This will provide more granular reasons for the failure. The possible error subtypes for `RowndException` in this case are:
+
+- `NoAccessTokenPresentException(message: String)` - the user is not signed in
+- `InvalidRefreshTokenException(message: String)` - the refresh token was invalid (e.g., the token was expired, revoked, or a previous exchange failed to complete successfully). The user will be signed out.
+- `NetworkConnectionFailureException(details: String)` - a network condition prevented the token from being refreshed, even after several retries and should be re-attempted later. The user can remain signed-in.
+- `ServerException(details: String)` - an error occurred on the server and you should try again later. The user can remain signed-in.
 
 Example:
 
 ```kotlin
-    val accessToken = Rownd.getAccessToken()
+    try {
+        val accessToken = Rownd.getAccessToken(throwIfMissing = true)
+    } catch (e: RowndException) {
+        when (e) {
+          is NoAccessTokenPresentException -> { /* User is not signed in. do nothing. */ }
+          is InvalidRefreshTokenException -> { /* Refresh token is invalid. User was signed out. Show splash page and error dialog */ }
+          else -> { /* Something else went wrong. Ignore if possible, otherwise ask user to retry their action, connect to a network, close/reopen the app, etc. */ }
+        }
+    }
 ```
 
 ### suspend Rownd.getAccessToken(token: String): String?
