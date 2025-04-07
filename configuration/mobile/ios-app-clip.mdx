@@ -254,12 +254,17 @@ Time your prompts for installing the full app strategically:
 - Use Apple's App Clip API to show the installation card:
 
 ```swift
-// After user completes primary task
-if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-    let appClipController = AppStoreOverlayController(windowScene: scene)
-    appClipController.present(completion: nil)
-}
+// UIKit: After user completes primary task
+guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene  else { return }
+
+let config = SKOverlay.AppClipConfiguration(position: .bottom)
+let overlay = SKOverlay(configuration: config)
+overlay.present(in: scene)
 ```
+
+<Note>
+For SwiftUI, you can also use the [`.appStoreOverlay` modifier](https://developer.apple.com/documentation/swiftui/view/appstoreoverlay(ispresented:configuration:)) to present the App Clip card:
+</Note>
 
 ---
 
