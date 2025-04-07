@@ -142,10 +142,15 @@
         {
           "group": "Mobile",
           "pages": [
-            "configuration/mobile/ios-app-clip",
             "configuration/mobile/overview",
-            "configuration/mobile/ios",
             "configuration/mobile/android",
+            {
+              "group": "iOS",
+              "pages": [
+                "configuration/mobile/ios",
+                "configuration/mobile/ios-app-clip"
+              ]
+            },
             "configuration/mobile/mobile-app-settings"
           ]
         },

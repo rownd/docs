@@ -4,8 +4,6 @@ description: "Rownd bindings for native iOS apps"
 icon: "apple"
 ---
 
-# Rownd SDK for iOS
-
 The Rownd SDK for iOS provides authentication, account and user profile management, deep linking, and more for native iPhone, iPad, and even macOS applications.
 
 Using the Rownd platform, you can easily bring the same authentication that's on your website to your mobile apps. Or if you only authenticate users on your mobile apps, you can streamline the authentication process using Rownd's passwordless sign-in links, enabling you to seamlessly authenticate users from an app link sent to their email or phone number.
@@ -36,6 +34,40 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
     }
 
     return true
+}
+
+// Optionally, ensure any incoming URL requests are passed to Rownd for authentication
+func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    Rownd.handleSmartLink(url: url)
+    return true
+}
+
+func application(_ application: UIApplication,
+                    continue userActivity: NSUserActivity,
+                    restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    // Get URL components from the incoming user activity.
+    guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let incomingURL = userActivity.webpageURL,
+            let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true) else {
+        return false
+    }
+
+    return Rownd.handleSmartLink(url: incomingURL)
+}
+
+func scene(_ scene: UIScene, willConnectTo
+            session: UISceneSession,
+            options connectionOptions: UIScene.ConnectionOptions) {
+
+    // Get URL components from the incoming user activity.
+    guard let userActivity = connectionOptions.userActivities.first,
+            userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let incomingURL = userActivity.webpageURL,
+            let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true) else {
+        return
+    }
+
+    Rownd.handleSmartLink(url: incomingURL)
 }
 ```
 
@@ -153,49 +185,11 @@ While most customizations are handled via the [Rownd dashboard](https://app.rown
 
 The `RowndCustomizations` class exists to facilitate these customizations. It provides the following properties that may be subclassed or overridden.
 
-* `sheetBackgroundColor: UIColor`
+* `sheetBackgroundColor: UIColor` (default: light: .white, dark: .systemGray6; requires subclassing) - Allows changing the background color underlaying the bottom sheet that appears when signing in, managing the user account, etc.
 
-   (default: 
+* `sheetCornerBorderRadius: CGFloat` (default: `25.0`) - Modifies the curvature radius of the bottom sheet corners.
 
-  `light: .white`
-
-  , 
-
-  `dark: .systemGray6`
-
-  ; requires subclassing) - Allows changing the background color underlaying the bottom sheet that appears when signing in, managing the user account, etc.
-
-* `sheetCornerBorderRadius: CGFloat`
-
-   (default: 
-
-  `25.0`
-
-  ) - Modifies the curvature radius of the bottom sheet corners.
-
-* `loadingAnimation: Lottie.Animation`
-
-   (default: nil) - Replace Rownd's use of the system default loading spinner (i.e., 
-
-  `UIActivityIndicatorView`
-
-   or 
-
-  `ProgressView`
-
-  ) with a custom animation. Any animation compatible with 
-
-  [Lottie](https://airbnb.design/lottie/)
-
-   should work, but will be scaled to fit a 1:1 aspect ratio (usually with a 
-
-  `CGRect`
-
-   frame width/height of 
-
-  `100`
-
-  )
+* `loadingAnimation: Lottie.Animation` (default: nil) - Replace Rownd's use of the system default loading spinner (i.e., `UIActivityIndicatorView` or `ProgressView`) with a custom animation. Any animation compatible with [Lottie](https://airbnb.design/lottie/) should work, but will be scaled to fit a 1:1 aspect ratio (usually with a `CGRect` frame width/height of `100`)
 
 To apply customizations, we recommend subclassing the `RowndCustomizations` class. Here's an example:
 
@@ -229,44 +223,11 @@ It's possible to access the Rownd state from within an app extension, like a wid
 
 Follow these steps to configure your app and extension to work with Rownd:
 
-1. Add an 
+1. Add an [app group](https://developer.apple.com/documentation/xcode/configuring-app-groups) entitlement to both your app and any extensions that will use Rownd. This app group **must** be named like this: `<prefix>.io.rownd.sdk`. For example, if you work at a company with the acme.com domain, your app group might look like this: `com.acme.app.io.rownd.sdk`. Rownd will store its data in this app group. Your app should store data in a separate app group to prevent any collisions.
 
-   [app group](https://developer.apple.com/documentation/xcode/configuring-app-groups)
+2. In your app's `AppDelegate` file as well as your extension's entry point, set the app group prefix you defined above via `Rownd.config.appGroupPrefix = "<prefix>"` (e.g., `Rownd.config.appGroupPrefix = "com.acme.app"`)
 
-    entitlement to both your app and any extensions that will use Rownd.
-   This app group 
-
-   **must**
-
-    be named like this: 
-
-   `<prefix>.io.rownd.sdk`
-
-   . For example, if you work at a company with the acme.com domain, your app group might look like this: 
-
-   `com.acme.app.io.rownd.sdk`
-
-   . Rownd will store its data in this app group. Your app should store data in a separate app group to prevent any collisions.
-
-2. In your app's 
-
-   `AppDelegate`
-
-    file as well as your extension's entry point, set the app group prefix you defined above via 
-
-   `Rownd.config.appGroupPrefix = "<prefix>"`
-
-    (e.g., 
-
-   `Rownd.config.appGroupPrefix = "com.acme.app"`
-
-   )
-
-3. In your extension, call 
-
-   `Rownd.configure()`
-
-    prior to accessing authentication state. Here's an example:
+3. In your extension, call `Rownd.configure()` prior to accessing authentication state. Here's an example:
 
    ```swift
     Task {
@@ -304,6 +265,11 @@ Follow these steps to configure your app and extension to work with Rownd:
   }
   ```
 </Note>
+
+### Configuration options
+Rownd provides a number of configuration options that can be set before calling `Rownd.configure()`. These options are available via the `Rownd.config` object.
+
+* `enableSmartLinkPasteBehavior: Bool` (default: `true`) - Attempts to access the clipboard for smart link pasting behavior if it contains a URL. This _will_ trigger a system alert asking for permission to access the clipboard. If you don't want this behavior, set this to `false`.
 
 ### Events
 
@@ -395,73 +361,42 @@ Here's a list of events that the Rownd SDK emits and the corresponding data that
 
 In addition to the state observable APIs, Rownd provides imperative APIs that you can call to request sign in, get and retrieve user profile information, retrieve a current access token, or encrypt user data with the user's local key.
 
-#### Rownd.requestSignIn() -> Void
+#### `Rownd.requestSignIn() -> Void`
 
 Opens the Rownd sign-in dialog for authentication.
 
-#### Rownd.requestSignIn(RowndSignInOptions(postSignInRedirect: "https://my-domain.com")) -> Void
+#### `Rownd.requestSignIn(RowndSignInOptions(postSignInRedirect: "https://my-domain.com")) -> Void`
 
-#### Rownd.requestSignIn(RowndSignInOptions(postSignInRedirect: "https://my-domain.com", intent: .signIn)) -> Void
+#### `Rownd.requestSignIn(RowndSignInOptions(postSignInRedirect: "https://my-domain.com", intent: .signIn)) -> Void`
 
 Opens the Rownd sign-in dialog for authentication, as above. When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for `postSignInRedirect`. If this is a [Universal Link](https://developer.apple.com/ios/universal-links/), it will redirect the user back to your app.
 
-#### Rownd.requestSignIn(with: RowndSignInHint) -> Void
+#### `Rownd.requestSignIn(with: RowndSignInHint) -> Void`
 
-#### Rownd.requestSignIn(with: RowndSignInHint, signInOptions: RowndSignInOptions?) -> Void
+#### `Rownd.requestSignIn(with: RowndSignInHint, signInOptions: RowndSignInOptions?) -> Void`
 
 Requests a sign-in, but with a specific authentication provider (e.g., Sign in with Apple). Rownd treats this information as a hint. If the specified authentication provider is enabled within your Rownd app configuration, it will be honored. If not, Rownd will fall back to the default flow.
 
 Supported values:
 
-* `.appleId`
+* `.appleId` - Prompt user to sign in with their Apple ID
+* `.google` - Prompt user to sign in with their Google account
+* `.passkey` - Prompt user to sign in with a passkey if they've previously set one up
+* `.guest` - Sign in the user anonymously as a guest.
 
-   \- Prompt user to sign in with their Apple ID
-
-* `.google`
-
-   \- Prompt user to sign in with their Google account
-
-* `.passkey`
-
-   \- Prompt user to sign in with a passkey if they've previously set one up
-
-* `.guest`
-
-   \- Sign in the user anonymously as a guest.
-
-#### RowndSignInOptions
+#### `RowndSignInOptions`
 
 Some of the `requestSignIn()` methods accept an optional `RowndSignInOptions` parameter. This class contains the following properties:
 
-* `postSignInRedirect: String?`
+* `postSignInRedirect: String?` (not recommended) - When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for `postSignInRedirect`. If this is a [Universal Link](https://developer.apple.com/ios/universal-links/), it will redirect the user back to your app. If you don't set this value, the user will be redirected to your app's subdomain as configured in the Rownd dashboard.
 
-   (not recommended) - When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for 
+* `intent: RowndSignInIntent?` - This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are `.signIn` or `.signUp`. If you don't set this value, the user will be presented with the unified sign-in/sign-up flow. If you don't set this value, the user will be presented with the unified sign-in/sign-up flow.
 
-  `postSignInRedirect`
-
-  . If this is a 
-
-  [Universal Link](https://developer.apple.com/ios/universal-links/)
-
-  , it will redirect the user back to your app. If you don't set this value, the user will be redirected to your app's subdomain as configured in the Rownd dashboard.
-
-* `intent: RowndSignInIntent?`
-
-   \- This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are 
-
-  `.signIn`
-
-   or 
-
-  `.signUp`
-
-  . If you don't set this value, the user will be presented with the unified sign-in/sign-up flow.
-
-### Rownd.signOut() -> Void
+### `Rownd.signOut() -> Void`
 
 Clears the user's access token, removes the user's profile data, and returns the user to a completely unauthenticated state.
 
-### Rownd.signOut(scope: RowndSignoutScope) -> Void
+### `Rownd.signOut(scope: RowndSignoutScope) -> Void`
 
 Revokes all tokens for the specified user causing them to be signed out on all devices.
 
@@ -469,7 +404,7 @@ Supported values:
 
 * `.all` - All devices
 
-### Rownd.getAccessToken(throwIfMissing: Bool = false) async throws -> String?
+### `Rownd.getAccessToken(throwIfMissing: Bool = false) async throws -> String?`
 
 Assuming a user is signed-in, returns a valid access token, refreshing the current one if needed.
 
