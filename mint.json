@@ -141,7 +141,13 @@
           "group": "Mobile",
           "pages": [
             "configuration/mobile/overview",
-            "configuration/mobile/android",
+            {
+              "group": "Android",
+              "pages": [
+                "configuration/mobile/android",
+                "configuration/mobile/android-instant"
+              ]
+            },
             {
               "group": "iOS",
               "pages": [
