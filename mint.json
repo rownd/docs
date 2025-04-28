@@ -69,6 +69,18 @@
             "migration/cognito",
             "migration/firebase"
           ]
+        },
+        {
+          "group": "Comparing Rownd",
+          "pages": [
+            "welcome/comparisons/overview",
+            "welcome/comparisons/auth0",
+            "welcome/comparisons/clerk",
+            "welcome/comparisons/cognito",
+            "welcome/comparisons/firebase",
+            "welcome/comparisons/supabase",
+            "welcome/comparisons/zitadel"
+          ]
         }
       ]
     },
@@ -136,7 +148,6 @@
             "magic-links/platform",
             "magic-links/authenticated",
             "magic-links/unauthenticated"
- 
           ]
         },
         {
