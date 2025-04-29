@@ -121,6 +121,13 @@
           ]
         },
         {
+          "group": "Custom domains",
+          "pages": [
+            "configuration/custom-domains/overview",
+            "configuration/custom-domains/dns-records"
+          ]
+        },
+        {
           "group": "Customizations",
           "pages": [
             "configuration/customizations/global-style",

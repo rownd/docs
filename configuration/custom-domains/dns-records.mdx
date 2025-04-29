@@ -1,0 +1,289 @@
+---
+title: "How to set custom domains in DNS providers"
+sidebarTitle: "DNS Provider Steps"
+
+---
+These docs shows how to add the **CNAME** and **TXT** records required to configure a custom authentication domain (e.g., for magic‑link emails, smart links, etc.) with Rownd. Each example uses:
+
+- **CNAME**: points `<YOUR_CUSTOM_DOMAIN>` to your Rownd subdomain (`<ROWND_SUBDOMAIN>`).
+- **TXT**: creates a verification record at `<TXT_RECORD_HOSTNAME>` with the token `<VERIFICATION_TOKEN>`.
+
+Click the links for your DNS provider’s official docs for more details.
+
+---
+
+## Table of Contents
+
+1. [Cloudflare](#1-cloudflare)  
+2. [GoDaddy](#2-godaddy)  
+3. [Google Cloud DNS](#3-google-cloud-dns)  
+4. [AWS Route 53](#4-aws-route-53)  
+5. [Azure DNS](#5-azure-dns)  
+6. [Namecheap](#6-namecheap)  
+7. [DigitalOcean DNS](#7-digitalocean-dns)  
+8. [Hover](#8-hover)  
+9. [DNS Made Easy](#9-dns-made-easy)  
+10. [Dyn Managed DNS](#10-dyn-managed-dns)  
+11. [Squarespace](#11-squarespace)  
+
+---
+
+## 1. Cloudflare
+
+- **Official Docs**: [Manage DNS Records – Cloudflare](https://developers.cloudflare.com/dns/manage-dns-records/)
+
+### Add a CNAME Record
+
+| Field  | Value                          |
+|--------|--------------------------------|
+| Type   | CNAME                          |
+| Name   | `<YOUR_CUSTOM_DOMAIN>`         |
+| Target | `<ROWND_SUBDOMAIN>`            |
+| TTL    | Auto (or your preferred value) |
+
+### Add a TXT Record
+
+| Field   | Value                         |
+|---------|-------------------------------|
+| Type    | TXT                           |
+| Name    | `<TXT_RECORD_HOSTNAME>`       |
+| Content | `<VERIFICATION_TOKEN>`        |
+| TTL     | Auto (or your preferred value)|
+
+---
+
+## 2. GoDaddy
+
+- **Official Docs**:
+  - [Add CNAME Records](https://support.godaddy.com/help/add-cname-records-19238)  
+  - [Add TXT Records](https://support.godaddy.com/help/add-a-txt-record-19236)
+
+### Add a CNAME Record
+
+| Field      | Value                   |
+|------------|-------------------------|
+| Type       | CNAME                   |
+| Host       | `<YOUR_CUSTOM_DOMAIN>`  |
+| Points to  | `<ROWND_SUBDOMAIN>`     |
+| TTL        | 600 sec (or default)    |
+
+### Add a TXT Record
+
+| Field     | Value                         |
+|-----------|-------------------------------|
+| Type      | TXT                           |
+| Host      | `<TXT_RECORD_HOSTNAME>`       |
+| TXT Value | `<VERIFICATION_TOKEN>`        |
+| TTL       | 600 sec (or default)          |
+
+---
+
+## 3. Google Cloud DNS
+
+- **Official Docs**: [Resource Record Types – Cloud DNS](https://cloud.google.com/dns/docs/records)
+
+### Add a CNAME Record
+
+| Field                | Value                      |
+|----------------------|----------------------------|
+| DNS Name             | `<YOUR_CUSTOM_DOMAIN>.`    |
+| Resource Record Type | CNAME                      |
+| Canonical name       | `<ROWND_SUBDOMAIN>.`       |
+| TTL                  | 300 sec (or your preference)|
+
+### Add a TXT Record
+
+| Field                | Value                          |
+|----------------------|--------------------------------|
+| DNS Name             | `<TXT_RECORD_HOSTNAME>`        |
+| Resource Record Type | TXT                            |
+| TTL                  | 300 sec (or your preference)   |
+| TXT data             | `"<VERIFICATION_TOKEN>"`       |
+
+---
+
+## 4. AWS Route 53
+
+- **Official Docs**: [Creating Records – Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-creating.html)
+
+### Add a CNAME Record
+
+| Field       | Value                   |
+|-------------|-------------------------|
+| Record name | `<YOUR_CUSTOM_DOMAIN>`  |
+| Record type | CNAME                   |
+| Value       | `<ROWND_SUBDOMAIN>`     |
+| TTL (sec)   | 300                     |
+
+### Add a TXT Record
+
+| Field       | Value                          |
+|-------------|--------------------------------|
+| Record name | `<TXT_RECORD_HOSTNAME>`        |
+| Record type | TXT                            |
+| Value       | `"<VERIFICATION_TOKEN>"`       |
+| TTL (sec)   | 300                            |
+
+---
+
+## 5. Azure DNS
+
+- **Official Docs**: [Add Records to DNS Zones – Azure DNS](https://learn.microsoft.com/azure/dns/dns-zones-records)
+
+### Add a CNAME Record
+
+| Field | Value                   |
+|-------|-------------------------|
+| Name  | `<YOUR_CUSTOM_DOMAIN>`  |
+| Type  | CNAME                   |
+| Alias | `<ROWND_SUBDOMAIN>`     |
+| TTL   | 3600 sec                |
+
+### Add a TXT Record
+
+| Field   | Value                   |
+|---------|-------------------------|
+| Name    | `<TXT_RECORD_HOSTNAME>` |
+| Type    | TXT                     |
+| Value   | `<VERIFICATION_TOKEN>`  |
+| TTL     | 3600 sec                |
+
+---
+
+## 6. Namecheap
+
+- **Official Docs**: [How to Add DNS Records – Namecheap](https://www.namecheap.com/support/knowledgebase/article.aspx/9756/2237/how-to-add-dns-records-for-a-domain)
+
+### Add a CNAME Record
+
+| Field | Value                   |
+|-------|-------------------------|
+| Type  | CNAME                   |
+| Host  | `<YOUR_CUSTOM_DOMAIN>`  |
+| Value | `<ROWND_SUBDOMAIN>`     |
+| TTL   | Automatic               |
+
+### Add a TXT Record
+
+| Field | Value                   |
+|-------|-------------------------|
+| Type  | TXT                     |
+| Host  | `<TXT_RECORD_HOSTNAME>` |
+| Value | `<VERIFICATION_TOKEN>`  |
+| TTL   | Automatic               |
+
+---
+
+## 7. DigitalOcean DNS
+
+- **Official Docs**: [Add DNS Records – DigitalOcean](https://docs.digitalocean.com/products/networking/dns/how-to/add-records/)
+
+### Add a CNAME Record
+
+| Field       | Value                   |
+|-------------|-------------------------|
+| Host name   | `<YOUR_CUSTOM_DOMAIN>`  |
+| Will direct to | `<ROWND_SUBDOMAIN>` |
+| Record type | CNAME                   |
+
+### Add a TXT Record
+
+| Field  | Value                   |
+|--------|-------------------------|
+| Host   | `<TXT_RECORD_HOSTNAME>` |
+| Value  | `<VERIFICATION_TOKEN>`  |
+| Type   | TXT                     |
+
+---
+
+## 8. Hover
+
+- **Official Docs**: [Adding a DNS Record – Hover Help](https://help.hover.com/hc/en-us/articles/203729334-Adding-a-DNS-record)
+
+### Add a CNAME Record
+
+| Field      | Value                   |
+|------------|-------------------------|
+| Type       | CNAME                   |
+| Host name  | `<YOUR_CUSTOM_DOMAIN>`  |
+| Points to  | `<ROWND_SUBDOMAIN>`     |
+
+### Add a TXT Record
+
+| Field     | Value                   |
+|-----------|-------------------------|
+| Type      | TXT                     |
+| Host name | `<TXT_RECORD_HOSTNAME>` |
+| Value     | `<VERIFICATION_TOKEN>`  |
+
+---
+
+## 9. DNS Made Easy
+
+- **Official Docs**: [Adding Records – DNS Made Easy](https://support.dnsmadeeasy.com/hc/en-us/articles/115005531225-Adding-Records)
+
+### Add a CNAME Record
+
+| Field | Value                   |
+|-------|-------------------------|
+| Type  | CNAME                   |
+| Host  | `<YOUR_CUSTOM_DOMAIN>`  |
+| Value | `<ROWND_SUBDOMAIN>`     |
+
+### Add a TXT Record
+
+| Field | Value                   |
+|-------|-------------------------|
+| Type  | TXT                     |
+| Host  | `<TXT_RECORD_HOSTNAME>` |
+| Value | `<VERIFICATION_TOKEN>`  |
+
+---
+
+## 10. Dyn Managed DNS
+
+- **Official Docs**: [Using the DNS Manager – Dyn](https://help.dyn.com/using-dns-manager/)
+
+### Add a CNAME Record
+
+| Field    | Value                   |
+|----------|-------------------------|
+| Type     | CNAME                   |
+| Hostname | `<YOUR_CUSTOM_DOMAIN>`  |
+| Target   | `<ROWND_SUBDOMAIN>`     |
+
+### Add a TXT Record
+
+| Field    | Value                   |
+|----------|-------------------------|
+| Type     | TXT                     |
+| Hostname | `<TXT_RECORD_HOSTNAME>` |
+| TXT Data | `<VERIFICATION_TOKEN>`  |
+
+---
+
+## 11. Squarespace
+
+- **Official Docs**:
+  - [Adding DNS records to your domain – Squarespace](https://support.squarespace.com/hc/en-us/articles/360002101888-Adding-DNS-records-to-your-domain)  
+  - [DNS records for connecting third-party domains – Squarespace](https://support.squarespace.com/hc/en-us/articles/360035485391-DNS-records-for-connecting-third-party-domains)
+
+### Add a CNAME Record
+
+| Field | Value                   |
+|-------|-------------------------|
+| Type  | CNAME                   |
+| Host  | `<YOUR_CUSTOM_DOMAIN>`  |
+| Data  | `<ROWND_SUBDOMAIN>`     |
+
+### Add a TXT Record
+
+| Field | Value                   |
+|-------|-------------------------|
+| Type  | TXT                     |
+| Host  | `<TXT_RECORD_HOSTNAME>` |
+| Data  | `<VERIFICATION_TOKEN>`  |
+
+---
+
+Follow these steps to configure your custom authentication domain for Rownd smart links and magic‑link flows.

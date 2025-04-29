@@ -14,9 +14,48 @@ In many cases, you can replace Branch or Firebase Dynamic Links with Rownd magic
 - **Cross-platform**: Rownd magic links are optimized for use across web, iOS, and Android, ensuring a consistent experience.
 - **Unauthenticated / bulk links**: Create reusable links for bulk distribution with a customized call-to-action. Deep link into your app or website or trigger app downloads from the correct app store. This allows users to directly access the download link without requiring authentication.
 
-## Creating and using magic links
+### Elevate Your Brand with Custom Domains
 
-During email or SMS sign-in, Rownd automatically generates magic links on your behalf and sends them to the user. However, you can also programmatically create magic links using the Rownd API. This allows you to customize the link's behavior, such as redirecting users to specific app screens or triggering custom actions.
+One of the most powerful features of Rownd Smart Links is the ability to use your own custom domain:
+
+- **Enhanced Brand Trust**: Links displaying your domain instead of a third-party one significantly improve click-through rates
+- **Improved Deliverability**: Email and SMS providers are less likely to flag links from established domains
+- **Seamless Brand Experience**: Maintain your brand identity throughout the entire user journey
+- **Professional Appearance**: Custom domains create a more polished, professional impression
+
+To set up custom domains for your Smart Links, visit our [Custom Domains](/configuration/custom-domains/overview) documentation. Once configured, all your Smart Links will use your branded domain, creating a cohesive experience from email or SMS all the way through to your application.
+
+## Creating and using smart links
+
+Rownd offers two powerful ways to create Smart Links, each designed for different use cases and workflow preferences:
+
+### Platform-Based Creation
+
+You can now create and manage Smart Links directly through the Rownd dashboard without writing any code. Our user-friendly interface allows you to:
+
+- Create reusable Smart Links for marketing campaigns, user onboarding, or app downloads
+- Customize link behavior with redirects based on device type
+- Add analytics tags to track link performance
+- Control how your links appear when shared on social media
+- Manage all your links from a central dashboard
+
+
+
+The platform approach is perfect for marketing teams, content managers, and anyone who needs to create and manage links without developer involvement. Within minutes, you can create a Smart Link that delivers a tailored experience to your users.
+
+For detailed instructions on creating Smart Links through the platform, see our [Platform Guide](/magic-links/platform).
+
+### API-Based Creation
+
+For developers and automated workflows, Rownd offers a powerful API for programmatically creating Smart Links. This approach enables:
+
+- **Dynamic link generation** based on user actions or events
+- **Seamless integration** with existing marketing automation platforms
+- **Bulk creation** of personalized links for email campaigns
+- **Custom authentication flows** tailored to your specific business needs
+- **Web hooks and callbacks** for advanced tracking and user journey orchestration
+
+During email or SMS sign-in, Rownd automatically generates smart links on your behalf and sends them to the user. However, you can also programmatically create smart links using the Rownd API. This allows you to customize the link's behavior, such as redirecting users to specific app screens or triggering custom actions.
 
 To create a magic link, see our [API documentation](/api-reference/authentication/create-magic-link).
 
