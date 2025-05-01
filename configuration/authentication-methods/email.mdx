@@ -26,6 +26,14 @@ Incorporating email-based authentication with Rownd Sign-in Links not only impro
 2. Toggle the switch for **Email** to the "on" position.
 3. Click **Save**.
 
+#### Browser Fingerprinting and Reverification for Returning Users
+
+Rownd uses browser fingerprinting to enhance the sign-in experience for returning users. When a user signs in with email authentication, Rownd securely associates their session with device metadata to form a private, temporary fingerprint. This allows returning users to sign back in—within a configurable time window—without going through the full email verification process again.
+
+Additionally, Rownd remembers the last sign-in method used. If a user has multiple authentication options, we’ll surface the one they last used to simplify the experience.
+
+Browser fingerprinting in Rownd is privacy-conscious and session-bound. It doesn’t track users across websites—it simply reduces friction for repeat visits on personal devices.
+
 #### Customizing email messages
 
 Rownd allows you to change portions of the email to better match your brand. See our [email customization article](/configuration/customizations/email-customization) for more information.
