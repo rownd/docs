@@ -1,0 +1,222 @@
+---
+title: "Convex"
+description: Convex SDK reference
+icon: c
+---
+
+## Installation
+
+Install the required dependencies:
+
+```bash
+npm install convex @rownd/react
+```
+
+---
+
+## Configuration
+
+1. **Get your Rownd App Key:**
+   - Sign up or log in at [Rownd Dashboard](https://app.rownd.io)
+   - Create/select your application
+   - Copy your **App Key** (e.g., `key_xxxxxxxx`)
+
+2. **Set up Convex:**
+   - Follow the [Convex Getting Started guide](https://docs.convex.dev/quickstart/) to initialize your backend and get your deployment URL.
+
+---
+
+## RowndProvider Setup
+
+Wrap your app with `RowndProvider` from `@rownd/react/convex` and pass both your Convex client and Rownd app key:
+
+```tsx
+import { createRoot } from "react-dom/client";
+import { ConvexReactClient } from "convex/react";
+import { RowndProvider } from "@rownd/react/convex";
+import App from "./App";
+
+const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
+
+createRoot(document.getElementById("root")!).render(
+  <RowndProvider client={convex} appKey="your_app_key_here">
+    <App />
+  </RowndProvider>
+);
+```
+
+## Server-side Usage
+
+### Mapping Rownd IDs in Convex
+
+**It is critical to keep a mapping of the Rownd user ID in your Convex `users` table.**  
+This allows you to associate Rownd-authenticated users with your app's data.
+
+**Schema example:**
+
+```ts
+// convex/schema.ts
+import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
+
+export default defineSchema({
+  users: defineTable({
+    rowndId: v.string(),
+    email: v.optional(v.string()),
+  })
+    .index("by_rowndId", ["rowndId"]),
+  // ...other tables
+});
+```
+
+**Storing and looking up users by Rownd ID:**
+
+This example mutation ensures the existence of a user record in your database for the currently authenticated
+user. `ctx.auth.getUserIdentity()` will return all of the claim data included in the user's JWT. You can use the
+`subject` value to map your internal users to Rownd user's.
+
+```ts
+// convex/users.ts
+import { mutation } from "./_generated/server";
+
+export const store = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Called storeUser without authentication present");
+    }
+
+    // Check if we've already stored this identity before.
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_rowndId", (q) =>
+        q.eq("rowndId", identity.subject),
+      )
+      .unique();
+    if (user !== null) {
+      return user._id;
+    }
+
+    // If it's a new identity, create a new `User`.
+    const dbUser = await ctx.db.insert("users", {
+      rowndId: identity.subject,
+      email: identity.email,
+    });
+
+    return dbUser;
+  },
+});
+```
+
+### Accessing the Current User
+
+To get the current authenticated user in any Convex function, always look up by the Rownd ID:
+
+```ts
+// convex/auth.ts
+import { query } from "./_generated/server";
+
+export const loggedInUser = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_rowndId", (q) =>
+        q.eq("rowndId", identity.subject),
+      )
+      .unique();
+    return user;
+  },
+});
+```
+
+### Protecting Convex Functions
+
+Always check for authentication and use the Rownd ID mapping to associate data with users:
+
+```ts
+import { mutation } from "./_generated/server";
+import { v } from "convex/values";
+
+export const createPost = mutation({
+  args: {
+    title: v.string(),
+    content: v.string(),
+    category: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Please log in");
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_rowndId", (q) =>
+        q.eq("rowndId", identity.subject),
+      )
+      .unique();
+    if (!user?._id) throw new Error("User not found");
+
+    return await ctx.db.insert("posts", {
+      authorId: user._id,
+      title: args.title,
+      content: args.content,
+      category: args.category,
+      likes: 0,
+    });
+  },
+});
+```
+
+---
+
+
+## Client-side Usage
+
+### Using Rownd React SDK Features
+
+After setting up the `RowndProvider`, you can use all other features of the [`@rownd/react`](https://docs.rownd.io/sdk-reference/web/react) SDK in your app as documented in the official Rownd docs.
+
+<Info>
+The Rownd React SDK only handles client-side authentication state. For proper integration with Convex, you should use Convex's authentication hooks and utilities to ensure server-side state is properly synchronized.
+</Info>
+
+Create a custom hook like `useStoreUserEffect` to handle the authentication flow as outlined in these [Convex docs](https://docs.convex.dev/auth/database-auth)
+
+**Example:**
+
+```tsx
+import { useRownd } from "@rownd/react";
+import { useStoreUserEffect } from "./useStoreUserEffect.js";
+
+function Profile() {
+  const { requestSignIn, signOut, user: rowndUser } = useRownd();
+  const { isAuthenticated } = useStoreUserEffect();
+
+  if (!isAuthenticated) {
+    return <button onClick={() => requestSignIn()}>Sign in</button>;
+  }
+
+  return (
+    <div>
+      <p>Welcome, {rowndUser?.first_name}!</p>
+      <button onClick={() => signOut()}>Sign out</button>
+    </div>
+  );
+}
+```
+
+For more details and advanced usage, see the [Rownd React SDK documentation](https://docs.rownd.io/sdk-reference/web/react).
+
+---
+
+## Best Practices & Tips
+
+- **Always map Rownd IDs:**  
+  Store the Rownd user ID (`identity.subject`) in your `users` table and use it as the primary lookup for all user-specific data.
+- **Use indexes for efficient lookups:**  
+  Index your `users` table by `rowndId` for fast queries.
+- **Optionally include additional profile data in JWT claims**
+  You can use the Rownd Platform to setup profile data fields for inclusion in additional JWT claims. This makes them avaiable on the `ctx.auth.getUserIdentity()`
