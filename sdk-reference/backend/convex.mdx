@@ -20,6 +20,7 @@ npm install convex @rownd/react
    - Sign up or log in at [Rownd Dashboard](https://app.rownd.io)
    - Create/select your application
    - Copy your **App Key** (e.g., `key_xxxxxxxx`)
+   - Copy your **App ID** This is used to verify the audience. 
 
 2. **Set up Convex:**
    - Follow the [Convex Getting Started guide](https://docs.convex.dev/quickstart/) to initialize your backend and get your deployment URL.
@@ -46,6 +47,27 @@ createRoot(document.getElementById("root")!).render(
 ```
 
 ## Server-side Usage
+
+
+### Add Rownd to your auth.config.js file. 
+
+Add these to your convex/auth.config.js file:
+
+```ts
+//convex/auth.config.js
+export default {
+  providers: [
+    {
+      domain: "https://api.rownd.io",
+      applicationID: "app:your-rownd-app-id"
+    },
+  ],
+```
+
+
+> [! NOTE]
+> Ensure you have the `app:` in addition to your app-id. 
+> For example, applicationID: "app:app_alksdjflakjvlkeja"
 
 ### Mapping Rownd IDs in Convex
 
