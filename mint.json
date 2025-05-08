@@ -258,7 +258,7 @@
         "sdk-reference/web/angular",
         "sdk-reference/web/html",
         "sdk-reference/web/nextjs",
-        "sdk-reference/web/react---next-js",
+        "sdk-reference/web/react",
         "sdk-reference/web/remix",
         "sdk-reference/web/ruby-on-rails",
         "sdk-reference/web/vue",
