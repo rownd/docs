@@ -280,6 +280,7 @@
         "sdk-reference/web/node-js",
         "sdk-reference/web/net-core",
         "sdk-reference/web/ruby-on-rails",
+        "sdk-reference/backend/convex",
         "sdk-reference/web/wordpress---woocommerce"
       ]
     },
