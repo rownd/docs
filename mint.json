@@ -28,6 +28,12 @@
       "url": "https://rownd.io"
     }
   ],
+  "redirects": [
+    {
+      "source": "/sdk-reference/web/react---next-js",
+      "destination": "/sdk-reference/web/react"
+    }
+  ],
   "openapi": "/openapi/api-server.json",
   "primaryTab": {
     "name": "Documentation"
