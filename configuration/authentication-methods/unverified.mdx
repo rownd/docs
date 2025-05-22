@@ -1,20 +1,53 @@
 ---
 title: "Unverified Users"
 sidebarTitle: "Unverified Users"
-description: "Unverifeid user sign-in with email or phone"
+description: "Allow first-time users to sign up without immediate verification. On subsequent visits, they will be prompted to verify their email or phone number."
 ---
 
 <Snippet file="unverified-users-description.mdx" />
 
-## Enabling Unverified Users
-Enabling Unverified Users is easy and does not require any additional code. Simply follow the steps below to enable Unverified Users for your application.
+## Enabling Delayed Verification for unverified Users
 
-1. Open your app in the [Rownd platform](https://app.rownd.io/applications). Then click on the **Sign-in methods** tab on the left to adjust your flow.
+Enabling delayed verification for unverified users allows first-time users to sign up without needing to verify their email immediately. This feature reduces friction during the sign-up process, providing a smoother user experience, especially for new users. 
 
-   ![Finding authentication methods is easy; just select "Sign-in methods" from the nav pane.](/images/sign-in-methods-page.png)
+On the user’s second visit, they will be prompted to verify their account to continue accessing the app. This ensures that your app maintains security while allowing users to try it out with minimal barriers.
 
-2. Scroll down to the bottom of the page and press the toggle next to **Unverified users**.
+This feature is particularly useful for applications where quick sign-up is critical, and you want to prioritize user experience without compromising security for returning users.
 
-   ![Enable unverified users toggle on the bottom of the sign-in methods page](/images/enable-unverified-users.png)
+### Benefits of Delayed Verification
+- **Lower Friction:** First-time users can sign up quickly without needing to verify their email immediately.
+- **User Experience:** Reduces the likelihood of sign-up abandonment by making the process faster and more seamless.
+- **Improved Security:** Users will still be required to verify their account on subsequent visits, ensuring that only legitimate users can access the app long-term.
+- **Flexible Integration:** Does not require any additional code beyond enabling the setting on your Rownd platform.
 
-3. To confirm your changes, press **Save** in the upper right-hand corner of the page.
+### Enabling Delayed Verification
+
+Enabling delayed verification for unverified users is simple and does not require coding changes. Just follow the steps below:
+
+1. **Open your application in Rownd**  
+   Open your app in the [Rownd platform](https://app.rownd.io/applications). In the left-hand navigation panel, click on the **Settings** tab and navigate to the **User Settings** tab.
+
+2. **Enable Delayed Verification**  
+   Scroll down to the part of the page where you'll find the toggle next to **Allow delayed verification**. Flip the toggle to enable the feature for your application.
+
+3. **Save Changes**  
+   After enabling delayed verification, click **Save** in the upper right-hand corner to confirm your changes.
+
+
+### How It Works for Users
+Once enabled, users can sign up without immediate verification by entering their email in the email sign-in field if enabled. They will be able to access the app and use its features, but when they return to the app on a later visit, they will be prompted to verify their email to continue using the app.
+
+For users who have a recognized device (via browser fingerprinting), the verification prompt may be skipped on future visits as long as the device is recognized.
+
+### Use Cases
+- **E-commerce apps**: Users can quickly browse and explore products without immediate verification but will need to verify their account for checkout.
+- **Social apps**: New users can sign up and explore the app, and on their second visit, they can verify their email or phone for account recovery and security.
+- **Service-based apps**: Let users try out basic features first without verification, and later require verification for accessing premium or restricted features.
+
+### Next Steps
+
+Once delayed verification is enabled, consider reviewing your sign-in flows and customizing the user experience even further. Rownd’s platform offers additional customization options, such as customizing the verification prompt and setting different requirements for different user groups.
+
+---
+
+If you have any further questions about this feature or need help with troubleshooting, feel free to reach out to Rownd’s support team at support@rownd.io
