@@ -200,6 +200,13 @@
           ]
         },
         {
+          "group": "Payments",
+          "pages": [
+            "payments/overview",
+            "payments/stripe"
+          ]
+        },
+        {
           "group": "Web3",
           "pages": [
             "configuration/web3/near-overview",
