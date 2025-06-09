@@ -203,7 +203,9 @@
           "group": "Payments",
           "pages": [
             "payments/overview",
+            "payments/app-setup",
             "payments/stripe"
+            
           ]
         },
         {
