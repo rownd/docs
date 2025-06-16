@@ -1,5 +1,5 @@
 ---
-title: "Mobile app configuration in the platform"
+title: "Mobile app configuration"
 sidebarTitle: "Overview"
 description: "Configure mobile apps in Rownd with ease."
 ---
@@ -27,7 +27,40 @@ Universal links offer several benefits for both users and developers:
 - **Improved conversion rates** - By reducing friction in the user experience and lowering the barriers to entry, universal links can help boost conversion rates for app installations that lead to user sign-ups.
 - **Enhanced security** - Universal links are more secure than legacy custom URL schemes, as they rely on the app's domain and can only be used by the associated app, thus reducing the risk of phishing attacks or unauthorized access.
 
-#### Configure by platform
+### Submitting Your App for Review
+
+When submitting your app to the App Store or Google Play Store, reviewers will need a way to access and test the app. If you're using Rownd for authentication, you can streamline this process by setting up simple test accounts.
+
+**Recommended Setup**
+
+Use a disposable email inbox service like [Mailinator](https://www.mailinator.com) to create one or more test accounts.
+
+**Example:**
+
+- Test email address: my-app-review-1@mailinator.com
+
+- Instruct reviewers to:
+    1. Enter the test email in your app’s sign-in screen  
+    2. Visit the corresponding Mailinator inbox at:  
+   ```
+   https://www.mailinator.com/v4/public/inboxes.jsp?to=my-app-review-1
+   ```
+
+You can create multiple test accounts by incrementing the address (e.g., `my-app-review-2@mailinator.com`, etc.).
+
+> Be sure the inbox name matches the email address  
+> (e.g., `my-app-review-1@mailinator.com` → `my-app-review-1` inbox on Mailinator).
+
+**Optional Enhancements**
+
+- Preload test data into the accounts
+- Use conditional logic in your app to streamline or skip onboarding for known test users
+
+This approach works for both iOS (App Store) and Android (Google Play), and is commonly accepted during the review process.
+
+
+
+### Configure by platform
 
 See our step-by-step configuration guides for [iOS](/configuration/mobile/ios) and [Android](/configuration/mobile/android) for assistance in filling out this section.
 
