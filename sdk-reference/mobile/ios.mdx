@@ -467,13 +467,13 @@ Returns the entire user profile as a dictionary object
 
 #### Rownd.user.get\<T>(field: String) -> T?
 
-Returns the value of a specific field in the user's data dictionary. `"id"` is a special case that will return the user's ID, even though it's technically not in the dictionary itself.
+Returns the value of a specific field in the user's data dictionary. You can use `user_id` to obtain the user's unique ID, which is always a string.
 
 Your application code is responsible for knowing which type the value should cast to. If the cast fails or the entry doesn't exist, a `nil` value will be returned.
 
 #### Rownd.user.set(data: Dictionary\<String, AnyCodable>) -> void
 
-Replaces the user's data with that contained in the dictionary. This may overwrite existing values, but must match the schema you defined within your Rownd application dashboard. Any fields that are flagged as `encrypted` will be encrypted on-device prior to storing in Rownd's platform.
+Replaces the user's data with that contained in the dictionary. This may overwrite existing values, but must match the schema you defined within your Rownd application dashboard.
 
 Hint: use `AnyCodable.init(value)` to conform your values to the required type.
 
