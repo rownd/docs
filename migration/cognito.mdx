@@ -19,7 +19,7 @@ Here's what you'll work through as part of this migration:
 ## Update back-end code
 You'll need to update your backend APIs to accept Rownd-signed JWTs instead of AWS Cognito JWTs.
 
- 1. Install the Rownd SDK for your [back-end language or framework](/sdk-reference/backend).
+ 1. Install the Rownd SDK for your [back-end language or framework](/sdk-reference/backend/overview).
  2. Locate code that uses the AWS Cognito to manage users, validate tokens, and so on. Remove this code.
 
 Our SDKs provide functions to validate Rownd tokens, fetch user data, and in some cases middleware that you can plug directly into your request handlers to authenticate users automatically. 

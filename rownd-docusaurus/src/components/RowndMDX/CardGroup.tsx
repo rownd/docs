@@ -7,6 +7,7 @@ export default function CardGroup({children}: PropsWithChildren) {
         display: 'grid',
         gap: 16,
         gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+        marginBottom: 16,
       }}
     >
       {children}

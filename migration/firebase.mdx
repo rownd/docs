@@ -26,7 +26,7 @@ Some Firebase apps don't have a back-end component. If that's the case for you, 
 In most cases, you should be able to remove all Firebase Authentication-related code from any backend servers or functions you're using. Take the following steps to migrate your back-end from Firebase Authentication to Rownd.
 
 1. If you're only using Firebase Authentication, uninstall Firebase SDKs from your back-end project.
-2. Install the Rownd SDK for your [back-end language or framework](/sdk-reference/backend).
+2. Install the Rownd SDK for your [back-end language or framework](/sdk-reference/backend/overview).
 2. Locate code that uses the Firebase SDK to manage users, validate tokens, and so on. Remove this code.
 3. Replace the previous Firebase code with Rownd code. See our [GitHub repo](https://github.com/rownd/migration-firebase) for an example of this code migration.
 
@@ -36,7 +36,7 @@ Firebase provides a limited amount of pre-built UI, so it's likely you've create
 <Info>If you plan to keep existing users signed-in (and you should!), keep your Firebase SDKs installed until you've migrated all of your active users to Rownd. This usually takes a month or two depending on your users' behavior patterns.</Info>
 
 1. Remove existing authentication code, authentication screens, and so on. (If you're migrating a mobile app, you may want to keep the splash screen, although Rownd can help you let users into your app before they fully authenticate).
-2. Install a [front-end web SDK](/sdk-reference/web) or [mobile SDK](/sdk-reference/mobile) for your platform or framework.
+2. Install a [front-end web SDK](/sdk-reference/web/overview) or [mobile SDK](/sdk-reference/mobile/overview) for your platform or framework.
 3. Add the required bits of Rownd code to authenticate users and protect your front-end.
 
 Here's an example where we'll update the front-end and replace Firebase authentication with Rownd. React code examples are provided for demonstration purposes.
