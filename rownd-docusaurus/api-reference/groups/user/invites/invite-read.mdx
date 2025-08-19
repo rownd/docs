@@ -1,0 +1,36 @@
+---
+title: "Retrieve a group invite"
+openapi: "GET /me/groups/{group}/invites/{invite}"
+---
+
+Retrieve a group invite (user-scoped).
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/me/groups/{group}/invites/{invite}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/me/groups/{group}/invites/{invite}" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "inv_abc",
+  "email": "invitee@example.com",
+  "status": "pending"
+}
+```

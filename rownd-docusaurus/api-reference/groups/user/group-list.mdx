@@ -1,0 +1,42 @@
+---
+title: "List groups"
+openapi: "GET /me/groups"
+---
+
+User-scoped API for listing groups owned by the current user.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/me/groups`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Query params
+
+- `limit` (optional): Page size (max 100)
+- `after` (optional): Pagination cursor
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/me/groups?limit=25" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "data": [
+    {"id": "grp_abc", "name": "My Group"}
+  ],
+  "paging": {"next": null}
+}
+```

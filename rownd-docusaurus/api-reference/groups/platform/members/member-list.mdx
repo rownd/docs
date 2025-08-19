@@ -1,0 +1,44 @@
+---
+title: "List group member"
+openapi: "GET /applications/{app}/groups/{group}/members"
+---
+
+List members of a group (app-scoped).
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/groups/{group}/members`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Query params
+
+- `limit` (optional): Page size (max 100)
+- `after` (optional): Pagination cursor
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}/members?limit=25" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "data": [
+    {"id": "mem_123", "user": "usr_123"}
+  ],
+  "paging": {"next": null}
+}
+```

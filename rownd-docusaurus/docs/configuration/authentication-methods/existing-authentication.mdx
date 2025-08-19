@@ -1,0 +1,8 @@
+---
+title: Validating third-party authenticators
+sidebarTitle: Existing authentication
+---
+
+Rownd's token validator allows you to authenticate a token issued by another authentication provider and exchange it for a Rownd token. This feature is useful when migrating to Rownd from another authentication provider and you want to prevent existing users from being signed-out during the transition. It can also be used when moving between contexts, such as when your code is embedded in an implementation that you don't directly control (e.g., a webview inside someone else's mobile app).
+
+Use Rownd's [token validator integration](/configuration/integrations/token-validator) to configure this feature.

@@ -1,0 +1,33 @@
+---
+title: "Retrieve OIDC configuration"
+openapi: "GET /hub/auth/.well-known/oauth-authorization-server"
+---
+
+Retrieve Rownd's OAuth 2.0/OIDC metadata document.
+
+<Endpoint method="GET" path="/hub/auth/.well-known/oauth-authorization-server" baseUrls={['https://api.rownd.io','https://api.us-east-2.dev.rownd.io']} />
+
+### Try it
+
+```bash title="cURL"
+curl --request GET \
+  --url https://api.rownd.io/hub/auth/.well-known/oauth-authorization-server
+```
+
+### Response
+
+200 - application/json — OIDC configuration
+
+```json title="200 OK"
+{
+  "issuer": "https://api.rownd.io/hub/auth",
+  "authorization_endpoint": "https://api.rownd.io/hub/auth/authorize",
+  "token_endpoint": "https://api.rownd.io/hub/auth/token",
+  "jwks_uri": "https://api.rownd.io/hub/auth/keys"
+  // ... properties omitted
+}
+```
+
+<Info>
+Use this document to dynamically configure OpenID Connect clients and discover Rownd endpoints.
+</Info>

@@ -1,0 +1,205 @@
+---
+title: "Ruby on Rails"
+description: Ruby on Rails SDK reference
+icon: gem
+---
+
+Rownd's support for Ruby on Rails is powered by our Ruby gem named
+`devise-rownd`. This gem is an implementation of a custom strategy for the
+popular [Devise](https://github.com/heartcombo/devise) framework. It works in
+tandem with the Rownd Hub, a javascript snippet embedded in your website. With
+this gem installed, Rownd handles all aspects of user authentication and gives
+you the tools to customize the user experience on your site.
+
+## Installation
+
+Add this line to your application's `Gemfile`:
+
+```rb
+gem 'devise-rownd'
+```
+
+And then execute:
+
+```
+$ bundle
+```
+
+Or install it yourself as:
+
+```bash
+$ gem install devise-rownd
+```
+
+### Mount the Engine
+
+Add this to your `config/routes.rb` file
+
+```rb
+mount Devise::Rownd::Engine, at: '/api/auth/rownd'
+```
+
+### Rownd Hub
+
+Follow [these instructions](/sdk-reference/web/javascript--browser)
+to install the Rownd Hub. You'll want to ensure it runs on every page of your
+application, so be sure to add it as a common in your Rails JS packs. Here's the
+easiest way to do that:
+
+1.  Create a new file in your JS packs directory called `rownd.js` and paste the
+    JS snippet that you got from the instructions listed above.
+
+2.  2.  Add the following API callbacks to your Javascript:
+
+```js
+_rphConfig.push([
+  "setPostAuthenticationApi",
+  {
+    method: "post",
+    url: "/api/auth/rownd/authenticate",
+  },
+]);
+
+_rphConfig.push([
+  "setPostSignOutApi",
+  {
+    method: "POST",
+    url: "/api/auth/rownd/sign_out",
+  },
+]);
+
+_rphConfig.push([
+  "setPostUserDataUpdateApi",
+  {
+    method: "POST",
+    url: "/api/auth/rownd/update_data",
+  },
+]);
+```
+
+<Info>
+  The path prefix `/api/auth/rownd` must match the `Devise::Rownd::Engine` mount
+  path that you specified in your Rails routes
+</Info>
+
+1.  Finally, include the Javascript pack in your application layout.
+
+```js
+<body>
+  <%= show_rownd_signin_if_required %>
+  <%= yield %>
+  <%= javascript_pack_tag 'rownd', 'data-turbolinks-track': 'reload' %>
+</body>
+```
+
+There are two key pieces that you must include in the layout:
+
+`<%= show_rownd_signin_if_required %>` This renders the Rownd sign-in modal to
+prompt the user for authentication when your app explicitly requires it in a
+controller
+
+`<%= javascript_pack_tag 'rownd', 'data-turbolinks-track': 'reload' %>` Tells
+Rails to include the `rownd` Javascript pack. We also tell Turbolinks to include
+the script on page reloads
+
+## Usage
+
+For this to work, you need to define these key environment variables:
+
+- `ROWND_APP_KEY` \- Your Rownd application key
+
+- `ROWND_APP_SECRET` \- Your Rownd application secret
+
+You can get all of these values from the [Rownd Platform](https://app.rownd.io)
+
+### Users
+
+This gem provides a new Devise module named `:rownd_authenticatable`. In your
+`user` model, you can tell Devise to use it like this:
+
+```rb
+class User < ApplicationRecord
+  devise :rownd_authenticatable
+
+  ...
+end
+```
+
+Now, in your `config/routes.rb` file, add the following:
+
+```rb
+Rails.application.routes.draw do
+  devise_for :users
+  ...
+
+  mount Devise::Rownd::Engine, at: '/api/auth/rownd'
+end
+...
+```
+
+### Require Authentication
+
+You can require authentication on a controller's actions the same way you would
+for any Devise strategies.
+
+```rb
+class MyController < ApplicationController
+  before_action :authenticate_user!
+
+  ...
+end
+```
+
+Now, when a user navigates to a route that requires authentication, Devise will
+prompt the user to sign into Rownd if a user is not already signed in.
+
+### Customizing the page using the `current_user`
+
+In any of your controllers, views, or helpers, you have access to the currently
+authenticated user via the `current_user` variable. You can use it to customize
+your page content like this:
+
+```rb
+<h1\>Hello, <%= current_user.first_name %>!</h1\>
+```
+
+The `current_user` object has all of the fields specified in your Rownd
+application's schema. If the user doesn't have a value for a particular field,
+it will be `nil`
+
+### Extending the `current_user` model
+
+You can extend the `current_user` object by modifying the `Devise::Rownd::User`
+class. This can be very helpful if you want to have additional functions that
+aggregate data across multiple fields, or perform some logic and return the
+result.
+
+For instance, you might want a function called `admin?` that will return if the
+current user has an `'admin'` role. To extend the `current_user` object, add a
+new initializer in `config/initializers` called `devise_rownd.rb`. In there you
+can modify the `Devise::Rownd::User` like this:
+
+```rb
+Devise::Rownd::User.class_eval do
+  def admin?
+    roles&.include?('admin')
+  end
+
+  def display_name
+    fullname = "#{first_name} #{last_name}"
+    fullname.present? ? fullname.strip.upcase : email&.upcase
+  end
+
+  ...
+end
+```
+
+Now, you can call things like `current_user.admin?` and
+`current_user.display_name`
+
+### Further customization
+
+All of the other Rownd HTML attributes work as well. You can see a full list of
+them [here](/rownd/sdk-reference/web/javascript-browser#hooks). This means you
+have the ability to customize the page with pure HTML, rather than Ruby code if
+you prefer.

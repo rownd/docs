@@ -1,0 +1,30 @@
+---
+title: "Delete a group invite"
+openapi: "DELETE /applications/{app}/groups/{group}/invites/{invite}"
+---
+
+Delete a group invite (app-scoped).
+
+### Endpoint
+
+- Method: `DELETE`
+- Path: `/applications/{app}/groups/{group}/invites/{invite}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request DELETE \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}/invites/{invite}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+204 - No Content

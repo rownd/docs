@@ -1,0 +1,24 @@
+Rownd will call this API after an authenticated session is terminated by calling `rownd.signOut()`.
+
+<Expandable title="Parameters" defaultOpen="true">
+  <ResponseField name="url" type="string">
+  The URL that Rownd will call
+  </ResponseField>
+  <ResponseField name="method" type="string">
+  The HTTP method that Rownd will use. Can be either `"post"` or `"put"`.
+  </ResponseField>
+  <ResponseField name="extra_headers" type="object">
+  A map of key-value pairs that Rownd will include in the HTTP headers
+  </ResponseField>
+</Expandable>
+
+There are two properties that Rownd looks for in the response body that drive behavior when thhe API call completes.
+
+<Expandable title="Response Properties" defaultOpen="true">
+  <ResponseField name="return_to">
+  A relative path or URL to which Rownd will redirect
+  </ResponseField>
+  <ResponseField name="should_refresh_page">
+  If `true`, Rownd will refresh the current page
+  </ResponseField>
+</Expandable>

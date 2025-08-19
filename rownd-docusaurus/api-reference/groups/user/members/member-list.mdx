@@ -1,0 +1,32 @@
+---
+title: "List group members"
+openapi: "GET /me/groups/{group}/members"
+---
+
+List members of a group (user-scoped).
+
+<Endpoint method="GET" path="/me/groups/{group}/members" baseUrls={['https://api.rownd.io']} />
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Query params
+
+- `limit` (optional): Page size (max 100)
+- `after` (optional): Pagination cursor
+
+```bash title="cURL"
+curl --request GET \
+  --url "https://api.rownd.io/me/groups/{group}/members?limit=25" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+```json title="200 OK"
+{
+  "data": [
+    {"id": "mem_abc", "user": "usr_123"}
+  ],
+  "paging": {"next": null}
+}
+```

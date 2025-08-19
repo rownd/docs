@@ -1,0 +1,47 @@
+---
+title: "Update one field in a user profile"
+openapi: "PUT /applications/{app}/users/{user}/data/fields/{field}"
+---
+
+Update a single field in a user's profile.
+
+### Endpoint
+
+- Method: `PUT`
+- Path: `/applications/{app}/users/{user}/data/fields/{field}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Request body
+
+```json
+{
+  "value": "user@example.com"
+}
+```
+
+### Try it
+
+```bash
+curl --request PUT \
+  --url "https://api.rownd.io/applications/{app}/users/{user}/data/fields/{field}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>" \
+  --header "Content-Type: application/json" \
+  --data '{"value":"user@example.com"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "field": "email",
+  "value": "user@example.com"
+}
+```

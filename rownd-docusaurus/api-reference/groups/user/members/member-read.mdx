@@ -1,0 +1,25 @@
+---
+title: "Retrieve a group member"
+openapi: "GET /me/groups/{group}/members/{member}"
+---
+
+Retrieve a group member (user-scoped).
+
+<Endpoint method="GET" path="/me/groups/{group}/members/{member}" baseUrls={['https://api.rownd.io']} />
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+```bash title="cURL"
+curl --request GET \
+  --url "https://api.rownd.io/me/groups/{group}/members/{member}" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+```json title="200 OK"
+{
+  "id": "mem_abc",
+  "user": "usr_123"
+}
+```

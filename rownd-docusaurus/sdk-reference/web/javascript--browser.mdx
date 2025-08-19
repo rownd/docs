@@ -1,0 +1,305 @@
+---
+title: "JavaScript"
+---
+
+The Rownd SDK for JavaScript enables seamless user authentication and profile management directly in the browser. This client-side SDK allows you to:
+- Authenticate users without requiring a backend server
+- Securely store and manage user profile information
+- Customize the authentication flow to match your needs
+- Handle user sessions and access tokens automatically
+- Do it all with a simple, easy-to-implement code snippet
+
+## Getting started
+
+1.  Get the Rownd Javascript code-snippet from the
+    [Rownd dashboard](https://app.rownd.io).
+
+    ```jsx
+    // EXAMPLE ONLY--THIS WON'T WORK IN A REAL APP
+    <script type="text/javascript">
+    !function(){var e=window._rphConfig=window._rphConfig||[];let t=window.localStorage.getItem("rph_base_url_override")||"https://hub.rownd.io";e.push(["setBaseUrl",t]);var r=document,s=r.createElement("script")=r.getElementsByTagName("script")[0];s.type="text/javascript",s.async=!0,s.src=t+"/static/scripts/rph.js",a&amp;&amp;a.parentNode?a.parentNode.insertBefore(s,a):r.body.appendChild(s)}();
+    </script>
+    ```
+
+2.  Add the snippet to your website. If you're using a CMS (e.g., WordPress,
+    Webflow, Wix, etc.), you can typically add the snippet through the
+    "settings" portion of their editors.
+
+     If you're testing locally or want to add the snippet directly to your site code,
+    add the snippet to your main layout or template HTML file. Ideally, add the snippet
+    just before the closing `</body>` tag.
+
+### Deploying the Snippet to hosted websites
+
+After copying the code snippet, you'll need to add it to your website(s). Most
+website builder software or content management systems (CMS) have an option to
+embed "custom HTML" or "custom code" in your site's pages. We usually recommend
+placing the snippet just before the closing `</body>` tag.
+
+Here are links to instructions for a few popular hosting providers. See our
+[JavaScript SDK reference](/sdk-reference/web/javascript--browser) for more details.
+
+- [Netlify](https://docs.netlify.com/site-deploys/post-processing/snippet-injection/)
+- [Squarespace](https://support.squarespace.com/hc/en-us/articles/205815908)
+- [Webflow](https://university.webflow.com/lesson/custom-code-in-the-head-and-body-tags)
+- [Weebly](https://www.weebly.com/app/help/us/en/topics/descriptions-and-keywords)​ (see the section on "footer code")
+- [Wix](https://support.wix.com/en/article/wix-editor-about-embeds-and-codes-on-your-site#embed-custom-code)
+- [WordPress](sdk-reference/web/wordpress---woocommerce)
+
+At this point, if you load your site in a browser after saving or publishing,
+you should see the Rownd Hub appear in the lower left-hand corner of the site.
+
+If you're building a single-page app in React, Vue, etc, then use our
+framework-specific [SDKs](https://docs.rownd.io/sdk-reference/web/overview) instead of these instructions.
+
+If your single-page app is separate from your website, then you'll want to use
+the instructions on this page for the website and the framework SDK instructions
+for the single-page app.
+
+If you find any of this unclear, get in touch with us and we can help you figure
+out which pieces you'll need.
+
+## Advanced
+The following sections require some level of development knowledge
+
+###  Configuring Rownd Behavior
+
+The behavior of Rownd and Rownd's UI components is configurable by appending configuration parameters to the global `_rphConfig` object.
+
+To set a config parameter, add an additional script block _after_ the main Rownd snippet. The important thing to see here is the call to `_rphConfig.push()`.
+
+```jsx
+<script type="text/javascript">
+  _rphConfig.push(["set<config_variable_name>", "<value>"]);
+</script>
+```
+
+**Configuration Parameters**
+
+#### setAppKey
+
+<Snippet file="web/params/app-key.mdx" />
+
+<Info>This is usually part of the snippet obtained from the Rownd dashboard, so you don't need to set it here.</Info>
+
+```jsx Example
+_rphConfig.push(["setAppKey", "82f7fa9a-8110-416c-8cc8-e3c0506fbf93"]);
+```
+
+#### setPostLoginRedirect
+
+<Snippet file="web/params/post-login-redirect.mdx" />
+
+```jsx Example
+_rphConfig.push(["setPostLoginRedirect", "https://app.rownd.io"]);
+```
+
+#### setPostRegistrationRedirect
+
+<Snippet file="web/params/post-registration-redirect.mdx" />
+
+```jsx Example
+_rphConfig.push(["setPostRegistrationRedirect", "https://app.rownd.io/post-registration"]);
+```
+
+#### setPostAuthenticationApi
+
+<Snippet file="web/params/post-authentication-api.mdx" />
+
+```jsx Example
+_rphConfig.push(["setPostAuthenticationApi",
+  {
+    method: "post",
+    url: "https://api.acme.com/authenticate",
+    extra_headers: {
+      extra: "value"
+    },
+    timeout: 3000 // 3s
+  }
+]);
+```
+
+#### setPostSignOutApi
+
+<Snippet file="web/params/post-sign-out-api.mdx" />
+
+```jsx Example
+_rphConfig.push(["setPostSignOutApi",
+  {
+    method: "post",
+    url: "https://api.acme.com/sign-out",
+    extra_headers: {
+      extra: "value"
+    },
+  }
+]);
+```
+
+#### setPostSignOutCallback
+
+<Snippet file="web/params/post-sign-out-callback.mdx" />
+
+```jsx Example
+_rphConfig.push(["setPostSignOutCallback", function () {
+  console.log('User signed out')
+}]);
+```
+
+#### setPostUserDataUpdateApi
+
+<Snippet file="web/params/post-user-data-update-api.mdx" />
+
+```jsx Example
+_rphConfig.push(["setPostUserDataUpdateApi",
+  {
+    method: "post",
+    url: "https://api.acme.com/user_data_update",
+    extra_headers: {
+      extra: "value"
+    },
+  }
+]);
+```
+
+#### setRootOrigin
+
+<Snippet file="web/params/root-origin.mdx" />
+
+```jsx Example
+_rphConfig.push(["setRootOrigin",  "https://acme.com"]);
+```
+
+#### setLogLevel
+
+<Snippet file="web/params/log-level.mdx" />
+
+```jsx Example
+_rphConfig.push(["setRootOrigin",  "trace"]);
+```
+
+### Programmatic API
+
+In addition to the declarative markup described above, you can use the Rownd
+Hub's programmatic API to create more advanced functionality.
+
+#### The \`rownd\` object
+
+Once the Rownd Hub initializes, it will place a `rownd` property on the global
+`Window` object. All JS APIs are available on this object. Check out the JavaScript API reference [documentation](/sdk-reference/web/javascript--api-reference) for a comprehensive view of the API.
+
+<Info>
+Before calling methods or accessing data on the Rownd API, you'll need to wait
+for the API to be ready. Start by adding a function to the configuration's
+`onLoaded` event, like this:
+
+You can interact with the Rownd JS Api
+
+```jsx
+<script type="text/javascript">
+_rphConfig.push(['onLoaded', () => {
+  // window.rownd should be available now!
+  console.log(window.rownd);
+}]);
+</script>
+```
+</Info>
+
+### Events
+
+The Rownd Hub emits various events when state changes occur. For example,
+initial authentication, updates to user data, etc. You can listen for these
+event changes and react to them.
+
+
+#### `sign_in_completed`
+
+This event fires when a user has completed the sign in process.
+
+<ResponseField name="method" type="string" required="true">
+The method used to sign in. Can be one of `"google"`, `"apple"`, `"phone"`, `"email"`, `"passkey"`, or `"anonymous"`.
+</ResponseField>
+<ResponseField name="user_type" type="string" required="true">
+The type of user that signed in. Can be either `"new_user"` or `"existing_user"`.
+</ResponseField>
+<ResponseField name="app_variant_user_type" type="string" optional>
+The type of user that signed in for the current app variant. Can be either `"new_user"` or `"existing_user"`.
+<Info>`app_variant_user_type` will be released in early 2025</Info>
+</ResponseField>
+
+
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener("sign_in_completed", (evt) => {
+    const { method, user_type, app_variant_user_type } = evt.detail;
+  });
+  ```
+</Accordion>
+
+#### `sign_in_failed`
+
+This event fires when a user's sign in attempt fails.
+
+<ResponseField name="reason" type="string" required="true">
+The reason the sign in failed.
+</ResponseField>
+
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener("sign_in_failed", (evt) => {
+    const { reason } = evt.detail;
+    console.log("Sign in failed:", reason);
+  });
+  ```
+</Accordion>
+
+#### `auth`
+This event fires any time the user moves from an unauthenticated state to an authenticated state. It will also fire any time the access token is refreshed.
+
+<ResponseField name="access_token" type="string" required="true">
+The user's access token that can be used to authenticate API requests.
+</ResponseField>
+<ResponseField name="user_id" type="string" required="true">
+The unique identifier for the authenticated user.
+</ResponseField>
+<ResponseField name="app_id" type="string" required="true">
+The ID of the Rownd application.
+</ResponseField>
+
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener("auth", (evt) => {
+    const { access_token, user_id, app_id } = evt.detail;
+  });
+  ```
+</Accordion>
+
+#### `sign_out`
+This event fires whenever a user is signed out.
+
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener('sign_out', () => {
+    // do something now that the user has signed out
+  });
+  ```
+</Accordion>
+
+#### `user_data`
+This event fires any time a user's profile data changes. This could fire due to calls to `rownd.user.set()`, `rowns.user.setValue()`, changes to profile data in the Rownd Hub UI, or due to data changes when authenticating.
+
+<ResponseField name="data" type="object" required="true">
+The user's updated profile data.
+</ResponseField>
+
+<Accordion title="Example" defaultOpen="true">
+  ```javascript Example
+  rownd.events.addEventListener("user_data", (evt) => {
+    const { data } = evt.detail;
+    console.log("first_name:", data.first_name);
+  });
+  ```
+</Accordion>
+
+### Hooks
+
+With the JavaScript SDK installed, you can use all of the HTML hooks described in the [HTML Hooks](/sdk-reference/web/html) documentation.

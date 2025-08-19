@@ -1,0 +1,45 @@
+---
+title: "Create a group"
+openapi: "POST /me/groups"
+---
+
+User-scoped API for creating a group owned by the current user.
+
+### Endpoint
+
+- Method: `POST`
+- Path: `/me/groups`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Request body
+
+```json
+{
+  "name": "My Group"
+}
+```
+
+### Try it
+
+```bash
+curl --request POST \
+  --url "https://api.rownd.io/me/groups" \
+  --header "Authorization: Bearer <user-token>" \
+  --header "Content-Type: application/json" \
+  --data '{"name":"My Group"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "grp_abc",
+  "name": "My Group"
+}
+```

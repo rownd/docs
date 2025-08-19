@@ -1,0 +1,38 @@
+---
+title: "Retrieve Rownd JWK set"
+openapi: "GET /hub/auth/keys"
+---
+
+Retrieve the current JWK set that validates Rownd-issued tokens.
+
+<Endpoint method="GET" path="/hub/auth/keys" baseUrls={['https://api.rownd.io','https://api.us-east-2.dev.rownd.io']} />
+
+### Try it
+
+```bash title="cURL"
+curl --request GET \
+  --url https://api.rownd.io/hub/auth/keys
+```
+
+### Response
+
+200 - application/json — Keys retrieved successfully
+
+```json title="200 OK"
+{
+  "keys": [
+    {
+      "kty": "OKP",
+      "alg": "EdDSA",
+      "kid": "sig-1644937360",
+      "use": "sig",
+      "crv": "Ed25519",
+      "x": "ChrFqbu1T7TTuLFg3o_coBNwqdm_O5Llok1dey0G2Tg"
+    }
+  ]
+}
+```
+
+<Info>
+Use these keys to validate Rownd JWTs in your backend. Keys may rotate; always fetch the current set.
+</Info>

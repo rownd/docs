@@ -1,0 +1,1612 @@
+---
+title: "React"
+description: React SDK reference
+icon: react
+---
+
+## Quick Navigation
+
+| Section | Description |
+|---------|-------------|
+| [Installation](#installation) | How to install the React SDK |
+| [Basic Setup](#usage) | Setting up the RowndProvider |
+| [Authentication States](#authentication-states) | Four possible auth states and handling |
+| [User Management](#user-object-structure) | Working with user data and profiles |
+| [Sign In Options](#sign-in-request-options) | Customizing the sign-in experience |
+| [HTML Hooks](#html-hooks-integration) | Using declarative data attributes |
+| [Type Definitions](#type-definitions) | TypeScript interfaces and types |
+| [Best Practices](#best-practices) | Recommended patterns and approaches |
+| [Advanced Features](#advanced-features) | Advanced SDK capabilities |
+| [API Integration](#type-safe-api-integration) | Making authenticated API calls |
+| [Account Management](#account-management) | Managing user accounts |
+
+### Installation
+
+Simply run `npm install @rownd/react` or `yarn add @rownd/react`.
+
+### Usage
+
+The library provides a React provider and hook for the Rownd browser API.
+
+In your app's main entrypoint, add the Rownd provider, likely before other
+providers:
+
+```jsx
+import React from 'react',
+import ReactDOM from 'react-dom';
+import { RowndProvider } from '@rownd/react';
+import App from './App';
+
+ReactDOM.render(
+  <RowndProvider
+    appKey="<your app key>"
+    // Optional: Configure post-login redirect
+    postLoginRedirect="/dashboard"
+    // Optional: Configure post-registration redirect
+    postRegistrationRedirect="/onboarding"
+    // Optional: Set root origin for multi-domain setups; please contact support if you have any questions
+    rootOrigin="https://yourdomain.com"
+  >
+    <App />
+  </RowndProvider>,
+  document.getElementById('root')
+);
+```
+
+<Info>
+  The Rownd React SDK automatically injects the Rownd Hub snippet into your React application, so you should _not_
+  manually include the Hub snippet in your HTML page. Doing so will produce unexpected results.
+</Info>
+
+<Info>
+ Rownd has a number of built in features including `getAccessToken()` which will fetch your token. Rownd's SDK automatically checks the token and do token refreshes. Rownd takes care of the UI for your app as well. 
+</Info>
+
+### Provider Configuration
+
+The RowndProvider component accepts the following configuration options:
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `appKey` | string | Yes | The application key generated in the Rownd dashboard. This uniquely identifies your application. |
+| `postLoginRedirect` | string | No | URL where users will be redirected after successful sign-in. If not provided, users stay on the current page. |
+| `postRegistrationRedirect` | string | No | URL where new users will be redirected after registration. Useful for onboarding flows. |
+| `rootOrigin` | string | No | Root domain for multi-domain setups (e.g., "https://yourdomain.com"). Used when your app spans multiple subdomains. |
+
+### The useRownd Hook
+
+The `useRownd` hook is your primary interface for accessing authentication state and user data. It provides a comprehensive set of properties and methods:
+
+#### State Properties
+
+| Property | Type | Description | Usage Example |
+|----------|------|-------------|---------------|
+| `is_initializing` | boolean | Indicates if Rownd is still loading. Always check this before making auth-dependent decisions. | `if (is_initializing) return <Loading />` |
+| `is_authenticated` | boolean | Whether the user is currently signed in. | `if (is_authenticated) showDashboard()` |
+| `access_token` | string | The current JWT access token. Updates automatically when refreshed. | `headers: { Authorization: Bearer ${access_token} }` |
+| `user.data` | object | The user's profile data. Contains all user fields. | `const { first_name, email } = user.data` |
+| `user.is_loading` | boolean | Whether user data is being loaded/updated | `if (user.is_loading) showSpinner()` |
+
+#### Authentication Methods
+
+| Method | Description | Parameters | Return Type |
+|--------|-------------|------------|-------------|
+| `requestSignIn()` | Triggers the sign-in flow | `{ auto_sign_in?: boolean, identifier?: string, method?: string }` | `void` |
+| `signOut()` | Signs out the current user | None | `void` |
+| `getAccessToken()` | Gets the current access token | `{ waitForToken?: boolean }` | `Promise<string>` |
+
+#### User Data Methods
+
+| Method | Description | Parameters | Return Type |
+|--------|-------------|------------|-------------|
+| `setUser()` | Updates multiple user fields | `Record<string, any>` | `Promise<void>` |
+| `setUserValue()` | Updates a single user field | `(field: string, value: any)` | `Promise<void>` |
+| `manageAccount()` | Opens account management UI | None | `void` |
+
+#### User Object Structure
+
+The user object provides comprehensive information about the current user:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `user.data()` | object | User's profile data including custom fields |
+| `user.data.{data-type}` | Varies | User's profile data including custom fields; for example; first_name|
+| `user.groups` | string[] | Groups the user belongs to |
+
+
+#### Example User Data Structure
+
+```typescript
+// Example of user.data() return value
+interface UserExample {
+  // Core user information
+  email: string;              // "example@example.com"
+  first_name: string;         // "First"
+  last_name: string;          // "Example"
+  user_id: string;           // "21245bc6-8a9a-4229-9c30-6b7adsd97c20"
+  
+  
+  // Custom fields
+  investor_type?: string;    // ""
+  place_of_employment?: string; // "Rownd"
+  position?: string;         // "Engineering"
+}
+
+// Usage example
+function UserProfileDisplay() {
+  const { user } = useRownd();
+  const userData = user.get();
+
+  return (
+    <div>
+      {/* Core Information */}
+      <h2>{userData.first_name} {userData.last_name}</h2>
+      <p>Email: {userData.email}</p>
+      
+      {/* Work Information */}
+      {userData.place_of_employment && (
+        <div>
+          <p>Works at: {userData.place_of_employment}</p>
+          <p>Position: {userData.position}</p>
+        </div>
+      )}
+      
+      {/* Authentication Info */}
+      {userData.google_id && (
+        <p>Authenticated via Google</p>
+      )}
+      
+      {/* Custom Fields */}
+      {userData.investor_type && (
+        <p>Investor Type: {userData.investor_type}</p>
+      )}
+      
+      {/* Technical Details */}
+      <small>User ID: {userData.user_id}</small>
+    </div>
+  );
+}
+```
+
+Note: The actual fields available in `user.get()` will depend on your application's configuration in the Rownd dashboard. The example above shows common fields, but you can add custom fields as needed for your application.
+
+#### Authentication State
+
+The auth object provides detailed authentication information:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `auth.access_token` | string | Current JWT access token |
+| `auth.app_id` | string | ID of the current application |
+| `auth.is_authenticated` | boolean | Whether user is authenticated |
+| `auth.is_verified_user` | boolean | Whether user has verified credentials |
+| `auth.auth_level` | string | Current authentication level |
+
+#### Events API
+
+The SDK provides an event system to react to various state changes:
+
+```jsx
+function EventExample() {
+  const { events } = useRownd();
+  
+  useEffect(() => {
+    // Listen for authentication changes
+    events.addEventListener('auth', (event) => {
+      const { access_token, user_id, app_id } = event.detail;
+      console.log('User authenticated:', user_id);
+    });
+
+    // Listen for user data changes
+    events.addEventListener('user_data', (event) => {
+      const { data } = event.detail;
+      console.log('User data updated:', data);
+    });
+
+    // Listen for sign-in completion
+    events.addEventListener('sign_in_completed', (event) => {
+      const { method, user_type } = event.detail;
+      console.log(`Signed in with ${method} as ${user_type}`);
+    });
+
+    return () => {
+      // Clean up listeners
+      events.removeEventListener('auth');
+      events.removeEventListener('user_data');
+      events.removeEventListener('sign_in_completed');
+    };
+  }, [events]);
+
+  return <div>Event Listener Example</div>;
+}
+```
+
+#### App Configuration
+
+Access application configuration:
+
+```jsx
+function AppConfigExample() {
+  const { getAppConfig } = useRownd();
+
+  useEffect(() => {
+    async function fetchConfig() {
+      const config = await getAppConfig();
+      console.log('App config:', config);
+    }
+    fetchConfig();
+  }, [getAppConfig]);
+
+  return <div>App Config Example</div>;
+}
+```
+
+#### Firebase Integration
+
+For applications using Firebase:
+
+```jsx
+function FirebaseExample() {
+  const { getFirebaseIdToken } = useRownd();
+  
+  const authenticateWithFirebase = async () => {
+    const firebaseToken = await getFirebaseIdToken();
+    // Use token with Firebase Auth
+    console.log('Firebase token:', firebaseToken);
+  };
+
+  return (
+    <button onClick={authenticateWithFirebase}>
+      Authenticate with Firebase
+    </button>
+  );
+}
+```
+
+#### Passkey Authentication
+
+Complete passkey implementation:
+
+```jsx
+function PasskeyAuthenticationExample() {
+  const { passkeys } = useRownd();
+
+  const handleRegistration = async () => {
+    try {
+      await passkeys.register();
+      console.log('Passkey registered successfully');
+    } catch (error) {
+      console.error('Passkey registration failed:', error);
+    }
+  };
+
+  const handleAuthentication = async () => {
+    try {
+      await passkeys.authenticate();
+      console.log('Authenticated with passkey');
+    } catch (error) {
+      console.error('Passkey authentication failed:', error);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Passkey Authentication</h2>
+      <button onClick={handleRegistration}>
+        Register New Passkey
+      </button>
+      <button onClick={handleAuthentication}>
+        Sign In with Passkey
+      </button>
+    </div>
+  );
+}
+```
+
+#### Complete User Profile Management
+
+Example showing comprehensive user data management:
+
+```jsx
+function UserProfileManager() {
+  const { 
+    user, 
+    setUser, 
+    setUserValue,
+    manageAccount 
+  } = useRownd();
+
+  const {
+    data,
+    groups,
+    verified_data,
+    is_loading,
+    redacted_fields
+  } = user;
+
+  // Monitor loading state
+  if (is_loading) {
+    return <div>Loading user data...</div>;
+  }
+
+  // Check for verified data
+  const hasVerifiedEmail = verified_data.email === data.email;
+  const hasVerifiedPhone = verified_data.phone_number === data.phone_number;
+
+  return (
+        <div>
+      <h2>User Profile</h2>
+      
+      {/* Basic Information */}
+      <section>
+        <h3>Basic Information</h3>
+        <div>Name: {data.first_name} {data.last_name}</div>
+        <div>
+          Email: {data.email} 
+          {hasVerifiedEmail && <span>(Verified)</span>}
+        </div>
+        <div>
+          Phone: {data.phone_number}
+          {hasVerifiedPhone && <span>(Verified)</span>}
+        </div>
+      </section>
+
+      {/* Group Membership */}
+      <section>
+        <h3>Groups</h3>
+        <ul>
+          {groups.map(group => (
+            <li key={group}>{group}</li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Custom Data */}
+      <section>
+        <h3>Custom Data</h3>
+        <pre>
+          {JSON.stringify(data, null, 2)}
+        </pre>
+      </section>
+
+      {/* Actions */}
+      <section>
+        <h3>Actions</h3>
+        <button onClick={() => {}}>
+          Open Account Manager
+        </button>
+      </section>
+    </div>
+  );
+}
+```
+
+### Type Definitions
+
+For TypeScript users, here are the comprehensive interfaces:
+
+```typescript
+// User Types
+interface RowndUser {
+  data: Record<string, any>;
+  groups: string[];
+  redacted_fields: string[];
+  verified_data: Record<string, any>;
+  meta: {
+    created_at: string;
+    updated_at: string;
+    last_sign_in: string;
+  };
+  is_loading: boolean;
+  instant_user: {
+    is_initializing: boolean;
+  };
+}
+
+interface UserData {
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  phone_number?: string;
+  [key: string]: any;  // Custom fields
+}
+
+// Authentication Types
+interface RowndAuth {
+  access_token: string | null;
+  app_id: string;
+  is_authenticated: boolean;
+  is_verified_user: boolean;
+  auth_level: 'high' | 'low' | 'none';
+}
+
+interface SignInOptions {
+  auto_sign_in?: boolean;
+  identifier?: string;
+  method?: 'email' | 'phone' | 'google' | 'apple' | 'passkey' | 'anonymous';
+  post_login_redirect?: string;
+  user_data?: Record<string, any>;
+  auto_submit?: boolean;
+}
+
+interface TokenOptions {
+  waitForToken?: boolean;
+  timeoutMs?: number;
+}
+
+// Event Types
+interface RowndEvents {
+  addEventListener: (event: RowndEventType, callback: (event: CustomEvent) => void) => void;
+  removeEventListener: (event: RowndEventType) => void;
+}
+
+type RowndEventType = 
+  | 'auth'
+  | 'user_data'
+  | 'sign_in_started'
+  | 'sign_in_completed'
+  | 'sign_out';
+
+interface AuthEventDetail {
+  access_token: string;
+  user_id: string;
+  app_id: string;
+}
+
+interface UserDataEventDetail {
+  data: UserData;
+  meta: RowndUser['meta'];
+}
+
+// Hook Return Type
+interface UseRowndReturn {
+  is_initializing: boolean;
+  is_authenticated: boolean;
+  user: RowndUser;
+  auth: RowndAuth;
+  requestSignIn: (options?: SignInOptions) => void;
+  signOut: () => void;
+  getAccessToken: (options?: TokenOptions) => Promise<string>;
+  setUser: (data: Partial<UserData>) => Promise<void>;
+  setUserValue: <T>(field: string, value: T) => Promise<void>;
+  manageAccount: () => void;
+  events: RowndEvents;
+  passkeys: {
+    register: () => Promise<void>;
+    authenticate: () => Promise<void>;
+  };
+}
+```
+
+### TypeScript Examples
+
+#### Type-Safe Authentication Component
+
+```tsx
+import React from 'react';
+import { useRownd } from '@rownd/react';
+import type { SignInOptions, UseRowndReturn } from '@rownd/react';
+
+interface AuthButtonProps {
+  onSuccess?: () => void;
+  signInMethod?: SignInOptions['method'];
+}
+
+const AuthButton: React.FC<AuthButtonProps> = ({ 
+  onSuccess,
+  signInMethod = 'email'
+}) => {
+  const { 
+    is_initializing,
+    is_authenticated,
+    requestSignIn,
+    signOut 
+  }: UseRowndReturn = useRownd();
+
+  const handleSignIn = () => {
+    requestSignIn({
+      method: signInMethod,
+      auto_sign_in: true,
+      user_data: {
+        source: 'auth_button'
+      }
+    });
+  };
+
+  return (
+    <div>
+      {is_initializing && is_authenticated && (
+        <div>Verifying authentication...</div>
+      )}
+
+      {is_initializing && !is_authenticated && (
+        <div>Loading...</div>
+      )}
+
+      {!is_initializing && is_authenticated && (
+        <button onClick={signOut}>
+          Sign Out
+        </button>
+      )}
+
+      {!is_initializing && !is_authenticated && (
+        <button onClick={handleSignIn}>
+          Sign In
+        </button>
+      )}
+    </div>
+  );
+};
+
+export default AuthButton;
+```
+
+#### Type-Safe User Profile Component
+
+```tsx
+import React, { useEffect, useState } from 'react';
+import { useRownd } from '@rownd/react';
+import type { UserData, RowndUser } from '@rownd/react';
+
+interface ProfileFormData extends UserData {
+  marketing_consent?: boolean;
+  preferences?: {
+    theme: 'light' | 'dark';
+    notifications: boolean;
+  };
+}
+
+const UserProfile: React.FC = () => {
+  const { 
+    user,
+    setUser,
+    setUserValue,
+    is_initializing,
+    is_authenticated 
+  } = useRownd();
+
+  const [formData, setFormData] = useState<ProfileFormData>({});
+
+  useEffect(() => {
+    if (user.data) {
+      setFormData(user.data as ProfileFormData);
+    }
+  }, [user.data]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await setUser(formData);
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+    }
+  };
+
+  const handleInputChange = (
+    field: keyof ProfileFormData,
+    value: string | boolean
+  ) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  if (is_initializing) {
+    return <div>Loading profile...</div>;
+  }
+
+  if (!is_authenticated) {
+    return <div>Please sign in to view your profile</div>;
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="first_name">First Name:</label>
+        <input
+          id="first_name"
+          type="text"
+          value={formData.first_name || ''}
+          onChange={e => handleInputChange('first_name', e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email">Email:</label>
+        <input
+          id="email"
+          type="email"
+          value={formData.email || ''}
+          onChange={e => handleInputChange('email', e.target.value)}
+        />
+        {user.verified_data.email === formData.email && (
+          <span>✓ Verified</span>
+        )}
+      </div>
+
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={formData.marketing_consent || false}
+            onChange={e => handleInputChange('marketing_consent', e.target.checked)}
+          />
+          Receive marketing communications
+        </label>
+      </div>
+
+      <button type="submit">Save Changes</button>
+    </form>
+  );
+};
+
+export default UserProfile;
+```
+
+#### Type-Safe API Integration
+
+```tsx
+import React, { useEffect, useState } from 'react';
+import { useRownd } from '@rownd/react';
+import type { TokenOptions } from '@rownd/react';
+
+interface ApiResponse<T> {
+  data: T;
+  status: number;
+  message: string;
+}
+
+interface UserPreferences {
+  theme: 'light' | 'dark';
+  notifications: boolean;
+  timezone: string;
+}
+
+const ApiExample: React.FC = () => {
+  const { 
+    is_initializing,
+    is_authenticated,
+    getAccessToken 
+  } = useRownd();
+  
+  const [preferences, setPreferences] = useState<UserPreferences | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchPreferences = async () => {
+    try {
+      const tokenOptions: TokenOptions = {
+        waitForToken: true,
+        timeoutMs: 5000
+      };
+      
+      const token = await getAccessToken(tokenOptions);
+      
+      const response = await fetch('/api/preferences', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      const result: ApiResponse<UserPreferences> = await response.json();
+      
+      if (response.ok) {
+        setPreferences(result.data);
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch preferences');
+    }
+  };
+
+  useEffect(() => {
+    if (!is_initializing && is_authenticated) {
+      fetchPreferences();
+    }
+  }, [is_initializing, is_authenticated]);
+
+  return (
+    <div>
+      {is_initializing && is_authenticated && (
+        <div>Loading preferences...</div>
+      )}
+
+      {is_initializing && !is_authenticated && (
+        <div>Checking authentication...</div>
+      )}
+
+      {!is_initializing && is_authenticated && preferences && (
+        <div>
+          <h2>Your Preferences</h2>
+          <pre>{JSON.stringify(preferences, null, 2)}</pre>
+        </div>
+      )}
+
+      {!is_initializing && !is_authenticated && (
+        <div>Please sign in to view your preferences</div>
+      )}
+
+      {error && (
+        <div className="error">Error: {error}</div>
+      )}
+    </div>
+  );
+};
+
+export default ApiExample;
+```
+
+### Examples
+
+#### Authentication States
+
+The Rownd SDK has four possible states based on `is_initializing` and `is_authenticated`:
+
+```jsx
+function AuthStateExample() {
+  const { 
+    is_initializing,
+    is_authenticated,
+    user,
+    requestSignIn,
+    signOut
+  } = useRownd();
+
+  return (
+    <div>
+      {/* State 1: Loading, Authenticated */}
+      {is_initializing && is_authenticated && (
+        <div>
+          <h2>Loading authenticated user...</h2>
+          <LoadingSpinner />
+        </div>
+      )}
+
+      {/* State 2: Loading, Not Authenticated */}
+      {is_initializing && !is_authenticated && (
+        <div>
+          <h2>Loading authentication state...</h2>
+          <LoadingSpinner />
+        </div>
+      )}
+
+      {/* State 3: Loaded, Authenticated */}
+      {!is_initializing && is_authenticated && (
+        <div>
+          <h1>Welcome {user.data.first_name}!</h1>
+          <button onClick={signOut}>Sign Out</button>
+          <UserDashboard />
+        </div>
+      )}
+
+      {/* State 4: Loaded, Not Authenticated */}
+      {!is_initializing && !is_authenticated && (
+        <div>
+          <h2>Please sign in to continue</h2>
+          <button onClick={() => requestSignIn()}>Sign In</button>
+          <PublicContent />
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+This pattern can be applied to any component that needs to handle authentication states. Here's a more specific example:
+
+```jsx
+function UserProfileManager() {
+  const { 
+    is_initializing,
+    is_authenticated,
+    user 
+  } = useRownd();
+
+  return (
+    <div>
+      {/* Loading States */}
+      {is_initializing && is_authenticated && (
+        <div>Loading your profile...</div>
+      )}
+
+      {is_initializing && !is_authenticated && (
+        <div>Checking authentication...</div>
+      )}
+
+      {/* Loaded States */}
+      {!is_initializing && is_authenticated && (
+        <div>
+          <h2>Your Profile</h2>
+          <div>Name: {user.data.first_name} {user.data.last_name}</div>
+          <div>Email: {user.data.email}</div>
+        </div>
+      )}
+
+      {!is_initializing && !is_authenticated && (
+        <div>
+          <h2>Profile Not Available</h2>
+          <p>Please sign in to view your profile</p>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+You can also create reusable components for each state:
+
+```jsx
+function LoadingAuthenticatedState({ children }) {
+  const { is_initializing, is_authenticated } = useRownd();
+  return is_initializing && is_authenticated && children;
+}
+
+function LoadingUnauthenticatedState({ children }) {
+  const { is_initializing, is_authenticated } = useRownd();
+  return is_initializing && !is_authenticated && children;
+}
+
+function LoadedAuthenticatedState({ children }) {
+  const { is_initializing, is_authenticated } = useRownd();
+  return !is_initializing && is_authenticated && children;
+}
+
+function LoadedUnauthenticatedState({ children }) {
+  const { is_initializing, is_authenticated } = useRownd();
+  return !is_initializing && !is_authenticated && children;
+}
+
+// Usage Example
+function App() {
+  return (
+    <div>
+      <LoadingAuthenticatedState>
+        <LoadingSpinner message="Loading your dashboard..." />
+      </LoadingAuthenticatedState>
+
+      <LoadingUnauthenticatedState>
+        <LoadingSpinner message="Checking authentication..." />
+      </LoadingUnauthenticatedState>
+
+      <LoadedAuthenticatedState>
+        <Dashboard />
+      </LoadedAuthenticatedState>
+
+      <LoadedUnauthenticatedState>
+        <SignInPrompt />
+      </LoadedUnauthenticatedState>
+    </div>
+  );
+}
+```
+
+This approach can also be used with API calls:
+
+```jsx
+function ProtectedDataComponent() {
+  const { 
+    is_initializing,
+    is_authenticated,
+    getAccessToken 
+  } = useRownd();
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!is_initializing && is_authenticated) {
+        const token = await getAccessToken({ waitForToken: true });
+        const response = await fetch('/api/protected', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setData(await response.json());
+      }
+    }
+    fetchData();
+  }, [is_initializing, is_authenticated, getAccessToken]);
+
+  return (
+    <div>
+      {is_initializing && is_authenticated && (
+        <div>Loading protected data...</div>
+      )}
+
+      {is_initializing && !is_authenticated && (
+        <div>Checking access...</div>
+      )}
+
+      {!is_initializing && is_authenticated && (
+        <div>
+          <h2>Protected Data</h2>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
+      )}
+
+      {!is_initializing && !is_authenticated && (
+        <div>Please sign in to view this data</div>
+      )}
+    </div>
+  );
+}
+
+### Integration with State Management
+
+#### Redux Integration
+
+```jsx
+function RowndReduxSync() {
+  const { is_authenticated, user } = useRownd();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: 'AUTH_STATE_CHANGED',
+      payload: {
+        isAuthenticated: is_authenticated,
+        userData: user.data
+      }
+    });
+  }, [is_authenticated, user.data, dispatch]);
+
+  return null;
+}
+```
+
+### Best Practices
+
+1. **Always Check Initialization**
+   ```jsx
+   if (is_initializing) {
+     return <LoadingSpinner />;
+   }
+   ```
+
+2. **Handle Loading States**
+```jsx
+   if (user.is_loading) {
+     return <div>Updating profile...</div>;
+   }
+   ```
+
+3. **Use Proper Token Handling**
+   ```jsx
+   const token = await getAccessToken({ waitForToken: true });
+   ```
+
+4. **Implement Error Boundaries**
+   ```jsx
+   class RowndErrorBoundary extends React.Component {
+     // Implementation
+   }
+   ```
+
+5. **Efficient Token Handling**
+   ```tsx
+   // Backend (Node.js/Express example)
+   import jwt from 'jsonwebtoken';
+   
+   app.get('/api/user-data', (req, res) => {
+     const token = req.headers.authorization?.split(' ')[1];
+     if (!token) return res.status(401).json({ error: 'No token provided' });
+
+     try {
+       // The Rownd token already contains app_id and user_id
+       const decoded = jwt.decode(token);
+       const { app_id, user_id } = decoded;
+       
+       // No need to send these in request body/params
+       // Just use the data from the token
+       return res.json({
+         message: 'Token already contains necessary identifiers',
+         app_id,
+         user_id
+       });
+     } catch (error) {
+       return res.status(401).json({ error: 'Invalid token' });
+     }
+   });
+   ```
+
+   ```tsx
+   // Frontend - Efficient API calls
+   function UserDataComponent() {
+     const { getAccessToken } = useRownd();
+
+     const fetchUserData = async () => {
+       const token = await getAccessToken();
+       
+       // No need to send app_id or user_id in body/params
+       // They're already in the token
+       const response = await fetch('/api/user-data', {
+         headers: {
+           Authorization: `Bearer ${token}`
+         }
+       });
+       
+       const data = await response.json();
+     };
+
+     return <div>User Data Component</div>;
+   }
+   ```
+
+6. **Token Decoding Example**
+   ```tsx
+   // Backend utility function
+   function getTokenData(token: string) {
+     const decoded = jwt.decode(token);
+     return {
+       app_id: decoded.app_id,
+       user_id: decoded.user_id,
+       // Other claims available in token
+       auth_time: decoded.auth_time,
+       exp: decoded.exp,
+       iat: decoded.iat
+     };
+   }
+   ```
+
+7. **API Route Best Practices**
+   ```tsx
+   // ❌ Don't do this
+   app.post('/api/update-user', (req, res) => {
+     const { app_id, user_id, data } = req.body; // Redundant!
+     // ... handle update
+   });
+
+   // ✅ Do this instead
+   app.post('/api/update-user', (req, res) => {
+     const token = req.headers.authorization?.split(' ')[1];
+     const { app_id, user_id } = jwt.decode(token);
+     const { data } = req.body; // Only send what's needed
+     // ... handle update
+   });
+   ```
+
+This approach:
+- Reduces payload size
+- Prevents token/ID mismatch
+- Improves security by relying on verified token data
+- Simplifies API implementations
+- Reduces potential for user spoofing
+
+### Advanced Features
+
+#### 1. Custom Sign-in Flows
+
+```jsx
+const { requestSignIn } = useRownd();
+
+// Email sign-in
+const handleEmailSignIn = (email) => {
+  requestSignIn({
+    identifier: email,
+    auto_sign_in: true,
+    post_login_redirect: '/dashboard'
+  });
+};
+
+// Google sign-in
+const handleGoogleSignIn = () => {
+  requestSignIn({
+    method: 'google',
+    post_login_redirect: '/dashboard'
+  });
+};
+```
+
+#### 2. File Uploads
+
+```jsx
+function ProfilePictureUpload() {
+  const { user } = useRownd();
+
+  const handleFileUpload = async (file) => {
+    try {
+      await user.uploadFile('profile_picture', file);
+      console.log('Profile picture updated');
+    } catch (error) {
+      console.error('Upload failed:', error);
+    }
+  };
+
+return (
+    <input 
+      type="file" 
+      accept="image/*" 
+      onChange={(e) => handleFileUpload(e.target.files[0])} 
+    />
+  );
+}
+```
+
+For more details on specific APIs and features, refer to the [JavaScript API Reference](/sdk-reference/web/javascript--api-reference).
+
+### Sign In Request Options
+
+The `requestSignIn` method accepts several configuration options to customize the sign-in experience:
+
+```typescript
+interface SignInOptions {
+  // Whether to automatically sign in the user if possible
+  auto_sign_in?: boolean;
+  
+  // Pre-fill the email/phone field
+  identifier?: string;
+  
+  // Authentication method to use
+  method?: 'email' | 'phone' | 'google' | 'apple' | 'passkey' | 'anonymous';
+  
+  // Override the global post-login redirect
+  post_login_redirect?: string;
+  
+  // Additional user data to store upon sign-in
+  user_data?: Record<string, any>;
+  
+  // Whether to auto-submit the form (requires identifier)
+  auto_submit?: boolean;
+}
+```
+
+#### Examples
+
+```tsx
+// Basic sign-in
+const handleBasicSignIn = () => {
+  requestSignIn();
+};
+
+// Pre-filled email with auto-submit
+const handleAutoSignIn = () => {
+  requestSignIn({
+    identifier: 'user@example.com',
+    auto_submit: true
+  });
+};
+
+// Google sign-in with custom redirect
+const handleGoogleSignIn = () => {
+  requestSignIn({
+    method: 'google',
+    post_login_redirect: '/dashboard'  // Overrides global setting
+  });
+};
+
+// Sign in with additional user data
+const handleSignInWithData = () => {
+  requestSignIn({
+    user_data: {
+      source: 'marketing_campaign',
+      referral_code: 'REF123'
+    }
+  });
+};
+```
+
+### HTML Hooks Integration
+
+While the React SDK provides programmatic control, you can also use HTML data attributes for declarative authentication controls. These work alongside React components:
+
+```tsx
+// Example combining React and HTML hooks
+function AuthenticationExample() {
+return (
+    <div>
+      {/* Trigger sign-in modal */}
+      <button data-rownd-sign-in-trigger>
+        Sign In
+      </button>
+
+      {/* Auto-display sign-in with pre-filled email */}
+      <div 
+        data-rownd-request-sign-in="auto-submit"
+        data-rownd-default-user-identifier="user@example.com"
+      />
+
+      {/* Sign in with custom authenticated text */}
+      <button
+        data-rownd-sign-in-trigger
+        data-rownd-authenticated-text="View Dashboard"
+        data-rownd-authenticated-redirect-url="/dashboard"
+      >
+        Sign In
+      </button>
+
+      {/* Display user data */}
+      <div data-rownd-field-interpolate>
+        Welcome, {{ first_name }} {{ last_name }}!
+      </div>
+
+      {/* Individual field mapping */}
+      <div>
+        Email: <span data-rownd-field-mapping="email" />
+        {/* Will show verification status automatically */}
+      </div>
+    </div>
+  );
+}
+```
+
+#### Available HTML Hooks
+
+| Attribute | Description | Example |
+|-----------|-------------|---------|
+| `data-rownd-sign-in-trigger` | Creates a clickable sign-in trigger | `<button data-rownd-sign-in-trigger>Sign In</button>` |
+| `data-rownd-authenticated-text` | Text to show when authenticated | `data-rownd-authenticated-text="Sign Out"` |
+| `data-rownd-authenticated-redirect-url` | URL to redirect to after auth | `data-rownd-authenticated-redirect-url="/dashboard"` |
+| `data-rownd-request-sign-in` | Auto-display sign-in modal (closable) | `<div data-rownd-request-sign-in />` |
+| `data-rownd-require-sign-in` | Force sign-in modal (non-closable) | `<div data-rownd-require-sign-in />` |
+| `data-rownd-default-user-identifier` | Pre-fill email/phone | `data-rownd-default-user-identifier="user@example.com"` |
+| `data-rownd-field-interpolate` | Template user data | `<div data-rownd-field-interpolate>Hello {{first_name}}!</div>` |
+| `data-rownd-field-mapping` | Display specific user field | `<span data-rownd-field-mapping="email" />` |
+
+#### Combining React and HTML Approaches
+
+You can mix programmatic and declarative approaches:
+
+```tsx
+function HybridAuthExample() {
+  const { is_authenticated, user } = useRownd();
+
+  const handleCustomSignIn = () => {
+    requestSignIn({
+      method: 'email',
+      identifier: user.data.email,
+      post_login_redirect: '/welcome'
+    });
+  };
+
+  return (
+    <div>
+      {/* Programmatic control */}
+      <button onClick={handleCustomSignIn}>
+        Custom Sign In Flow
+      </button>
+
+      {/* HTML hook with dynamic content */}
+      <div 
+        data-rownd-sign-in-trigger
+        data-rownd-authenticated-text={`Welcome back, ${user.data.first_name}`}
+      >
+        Get Started
+      </div>
+
+      {/* Automatic sign-in prompt */}
+      {!is_authenticated && (
+        <div 
+          data-rownd-request-sign-in="auto-submit"
+          data-rownd-default-user-identifier={user.data.email}
+        />
+      )}
+
+      {/* User data display */}
+      <div data-rownd-field-interpolate>
+        Account: {{ email }}
+        Status: {{ subscription_status }}
+      </div>
+    </div>
+  );
+}
+```
+
+### Best Practices for Authentication Flow
+
+1. **Global vs. Local Redirects**
+   ```tsx
+   // Global redirect in provider
+   <RowndProvider
+     appKey="your_app_key"
+     postLoginRedirect="/dashboard"
+   >
+     <App />
+   </RowndProvider>
+
+   // Local override in component
+   const handleSignIn = () => {
+     requestSignIn({
+       post_login_redirect: '/special-landing'  // Takes precedence
+     });
+   };
+   ```
+
+2. **Progressive Enhancement**
+   ```tsx
+   function AuthenticationFlow() {
+     const { is_initializing, is_authenticated, user } = useRownd();
+
+     // First, try HTML hooks
+     if (!is_authenticated) {
+       return (
+         <div 
+           data-rownd-request-sign-in
+           data-rownd-default-user-identifier={user.data.email}
+         />
+       );
+     }
+
+     // Then, enhance with React
+     return (
+       <div>
+         <h1>Welcome {user.data.first_name}!</h1>
+         <button onClick={() => requestSignIn({
+           method: 'passkey'
+         })}>
+           Add Passkey
+         </button>
+       </div>
+     );
+   }
+   ```
+
+3. **Handling Different Auth States**
+   ```tsx
+   function AuthStateManager() {
+     return (
+       <div>
+         {/* Request sign-in for new users */}
+         <div data-rownd-request-sign-in />
+
+         {/* Force sign-in for protected content */}
+         <ProtectedContent>
+           <div data-rownd-require-sign-in />
+         </ProtectedContent>
+
+         {/* Custom experience for returning users */}
+         <div 
+           data-rownd-sign-in-trigger
+           data-rownd-authenticated-text="Welcome back!"
+         >
+           Sign In
+         </div>
+       </div>
+     );
+   }
+   ```
+
+### Account Management
+
+#### Using manageAccount()
+
+The `manageAccount()` function provides a pre-built, customizable account management interface that saves significant development time. This Rownd-generated system handles common user management tasks out of the box.
+
+```tsx
+function ProfileManager() {
+  const { manageAccount, is_authenticated } = useRownd();
+
+  return (
+    <div>
+      <h2>Account Settings</h2>
+      <button 
+        onClick={() => {}}
+        disabled={!is_authenticated}
+      >
+        Manage Your Account
+      </button>
+    </div>
+  );
+}
+```
+
+#### Features Included
+
+The account management interface provides:
+
+| Feature | Description |
+|---------|-------------|
+| Profile Editing | Users can update their basic information (name, email, etc.) |
+| Email Verification | Handles email verification status and re-verification |
+| Password Management | Change password and set up passwordless options |
+| Connected Accounts | Manage social logins and connected services |
+| Security Settings | 2FA setup, passkey management, session control |
+| Data Access | View and download personal data |
+| Account Deletion | Self-service account removal option |
+
+#### Customization Options
+
+You can customize the account management interface through the Rownd Dashboard:
+
+1. **Branding**
+   - Custom colors and themes
+   - Logo placement
+   - Typography settings
+
+2. **Field Configuration**
+   - Show/hide specific fields
+   - Mark fields as required
+   - Add custom fields
+   - Set field validation rules
+
+3. **Feature Toggles**
+   - Enable/disable specific features
+   - Configure verification requirements
+   - Set up data retention policies
+
+#### Integration Example
+
+```tsx
+function AccountSection() {
+  const { 
+    manageAccount, 
+    is_authenticated,
+    user,
+    is_initializing 
+  } = useRownd();
+
+  if (is_initializing) {
+    return <div>Loading account settings...</div>;
+  }
+
+  return (
+    <div className="account-section">
+      {!is_authenticated && (
+<div>
+          <h3>Please sign in to manage your account</h3>
+          <button 
+            data-rownd-sign-in-trigger
+            data-rownd-authenticated-redirect-url="/account"
+          >
+            Sign In
+          </button>
+        </div>
+      )}
+
+      {is_authenticated && (
+        <>
+          <div className="account-summary">
+            <h3>Account Overview</h3>
+            <p>Welcome, {user.data.first_name}!</p>
+            {user.verified_data.email && (
+              <span className="verified-badge">✓ Verified Email</span>
+            )}
+          </div>
+
+          <div className="account-actions">
+            <button 
+              onClick={() => {}}
+              className="primary-button"
+            >
+              Manage Account Settings
+            </button>
+            <p className="help-text">
+              Update your profile, security settings, and connected accounts
+            </p>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+```
+
+#### Best Practices
+
+1. **Accessibility**
+   ```tsx
+   <button 
+     onClick={() => {}}
+     aria-label="Open account management interface"
+     className="account-button"
+   >
+     Manage Account
+   </button>
+   ```
+
+2. **Context-Aware Placement**
+   ```tsx
+   function UserMenu() {
+     const { manageAccount } = useRownd();
+     
+  return (
+       <menu>
+         <li>Dashboard</li>
+         <li>
+           <button onClick={() => {}}>
+             Account Settings
+           </button>
+         </li>
+         <li>Help</li>
+       </menu>
+     );
+   }
+   ```
+
+3. **Error Handling**
+   ```tsx
+   function SafeAccountManager() {
+     const { manageAccount } = useRownd();
+     
+     const handleAccountClick = () => {
+       try {
+         manageAccount();
+       } catch (error) {
+         console.error('Failed to open account manager:', error);
+         // Show fallback UI or error message
+       }
+     };
+
+     return (
+       <button onClick={handleAccountClick}>
+         Manage Account
+       </button>
+     );
+   }
+   ```
+
+By using `manageAccount()`, you get a complete user account management system without building and maintaining custom interfaces. This significantly reduces development time while providing a consistent, secure, and feature-rich experience for your users.
+
+### Accessing User Data
+
+There are two ways to access user data in your application:
+
+1. **Using the useRownd Hook (Recommended)**
+```tsx
+function UserProfile() {
+  const { user } = useRownd();
+  
+  // Access user data directly
+  return (
+    <div>
+      <div className="firstName">{user.data.first_name}</div>
+      <div className="email">{user.data.email}</div>
+      <div className="customField">{user.data.custom_field}</div>
+    </div>
+  );
+}
+```
+
+2. **Using HTML Data Attributes**
+```html
+<!-- Template-style interpolation -->
+<div data-rownd-field-interpolate>
+  Hello, {{ first_name }} {{ last_name }}!
+  Your email is: {{ email }}
+</div>
+
+<!-- Individual field mapping -->
+<div>
+  First Name: <span data-rownd-field-mapping="first_name"></span>
+  Email: <span data-rownd-field-mapping="email"></span>
+</div>
+```
+
+#### Important Notes:
+- Always access user data through `user.data` when using the hook
+- Fields are accessed directly in HTML templates (e.g., `{{ first_name }}` not `{{ user.data.first_name }}`)
+- Both methods require being within a `<RowndProvider>` context
+- Both methods automatically update when user data changes
+
+#### Combined Example:
+```tsx
+function UserDashboard() {
+  const { user, is_authenticated } = useRownd();
+
+  if (!is_authenticated) {
+    return <div>Please sign in</div>;
+  }
+
+  return (
+    <div>
+      {/* Programmatic access with useRownd */}
+      <h1>Welcome, {user.data.first_name}!</h1>
+      
+      {/* HTML hook for complex templates */}
+      <div data-rownd-field-interpolate>
+        Account Details:
+        Email: {{ email }}
+        Subscription: {{ subscription_type }}
+        Member since: {{ join_date }}
+      </div>
+
+      {/* Mix both approaches */}
+      <div className="profile-card">
+        <h2>Profile</h2>
+        {user.data.profile_picture && (
+          <img 
+            src={user.data.profile_picture} 
+            data-rownd-field-mapping="profile_picture"
+          />
+        )}
+        <div data-rownd-field-mapping="bio"></div>
+      </div>
+    </div>
+  );
+}
+```

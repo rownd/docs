@@ -1,0 +1,44 @@
+---
+title: "List user profiles"
+openapi: "GET /applications/{app}/users/data"
+---
+
+Retrieve a paginated list of user profiles for your application.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/users/data`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Query params
+
+- `limit` (optional): Page size (max 100)
+- `after` (optional): Pagination cursor
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/users/data?limit=25" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "data": [
+    {"user": "usr_123", "data": {"email": "user@example.com"}}
+  ],
+  "paging": {"next": null}
+}
+```

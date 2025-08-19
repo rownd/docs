@@ -1,0 +1,38 @@
+---
+title: "Retrieve a group"
+openapi: "GET /applications/{app}/groups/{group}"
+---
+
+Platform API for retrieving a group.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/groups/{group}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "grp_123",
+  "name": "Early Access",
+  "description": "Beta testers"
+}
+```

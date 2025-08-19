@@ -1,0 +1,48 @@
+---
+title: "Create a group invite"
+openapi: "POST /applications/{app}/groups/{group}/invites"
+---
+
+Create a new invite for a group (app-scoped).
+
+### Endpoint
+
+- Method: `POST`
+- Path: `/applications/{app}/groups/{group}/invites`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Request body
+
+```json
+{
+  "email": "invitee@example.com"
+}
+```
+
+### Try it
+
+```bash
+curl --request POST \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}/invites" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>" \
+  --header "Content-Type: application/json" \
+  --data '{"email":"invitee@example.com"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "inv_123",
+  "email": "invitee@example.com",
+  "status": "pending"
+}
+```

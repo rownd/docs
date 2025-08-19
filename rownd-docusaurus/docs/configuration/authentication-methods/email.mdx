@@ -1,0 +1,39 @@
+---
+title: "Email sign-in"
+sidebarTitle: "Email"
+description: "Email-based Authentication with Rownd Sign-in Links offers a secure and user-friendly way for users to access their accounts on your website and mobile apps."
+---
+
+Email-based authentication using Rownd Sign-in Links provides a secure and user-friendly method for users to sign in to their accounts on your website and mobile apps. With this approach, users don't need to remember complex passwords or create new accounts. Instead, they simply enter their email address and receive a unique sign-in link directly within their inbox, which they can use to securely access their account.
+
+<Note>
+**Improve Email Deliverability with Custom Domains**
+
+Using a custom domain for your authentication emails can significantly improve deliverability rates and enhance your brand's credibility. When your sign-in links come from your own domain instead of a third-party one, email providers are less likely to flag them as suspicious.
+
+Learn more about setting up [Custom Domains](/configuration/custom-domains/overview) to enhance your authentication experience.
+</Note>
+
+This method of authentication is especially convenient for users, as it eliminates the need for password management and reduces the risk of password-related security breaches. By sending a one-time-use sign-in link to the user's email address, you can ensure that only the account owner can access the account.
+
+Rownd Sign-in Links are designed to be straightforward for both developers and users. Integration is seamless, and the process is intuitive for users, streamlining the authentication experience on your platform.
+
+Incorporating email-based authentication with Rownd Sign-in Links not only improves the user experience but also enhances the security of your platform, helping you build trust with your users and maintain a secure environment for their data.
+
+#### Enabling email authentication
+
+1. Navigate to **Sign-in methods** in the [Rownd dashboard](https://app.rownd.io).
+2. Toggle the switch for **Email** to the "on" position.
+3. Click **Save**.
+
+#### Browser Fingerprinting and Reverification for Returning Users
+
+Rownd uses browser fingerprinting to enhance the sign-in experience for returning users. When a user signs in with email authentication, Rownd securely associates their session with device metadata to form a private, temporary fingerprint. This allows returning users to sign back in—within a configurable time window—without going through the full email verification process again.
+
+Additionally, Rownd remembers the last sign-in method used. If a user has multiple authentication options, we’ll surface the one they last used to simplify the experience.
+
+Browser fingerprinting in Rownd is privacy-conscious and session-bound. It doesn’t track users across websites—it simply reduces friction for repeat visits on personal devices.
+
+#### Customizing email messages
+
+Rownd allows you to change portions of the email to better match your brand. See our [email customization article](/configuration/customizations/email-customization) for more information.

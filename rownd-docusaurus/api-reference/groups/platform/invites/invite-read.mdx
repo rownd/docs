@@ -1,0 +1,38 @@
+---
+title: "Retrieve a group invite"
+openapi: "GET /applications/{app}/groups/{group}/invites/{invite}"
+---
+
+Retrieve a specific group invite (app-scoped).
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/groups/{group}/invites/{invite}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}/invites/{invite}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "inv_123",
+  "email": "invitee@example.com",
+  "status": "pending"
+}
+```
