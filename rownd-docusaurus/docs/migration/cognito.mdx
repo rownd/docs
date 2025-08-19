@@ -1,0 +1,171 @@
+---
+title: "Migrating from AWS Cognito"
+sidebarTitle: "Cognito (AWS)"
+---
+
+## Overview
+
+Here's what you'll work through as part of this migration:
+1. Creating a Rownd account and setting up your test and production apps.
+2. Updating your code to leverage Rownd instead of Cognito for authentication.
+3. Migrating your existing users to Rownd.
+
+<Note>We've prepared a [sample repository](https://github.com/rownd/migration-cognito#cognito-migration-to-rownd) that demonstrates the migration process from a code perspective.</Note>
+
+## Set up Rownd
+
+<Snippet file="migration/setup-rownd-steps.mdx" />
+
+## Update back-end code
+You'll need to update your backend APIs to accept Rownd-signed JWTs instead of AWS Cognito JWTs.
+
+ 1. Install the Rownd SDK for your [back-end language or framework](/sdk-reference/backend).
+ 2. Locate code that uses the AWS Cognito to manage users, validate tokens, and so on. Remove this code.
+
+Our SDKs provide functions to validate Rownd tokens, fetch user data, and in some cases middleware that you can plug directly into your request handlers to authenticate users automatically. 
+
+Here's an example using Express middleware in Node.js:
+
+<Info>
+Notice the use of the `authenticate` middleware function from `rownd.express` which validates a JWT in the `Authorization` header and fetches profile data from Rownd, making it available on the request object for other request handlers. You can also build a middleware yourself or use one-off instances of `rownd.validateToken(token)` and `rownd.fetchUserInfo(token)`. 
+</Info>
+
+```typescript
+import { createInstance } from '@rownd/node';
+const rownd = createInstance({
+  app_key: 'YOUR_APP_KEY',
+  app_secret: 'YOUR_APP_SECRET',
+});
+const { authenticate } = rownd.express;
+
+app.get('/api/*', authenticate({ fetchUserInfo: true }));
+
+app.get('/api/profile', (req, res) => {
+    res.send({
+        profile: req.user
+    });
+});
+```
+
+## Update front-end code
+
+1. Install the `@rownd/react` dependency with your preferred package manager
+```
+npm install @rownd/react
+```
+
+2. Add the `<RowndProvider>` to the app's main entry.
+<CodeGroup>
+```typescript React .tsx
+import React from 'react',
+import ReactDOM from 'react-dom';
+import { RowndProvider } from '@rownd/react';
+import App from './App';
+
+ReactDOM.render(
+  <RowndProvider
+    appKey="<your app key>"
+  >
+    <App />
+  </RowndProvider>,
+  document.getElementById('root')
+```
+</CodeGroup>
+
+
+3. Replace all sign up and sign in buttons to trigger the `requestSignIn` flow for new or existing users.
+
+```typescript 
+const { requestSignIn } = useRownd();
+<button onClick={() => requestSignIn()}>Login or Sign Up</button>
+```
+
+4. Replace ConfirmSignUp with is_authenticated API request
+
+```typescript 
+const { is_authenticated } = useRownd();
+return (
+  <>
+    {is_authenticated && <ProtectedRoute />}
+    {!is_authenticated && <PublicRoute />}
+  </>
+);
+```
+
+
+5. Replace InitiateAuth with getAccessToken API request
+
+```typescript 
+const { getAccessToken } = useRownd();
+
+let accessToken = await getAccessToken({
+  waitForToken: false,
+});
+```
+
+6. Replace sign out buttons to send a signOut API request
+
+```typescript 
+const { signOut } = useRownd();
+<button onClick={() => signout()}>Logout</button>
+```
+
+## Sync user profiles (optional)
+
+Export user data, then import it
+
+1. To do a bulk import of all users from your Cognito to Rownd see our [GitHub repo](https://github.com/rownd/csv-exporter) to export user data and transform your user data to the correct schema 
+
+2. Then use the following script to import your users into Rownd.
+
+ <CodeGroup>
+```
+const axios = require('axios');
+let data = JSON.stringify({
+  "users": [
+    {
+      "user_id": "__default__",
+      "data": {
+        "email": "romeo@gmail.com",
+        "sub": "41dbf550-1031-70e1-cc01-ce0106007d33"
+      }
+    },
+    {
+      "user_id": "__default__",
+      "data": {
+        "email": "johndoe@mailinator.com",
+        "sub": "518b35f0-9081-707d-5814-54cb79d27cc6"
+      }
+    },
+    {
+      "user_id": "__default__",
+      "data": {
+        "email": "janedoe@gmail.com",
+        "sub": "910b8560-c071-70a3-09e3-ef0bd61a8168"
+      }
+    }
+  ]
+});
+
+let config = {
+  method: 'put',
+  maxBodyLength: Infinity,
+  url: 'https://api.rownd.io/applications/<YOUR APP ID>/users/data',
+  headers: { 
+    'x-rownd-app-key': '<YOUR APP KEY>', 
+    'x-rownd-app-secret': '<YOUR APP SECRET>', 
+    'Content-Type': 'application/json', 
+  },
+  data : data
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+
+```
+</CodeGroup>

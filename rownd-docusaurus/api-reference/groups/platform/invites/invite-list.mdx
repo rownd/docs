@@ -1,0 +1,44 @@
+---
+title: "List group invites"
+openapi: "GET /applications/{app}/groups/{group}/invites"
+---
+
+List invites for a group (app-scoped).
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/groups/{group}/invites`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Query params
+
+- `limit` (optional): Page size (max 100)
+- `after` (optional): Pagination cursor
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}/invites?limit=25" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "data": [
+    {"id": "inv_123", "email": "invitee@example.com", "status": "pending"}
+  ],
+  "paging": {"next": null}
+}
+```

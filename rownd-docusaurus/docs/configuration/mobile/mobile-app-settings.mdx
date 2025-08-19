@@ -1,0 +1,46 @@
+---
+title: "Mobile app settings"
+sidebarTitle: "Mobile app settings"
+description: "Configuring your mobile app"
+---
+
+Configure mobile app settings to enable a prompt for mobile users to download the app or take them to their existing app.
+
+### Configure iOS mobile app settings
+
+1. App store URL
+   1. Log in to [Apple App Store Connect](https://appstoreconnect.apple.com/apps).
+   2. Go to My Apps and click on you app.
+   3. Click App Information in the General section.
+      ![Configuring mobile apps only takes a few minutes.](/images/mobile-app-settings-app-info.png)
+   4. Click View on App Store in the Additional Information section.
+      ![Configuring mobile apps only takes a few minutes.](/images/mobile-app-settings-apple-store-url.png)
+   5. Copy the URL of the page.
+2. Bundle IDs
+   1. Enter a comma-separated list of bundle IDs for your app (e.g., `com.example.myapp`)
+3. Team ID
+   1. Log in to Apple [Apple Developer Portal](https://developer.apple.com/account)
+   2. Scroll down to Membership details
+      ![Configuring mobile apps only takes a few minutes.](/images/mobile-app-settings-ios-team-id.png)
+   3. Copy the Team ID
+
+### Configure Android mobile app settings
+
+1. Play store URL
+   1. Log in to [Google Play Console](https://play.google.com/console)
+   2. Select your app from the dashboard.
+   3. Click on View on Google Play.
+      ![Configuring mobile apps only takes a few minutes.](/images/mobile-app-settings-google-store-url.png)
+   4. Copy the URL of the page.
+2. Package name
+   1. Log in to [Google Play Console](https://play.google.com/console)
+   2. Select your app from the dashboard.
+   3. Copy package name from the app dashboard
+      ![Configuring mobile apps only takes a few minutes.](/images/mobile-app-settings-google-package-name.png)
+3. SHA-256 Cert Fingerprints
+   1. Log in to [Google Play Console](https://play.google.com/console)
+   2. Select your app from the dashboard.
+   3. Click App Integrity under the Release section then click Settings in the Play app signing section.
+      ![Configuring mobile apps only takes a few minutes.](/images/mobile-app-settings-app-integrity.png)
+      4.Copy SHA-256 certificate fingerprint in the App signing key certificate section
+      ![Configuring mobile apps only takes a few minutes.](/images/mobile-app-settings-sha256.png)

@@ -1,0 +1,144 @@
+---
+title: "HTML Hooks"
+sidebarTitle: "HTML Hooks"
+icon: code
+---
+
+## Installation
+
+Please reference one of Rownd's other [Web SDKs](/sdk-reference/web/overview) for instructions on installing Rownd onto your site or web app. The HTML Hooks functionality is available with any or our web SDKs.
+
+## HTML Hooks
+
+The Rownd Hub supports various hooks that can be used to modify the behavior of
+content on a page. These are controlled by
+[HTML data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use%5Fdata%5Fattributes).
+The following attribute hooks are supported.
+
+## Sign in / sign up buttons / triggers
+
+### `data-rownd-sign-in-trigger`
+
+Attach to a clickable control (e.g., `<a>` or `<button>`) to trigger the Rownd
+authentication modal when not signed in.
+
+Example:
+
+```jsx
+<a href="/dashboard" data-rownd-sign-in-trigger>
+  Sign in
+</a>
+```
+
+**`data-rownd-authenticated-text="<text>"`**
+
+When the user is authenticated, the text in this attribute will replace the
+element's original text.
+
+Example:
+
+```jsx
+<a
+  href="/dashboard"
+  data-rownd-sign-in-trigger
+  data-rownd-authenticated-text="Sign out"
+>
+  Sign in
+</a>
+```
+
+**`data-rownd-authenticated-redirect-url="<url>"`**
+
+When the user is authenticated, the clicked element will navigate the browser to
+the specified absolute or relative URL. If not specified in the case of an `<a>`
+tag, the `href` attribute from the tag will be used instead.
+
+Example:
+
+```jsx
+<button
+  data-rownd-sign-in-trigger
+  data-rownd-authenticated-text="Sign out"
+  data-rownd-authenticated-redirect-url="/dashboard"
+>
+  Sign in
+</button>
+```
+
+**`data-rownd-request-sign-in`** / **`data-rownd-require-sign-in`**
+
+When one of these attributes is present on any DOM element, the Rownd sign-in
+modal will automatically display if the user is not currently signed in.
+
+The only difference between the two is that `data-rownd-request-sign-in` will
+display a closable sign-in modal (i.e., with a close icon showing) whereas
+`data-rownd-require-sign-in` will display a persistent, non-closable modal until
+the user successfully completes the sign-in process.
+
+**Pre-set the user's email address or phone number**
+
+If you already know the current visitor's sign-in identifier (i.e., email or
+phone), Rownd can pre-populate that into the sign-in modal. Simply add the
+following additional attribute to the same element where the request/require
+sign-in attribute is present:
+`data-rownd-default-user-identifier="REPLACE_WITH_EMAIL_OR_PHONE"`
+
+Here's a complete example:
+
+```jsx
+<div
+  data-rownd-require-sign-in="auto-submit"
+  data-rownd-default-user-identifier="jrose@rownd.io"
+/>
+```
+
+### Display user profile information for site customization
+
+Use these hooks when you want to customize site content with information about
+the currently signed-in user. The fields available here will match those
+specified in the Rownd dashboard.
+
+If the user's profile changes within the browser context, the changes will
+automatically be reflected within the site.
+
+**`data-rownd-field-interpolate`**
+
+Replaces templated strings within the element's HTML content with the values
+from the currently signed-in user's profile.
+
+Example:
+
+```jsx
+<p data-rownd-field-interpolate>
+  Hello, {{ first_name }} {{ last_name }}!
+</p>
+
+// Result: <p data-rownd-field-interpolate>Hello, Alice Remansi!</p>
+```
+
+**`data-rownd-field-mapping="<field name>"`**
+
+Examples:
+
+```jsx
+<p>
+  Hello,
+  <span data-rownd-field-mapping="first_name"></span>
+  <span data-rownd-field-mapping="last_name"></span>!
+</p>;
+
+Result: <p>
+  {" "}
+  Hello,
+  <span data-rownd-field-mapping="first_name">Alice</span>
+  <span data-rownd-field-mapping="last_name">Remansi</span>!
+</p>;
+```
+
+Rownd can also render images when this attribute is applied to an `img` element
+and the field name corresponds to a field of type "image". Example:
+
+```jsx
+<h3>Profile Picture</h3>
+<img data-rownd-field-mapping="profile_picture" />
+```

@@ -1,0 +1,133 @@
+---
+title: "Overview"
+sidebarTitle: "Overview"
+---
+
+Magic links provide a seamless authentication method for getting users into your app or website without requiring them to explicitly sign in. However, you can also use magic links for other purposes, such as re-engaging users, onboarding new users, or directing users to specific app screens. While magic links usually include an authentication payload identifying the user, they can also be used for non-authentication purposes.
+
+In many cases, you can replace Branch or Firebase Dynamic Links with Rownd magic links, as they provide similar functionality at no additional cost with the added benefit of integrated authentication.
+
+### What makes Rownd magic links unique?
+
+- **Integrated authentication**: Unlike standard Magic links, Rownd's Magic Links also manage user sign-in and verification, providing a streamlined login experience across devices and platforms.
+- **Security first**: Each link is dynamically generated to verify user identity and restrict unauthorized access.
+- **Cross-platform**: Rownd magic links are optimized for use across web, iOS, and Android, ensuring a consistent experience.
+- **Unauthenticated / bulk links**: Create reusable links for bulk distribution with a customized call-to-action. Deep link into your app or website or trigger app downloads from the correct app store. This allows users to directly access the download link without requiring authentication.
+
+### Elevate Your Brand with Custom Domains
+
+One of the most powerful features of Rownd Smart Links is the ability to use your own custom domain:
+
+- **Enhanced Brand Trust**: Links displaying your domain instead of a third-party one significantly improve click-through rates
+- **Improved Deliverability**: Email and SMS providers are less likely to flag links from established domains
+- **Seamless Brand Experience**: Maintain your brand identity throughout the entire user journey
+- **Professional Appearance**: Custom domains create a more polished, professional impression
+
+To set up custom domains for your Smart Links, visit our [Custom Domains](/configuration/custom-domains/overview) documentation. Once configured, all your Smart Links will use your branded domain, creating a cohesive experience from email or SMS all the way through to your application.
+
+## Creating and using smart links
+
+Rownd offers two powerful ways to create Smart Links, each designed for different use cases and workflow preferences:
+
+### Platform-Based Creation
+
+You can now create and manage Smart Links directly through the Rownd dashboard without writing any code. Our user-friendly interface allows you to:
+
+- Create reusable Smart Links for marketing campaigns, user onboarding, or app downloads
+- Customize link behavior with redirects based on device type
+- Add analytics tags to track link performance
+- Control how your links appear when shared on social media
+- Manage all your links from a central dashboard
+
+
+
+The platform approach is perfect for marketing teams, content managers, and anyone who needs to create and manage links without developer involvement. Within minutes, you can create a Smart Link that delivers a tailored experience to your users.
+
+For detailed instructions on creating Smart Links through the platform, see our [Platform Guide](/magic-links/platform).
+
+### API-Based Creation
+
+For developers and automated workflows, Rownd offers a powerful API for programmatically creating Smart Links. This approach enables:
+
+- **Dynamic link generation** based on user actions or events
+- **Seamless integration** with existing marketing automation platforms
+- **Bulk creation** of personalized links for email campaigns
+- **Custom authentication flows** tailored to your specific business needs
+- **Web hooks and callbacks** for advanced tracking and user journey orchestration
+
+During email or SMS sign-in, Rownd automatically generates smart links on your behalf and sends them to the user. However, you can also programmatically create smart links using the Rownd API. This allows you to customize the link's behavior, such as redirecting users to specific app screens or triggering custom actions.
+
+To create a magic link, see our [API documentation](/api-reference/authentication/create-magic-link).
+
+#### Example Request
+
+Here’s a basic example of how to create a Magic Link using Rownd's API:
+
+```bash
+POST https://api.rownd.io/hub/auth/magic
+Content-Type: application/json
+X-Rownd-App-Key: YOUR_APP_KEY
+X-Rownd-App-Secret: YOUR_APP_SECRET
+
+{
+  "data": {
+    "email": "user@example.com"
+  },
+  "redirect_url": "https://yourapp.com/welcome"
+}
+```
+
+This request will create a Magic Link that authenticates the user when accessed and redirects them to the specified URL.
+
+### Example Response
+
+```json
+{
+  "link": "https://rownd.link/YOUR_UNIQUE_MAGIC_LINK"
+}
+```
+
+You can then send this link to the user.
+
+### Using magic links
+
+If you're only using magic links on a web platform, then no additional setup is required. However, if you're using Rownd on a mobile platform like iOS or Android, you'll need to add some configuration to your app and the Rownd dashboard to get everything working properly.
+
+#### iOS setup
+
+Apple requires several changes to your app's configuration to handle magic links. They also require an Apple App Site Association (AASA) file to be properly configured; however, Rownd builds and hosts this file for you.
+
+To complete the required setup, follow the [iOS configuration steps](/configuration/mobile/ios).
+
+After setup, test your links on a physical device to confirm they redirect correctly into the app.
+
+#### Android setup
+
+Android apps require an intent filter in the `AndroidManifest.xml` file to handle magic links. Android also requires a Digital Asset Links JSON file to be properly configured; however, Rownd builds and hosts this file for you.
+
+To complete the required setup, follow the [Android configuration steps](/configuration/mobile/android).
+
+After setup, test your links on a physical device to confirm they redirect correctly into the app.
+
+
+### App download links
+
+After you've configured and tested your mobile apps to handle magic links, you can also direct your mobile users to a special magic link endpoint that will automatically launch your app if it's installed or otherwise direct the user to your app listing on the appropriate app store for their device.
+
+To use this link, simply append `/download` to your Rownd subdomain (configured in Mobile settings). For example, if your subdomain is `myapp`, then the download link would be `https://myapp.rownd.link/download`.
+
+If the user is not on iOS or Android when they activate this link, it'll simply redirect them to your Rownd app's default URL
+
+---
+
+## Additional Resources
+
+For more details on configuring and customizing Magic Links in Rownd, refer to the following:
+
+- [Rownd iOS Configuration Documentation](https://docs.rownd.io/configuration/mobile/ios)
+- [Rownd Android Configuration Documentation](https://docs.rownd.io/configuration/mobile/android)
+- [Create Magic Link API Reference](https://docs.rownd.io/api-reference/authentication/create-magic-link)
+
+--- 
+
+This setup should help you get started with implementing Magic Links in Rownd. For any additional questions, feel free to reach out to our support team or consult the API reference.

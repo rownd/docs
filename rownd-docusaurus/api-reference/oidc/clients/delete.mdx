@@ -1,0 +1,30 @@
+---
+title: "Delete an OpenID Connect client"
+openapi: "DELETE /applications/{app}/oidc-clients/{client}"
+---
+
+Delete an OIDC client.
+
+### Endpoint
+
+- Method: `DELETE`
+- Path: `/applications/{app}/oidc-clients/{client}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request DELETE \
+  --url "https://api.rownd.io/applications/{app}/oidc-clients/{client}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+204 - No Content

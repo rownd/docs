@@ -1,0 +1,49 @@
+---
+title: "Update / patch user profile data"
+openapi: "PATCH /applications/{app}/users/{user}/data"
+---
+
+Patch a user's profile data.
+
+### Endpoint
+
+- Method: `PATCH`
+- Path: `/applications/{app}/users/{user}/data`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Request body
+
+```json
+{
+  "first_name": "Janet"
+}
+```
+
+### Try it
+
+```bash
+curl --request PATCH \
+  --url "https://api.rownd.io/applications/{app}/users/{user}/data" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>" \
+  --header "Content-Type: application/json" \
+  --data '{"first_name":"Janet"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "user": "usr_123",
+  "data": {
+    "first_name": "Janet"
+  }
+}
+```

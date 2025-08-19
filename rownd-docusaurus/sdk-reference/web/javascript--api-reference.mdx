@@ -1,0 +1,459 @@
+---
+title: "Javascript API Reference"
+description: "API Reference for the Rownd Javascript API"
+sidebarTitle: "API Reference"
+---
+
+## `requestSignIn(opts)`
+
+Show the Rownd sign-in dialog, or automatically initiate a sign-in.
+
+### Examples
+
+#### Prompt the user to sign in
+
+`requestSignIn()` can be called without any parameters and the user can choose to sign in
+with any of your app's configured sign-in methods.
+
+```javascript
+rownd.requestSignIn()
+```
+
+#### Automatically sign in a user using their email
+
+```javascript
+rownd.requestSignIn({
+  identifier: 'john.doe@acme.com',
+  auto_sign_in: true
+})
+```
+
+#### Prompt the user to sign in with Google and save a referral code to their user data
+```javascript
+rownd.requestSignIn({
+  method: 'google',
+  user_data: {
+    referral_code: 'ref_123'
+  }
+})
+```
+
+### Parameters
+
+<ResponseField name="identifier" type="string">
+  An email address or phone number (in E164 format) to
+  which a verification message may be sent. If the Rownd app is configured to
+  allow unverified users, then sign-in will complete without verification if the
+  user has not signed in previously.
+  
+  This is frequently used in conjunction with
+  `auto_sign_in: true` to automatically sign in a specific user.
+
+  <Accordion title="Example">
+    <CodeGroup>
+      ```javascript Email
+        rownd.requestSignIn({ identifier: 'john.doe@acme.com' })
+      ```
+      ```javascript Phone
+        rownd.requestSignIn({ identifier: '+19199999999' })
+      ```
+    </CodeGroup>
+  </Accordion>
+</ResponseField>
+<ResponseField name="auto_sign_in" type="boolean" default="false">
+  When `true`, automatically trigger a sign-in
+  attempt _if_ `identifier` is included or an email address or phone number has
+  already been set in the user data.
+
+  <Accordion title="Example">
+    <CodeGroup>
+      ```javascript Auto Sign-in
+      rownd.requestSignIn({
+        identifier: 'john.doe@acme.com'.
+        auto_sign_in: true
+      });
+      ```
+    </CodeGroup>
+  </Accordion>
+</ResponseField>
+<ResponseField name="method" type="SignInMethod">
+  If set, Rownd will initiate a sign-in with the specified method. Must be one of 
+  `'email'`, `'phone'`, `'google'`, `'one_tap'`, `'passkeys'`, `'crypto_wallet'`, or `'anonymous'`
+
+  <Accordion title="Example">
+    <CodeGroup>
+    ```javascript Email
+      rownd.requestSignIn({ method: 'email' });
+    ```
+    ```javascript Phone
+      rownd.requestSignIn({ method: 'phone' });
+    ```
+    ```javascript Google
+      rownd.requestSignIn({ method: 'google' });
+    ```
+    ```javascript One Tap
+      rownd.requestSignIn({
+        method: 'one_tap',
+        method_options: {
+          // This is optional. Let's you anchor the One Tap dialog to a specific
+          // spot on the page.
+          prompt_parent_id: '#one-tap-anchor-selector'
+        }
+      });
+    ```
+    ```javascript Passkeys
+      rownd.requestSignIn({ method: 'passkeys' });
+    ```
+    ```javascript Crypto Wallet
+      rownd.requestSignIn({ method: 'crypto_wallet' });
+    ```
+    ```javascript Anonymous
+      rownd.requestSignIn({ method: 'anonymous' });
+    ```
+    </CodeGroup>
+  </Accordion>
+</ResponseField>
+<ResponseField name="redirect" type="boolean" default="true">
+  After the sign-in completes, Rownd will redirect to the configured `postLoginRedirectUrl` 
+  or `postRegistrationUrl`. If `false`, the user will stay on the verification page. This
+  can be helpful if your site or application cannnot be reached via a traditional redirect,
+  such as if it's running in an iframe.
+
+  <Accordion title="Example">
+    <CodeGroup>
+      ```javascript Disable Redirect
+      rownd.requestSignIn({
+        method: 'email',
+        redirect: false,
+      })
+      ```
+    </CodeGroup>
+  </Accordion>
+</ResponseField>
+<ResponseField name="post_login_redirect" type="string">
+  An absolute or relative URL for which to redirect the user after the sign-in completes.
+  
+  <Info>This overrides `postLoginRedirectUrl` and `postRegistrationUrl` if they are set.</Info>
+
+  <Accordion title="Example">
+    <CodeGroup>
+      ```javascript Absolute URL
+      rownd.requestSignIn({ post_login_redirect: 'https:/my.site/signed_in' })
+      ```
+      ```javascript Relative Path
+      rownd.requestSignIn({ post_login_redirect: '/some/path?signed_in=true' })
+      ```
+    </CodeGroup>
+  </Accordion>
+</ResponseField>
+<ResponseField name="user_data" type="object">
+  Extra user data to append to the user record when sign-in completes.
+
+  <Accordion title="Example">
+    <CodeGroup>
+      ```javascript Referral Code
+      rownd.requestSignIn({
+        user_data: {
+          referral_code: 'ref_123'
+        }
+      })
+      ```
+    </CodeGroup>
+  </Accordion>
+</ResponseField>
+<ResponseField name="include_user_data" type="boolean" default="true">
+  When `true`, user data that was previously set using `rownd.user.set()` will be added to
+  the user record after sign-in.
+
+  <Accordion title="Example">
+    <CodeGroup>
+      ```javascript No User Data
+      rownd.user.set({ nick_name: 'Joey' })
+
+      ...
+
+      // { 'nick_name': 'joey' } will not be added to the user's data
+      rownd.user.requestSignIn({
+        include_user_data: false
+      })
+      ```
+    </CodeGroup>
+  </Accordion>
+</ResponseField>
+<ResponseField name="intent" type="string">
+  This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are `"sign_in"` or `"sign_up"`. If you don't set this value, the user will be presented with the unified sign-in/sign-up flow.
+
+  <Accordion title="Example">
+    <CodeGroup>
+      ```javascript Sign Up
+      rownd.requestSignIn({ intent: 'sign_up' })
+      ```
+    </CodeGroup>
+  </Accordion>
+</ResponseField>
+<ResponseField name="login_step" type="LoginStep">
+  The step in the sign-in dialog to display. Must be one of [LoginStep](#loginstep)
+
+  <warn>This is an advanced option and rarely necessary for most use-cases</warn>
+
+  <Accordion title="Example">
+    <CodeGroup>
+      ```javascript Success
+      rownd.requestSignIn({
+        login_step: rownd.LoginStep.Success
+      })
+      ```
+    </CodeGroup>
+  </Accordion>
+</ResponseField>
+
+## `signOut()`
+
+Signs out the user, clearing their access token and user data
+
+```javascript
+rownd.signOut()
+```
+
+## `getAccessToken()`
+
+Get the access token for the signed-in user.
+
+### Parameters
+
+<ResponseField name="waitForToken" type="boolean" default="false">
+  When `true`, if no access token is present or if
+  it's expired, the promise will not be resolved until a valid token is
+  available. While unlikely, this could result in waiting forever.
+
+  <Accordion title="Example">
+    ```javascript
+    const token = await rownd.getAccessToken({ waitForToken: true });
+    ```
+  </Accordion>
+</ResponseField>
+
+
+## `user`
+
+<ResponseField name="get()" type="Function">
+  Gets the data associated with the current user
+
+  <Accordion title="Example">
+    ```javascript
+    // data = { user_id: "user_1235, email: "john.doe@acme.com", referral_code: "ref_123" }
+    const data = await rownd.user.get();
+    ```
+  </Accordion>
+</ResponseField>
+<ResponseField name="set(user_data)" type="Function">
+  Replaces all of the user data for the current user.
+
+  <Tip>You can call `set()` prior to a user signing in. This can be useful to construct user data if your app
+  supports an unauthenticated state.</Tip>
+
+  <Accordion title="Example">
+    ```javascript
+    rownd.user.set({ email: "john.doe@acme.com", referral_code: "ref_123"})
+    ```
+  </Accordion>
+</ResponseField>
+
+<ResponseField name="setValue(field_name, value)" type="Function">
+  Sets a specific field in current user's data.
+
+  <Accordion title="Example">
+    ```javascript
+    rownd.user.setValue('referral_code', 'ref_123')
+    ```
+  </Accordion>
+</ResponseField>
+
+<ResponseField name="uploadFile(field_name, file)" type="Function">
+  Upload a file for a specific field
+
+  <Info>The file parameter must be a javascript File. If the field name corresponds to
+  an image field, the mime type of the file must have an "image/" prefix (e.g.
+  "image/png")</Info>
+
+  <Accordion title="Example">
+    ```javascript
+    rownd.user.uploadFile("profile_picture", file);
+    ```
+  </Accordion>
+</ResponseField>
+
+<ResponseField name="manageAccount()" type="Function">
+  Show the user profile dialog 
+
+  <Accordion title="Example">
+    ```javascript
+    rownd.user.manageAccount()
+    ```
+  </Accordion>
+
+  <Tabs>
+    <Tab title="Mobile" value="mobile">
+      <Frame>
+        <img style={{height:'400px'}} src="/images/hub/mobile/profile.png" />
+      </Frame>
+    </Tab>
+    <Tab title="Desktop" value="desktop">
+      <Frame>
+        <img style={{height:'400px'}} src="/images/hub/desktop/profile.png" />
+      </Frame>
+    </Tab>
+  </Tabs>
+</ResponseField>
+
+## `auth`
+
+<ResponseField name="isVerifiedUser()" type="Function -> boolean">
+  Returns `true` if the current user is a verified user. In practice, this means that they have at least
+  one piece of verified data (email, phone, etc).
+
+  <Accordion title="Example">
+    ```javascript
+    if (rownd.auth.isVerifiedUser()) {
+      console.log('verified!')
+    }
+    ```
+  </Accordion>
+</ResponseField>
+
+## `requestFields()`
+
+Prompt the user to enter values to save in their data. You can specify the fields, submit button content, and the
+queustion/prompt.
+
+### Examples
+
+#### Prompt the user to enter their first and last name
+
+```javascript
+rownd.requestFields({
+  fields: ['first_name', 'last_name'],
+  buttonText: 'Save name',
+  questionText: 'What\'s your name?'
+});
+```
+<Tabs>
+  <Tab title="Mobile" value="mobile-req">
+    <Frame>
+      <img style={{height:'400px'}} src="/images/hub/mobile/request-fields.png" />
+    </Frame>
+  </Tab>
+  <Tab title="Desktop" value="desktop-req">
+    <Frame>
+      <img style={{height:'400px'}} src="/images/hub/desktop/request-fields.png" />
+    </Frame>
+  </Tab>
+</Tabs>
+
+### Parameters
+
+<ResponseField name="fields" type="string[]">
+  List of the field names for which to prompt the user.
+
+  <Info>The fields must exist in your application's Data Types in order to save the data to the user's profile</Info>
+</ResponseField>
+
+<ResponseField name="bottonText" type="string">
+  The text to show on the submit button
+</ResponseField>
+
+<ResponseField name="questionText" type="string">
+  The prompt or question displayed on the dialog
+</ResponseField>
+
+## `near`
+
+<ResponseField name="near" type="object">
+  The `near` API allows you to interact with the Rownd's [NEAR integration](/configuration/web3/near-overview).
+
+  <ResponseField name="ensureImplicitAccount()" type="function">
+    Creates an implicit NEAR account for the current user if one doesn't already exist
+
+    <Accordion title="Example">
+      ```javascript
+      const accountId = rownd.near.ensureImplicitAccount()
+      ```
+    </Accordion>
+  </ResponseField>
+
+  <ResponseField name="createNamedAccount()" type="function">
+    Prompts the user to create a named NEAR account
+    <Accordion title="Example">
+      ```javascript
+      const accountId = rownd.near.createNamedAccount()
+      ```
+    </Accordion>
+    <Tabs>
+      <Tab title="Mobile" value="mobile-named">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/mobile/near-create-named-account.png" />
+        </Frame>
+      </Tab>
+      <Tab title="Desktop" value="desktop-named">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/desktop/near-create-named-account.png" />
+        </Frame>
+      </Tab>
+    </Tabs>
+  </ResponseField>
+
+  <ResponseField name="connectAccount()" type="function">
+    Prompts the user to connect a NEAR accuont
+    <Accordion title="Example">
+      ```javascript
+      rownd.near.connectAccount()
+      ```
+    </Accordion>
+    <Tabs>
+      <Tab title="Mobile" value="mobile-conn">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/mobile/near-connect-account.png" />
+        </Frame>
+      </Tab>
+      <Tab title="Desktop" value="desktop-conn">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/desktop/near-connect-account.png" />
+        </Frame>
+      </Tab>
+   </Tabs>
+  </ResponseField>
+
+  <ResponseField name="walletDetails()" type="function">
+    Opens a dialog showing the details of the user's implicit NEAR account
+
+    <Accordion title="Example">
+      ```javascript
+      const accountId = rownd.near.walletDetails()
+      ```
+    </Accordion>
+
+    <Tabs>
+      <Tab title="Mobile" value="mobile-wallet">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/mobile/near-wallet-details.png" />
+        </Frame>
+      </Tab>
+      <Tab title="Desktop" value="desktop-wallet">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/desktop/near-wallet-details.png" />
+        </Frame>
+      </Tab>
+    </Tabs>
+  </ResponseField>
+</ResponseField>
+
+## `LoginStep`
+
+A step in the Rownd sign-in dialog. Used when calling [requestSignIn](#requestsignin) to show
+a specific step.
+
+<ResponseField name="INIT" type="enum"></ResponseField>
+<ResponseField name="NoAccount" type="enum"></ResponseField>
+<ResponseField name="Success" type="enum"></ResponseField>
+<ResponseField name="Error" type="enum"></ResponseField>
+<ResponseField name="Completing" type="enum"></ResponseField>

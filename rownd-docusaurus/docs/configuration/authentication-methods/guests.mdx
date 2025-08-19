@@ -1,0 +1,36 @@
+---
+title: Sign in as guest
+sidebarTitle: Guests / Anonymous users
+---
+
+Authentication should often be a gradual process. Users may not want to provide identifiable information when trying your product for the first time. Or, if your product uses sensitive information like health data, users may not want to link that data to their identity at all.
+
+For these and other use cases, Rownd offers _guest authentication_, which provides a mechanism for users to onboard your product anonymously—-no email address, phone number, or other contact information is required.
+
+## How it works
+After enabling the **Guests** sign-in method, Rownd will display the option **Continue as guest** in the sign-in modal. Or, if you're writing custom code, you can trigger a guest sign-in automatically on behalf of a visitor who has not yet signed in.
+
+Rownd doesn't request any identifiers for this user, but simply generates a unique ID for their account. Any profile information that's collected will be associated with this unique ID.
+
+Traditionally, using a guest account presented difficulty when signing into that same account on other devices or after signing out. To prevent this issue, Rownd supports [Passkeys](./passkeys) so that even anonymous users can sign into their account across multiple devices that have access to the Passkey.
+
+<Info>
+Passkeys for guests identify a user only by their random unique identifier. No personal information is associated with a Passkey.
+</Info>
+
+### Progressive profiles
+Once a user has tried your product, they may feel more confident in sharing personal details in order to preserve their account, receive customer service, and so on. Leveraging [Automations](/configuration/automations/overview), you can prompt these users to add identifiable information at strategic points within a user journey.
+
+### Detecting guests
+While you might allow guests to use certain aspects of your product, you may want to limit their access to specific features. Whether as a means of upselling or because a specific feature relies on identifiable information, you can detect guests in one of two ways.
+
+1. **Inspect the user's access token:** When a user signs in anonymously, their JWT (access token) is annotated to indicate that they are a guest. The JWT claim looks like this: `https://auth.rownd.io/is_anonymous: true`.
+
+2. **Inspect the user's profile:** Users who originally signed in as a guest will have an `anonymous_id` field populated within their profile. Check if this is present without any other identifiers like email, phone number, wallet address, etc.
+
+## Enabling guest sign-in
+
+1. Navigate to the [Rownd dashboard](https://app.rownd.io/)
+2. Select **Sign-in methods** from the sidebar
+3. Press **Enable** within the **Guests** sign-in chip.
+4. Press **Save** to publish your changes.

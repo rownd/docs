@@ -1,0 +1,40 @@
+---
+title: "Retrieve a user profile"
+openapi: "GET /applications/{app}/users/{user}/data"
+---
+
+Retrieve a user's profile data for your application.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/users/{user}/data`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/users/{user}/data" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "user": "usr_123",
+  "data": {
+    "email": "user@example.com",
+    "first_name": "Jane"
+  }
+}
+```

@@ -1,0 +1,33 @@
+Rownd's API leverages two authentication mechanisms depending on which operation you're invoking. **User-scoped** APIs enable your users to manage their profile information, register passkeys, set preferences, and so on. **App-scoped** APIs allow you to manage aspects of your app, read and update user profiles, add or remove users, and fetch keys necessary for validating a user's bearer token.
+
+Rownd leverages API keys for app-scoped authentication. You'll see these referred to as "app keys" throughout the platform and documentation.
+
+To generate a new app key/secret pair, see this [reference guide](/configuration/app-credentials).
+
+### App-scoped authentication
+
+When making calls to the Rownd REST API, you must include your app key/secret pair in the request headers. The app key is used to identify the app making the request, and the secret is used to authenticate the request.
+
+Ensure the following headers are present:
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+<Info>
+User-initiated requests leverage bearer token authentication, which is generated when a user signs in. You'll usually leverage this token from one of our SDKs in order to call user-based Rownd APIs in addition to your own API stack.
+</Info>
+
+### User-scoped authentication
+
+In most cases, Rownd's SDKs and the Rownd Hub call Rownd APIs on behalf of a user. In these cases, the user's bearer token is included in the request headers. The bearer token is used to identify the user making the request, and to authenticate the request.
+
+We recommend that you use Rownd bearer tokens to authenticate users against your own API or service. Since Rownd's tokens are signed asymmetrically, you can use our public JWK set to validate a token's signature.
+
+<Info>
+If you're using a Rownd server SDK (e.g., Node.js), convenience methods or middleware are provided to automatically validate a bearer token and attach the user's profile to the request object.
+</Info>
+
+Use these endpoints to fetch our OIDC and/or JWK configurations:
+
+- [OIDC configuration](/api-reference/authentication/retrieve-oidc)
+- [JWK set](/api-reference/authentication/retrieve-jwk)

@@ -1,0 +1,19 @@
+---
+title: Auth0
+---
+The Auth0 integration helps you migrate your user authentication from Auth0 to Rownd. The migration can be done in one sync operation or on-demand as users sign-in. Existing Auth0 users will maintain their user IDs in Rownd.
+
+#### Creating the integration
+
+1. From the **Integrations** tab in the sidebar, click on the **Add Integration** button.
+2. Choose the **Auth0** connector from the Connector Catalog
+3. Enter a name for your new integration. After you've entered a descriptive name, click **Next**
+4. Enter your client credentials and environment domain
+
+    <Info>
+    The client credentials that you provide must be for a "Machine-to-Machine" application. Rownd uses these credentials to make calls to the Auth0 Management API to lookup user info. Find out more about creating the client credentials [here.](https://auth0.com/docs/get-started/auth0-overview/create-applications/machine-to-machine-apps)
+    </Info>
+
+When the connection is ready, you can use the three-dots menu on the far right of the row to attach the connection to your app.
+
+Once these steps are completed, you should be able to use Rownd to sign in as an existing Auth0 user, receiving the same ID that you had previously.

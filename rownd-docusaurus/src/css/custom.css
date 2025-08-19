@@ -1,0 +1,77 @@
+.icon-color { color: var(--ifm-color-primary); }
+
+:root {
+    --ifm-color-primary: #5B0AE0;
+}
+
+html[data-theme='dark'] {
+    --ifm-color-primary: #B4B4FF; /* lighter purple for better contrast */
+}
+
+/* Hover effect for cards */
+.rownd-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* Constrain videos */
+video, .mdx-video {
+    max-width: 100%;
+    max-height: 420px;
+}
+
+/* Wider page margins similar to Mintlify */
+:root {
+    --ifm-container-width: 1200px;
+    --ifm-container-width-xl: 1280px;
+}
+
+/* Add margin to the left of the sidebar on desktop to match Mintlify */
+@media (min-width: 997px) {
+  .theme-doc-sidebar-container {
+    margin-left: 16px;
+  }
+}
+
+/* Add side margins to the middle content column */
+@media (min-width: 997px) {
+  .theme-doc-markdown, .theme-doc-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* Typography: Inter with Inter Fallback */
+html, body {
+    font-family: Inter, "Inter Fallback", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+}
+
+/* Smaller heading sizes to match Mintlify proportions */
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.1rem; }
+
+/* Navbar: slightly smaller nav items with more spacing */
+.navbar__link {
+    font-size: 0.92rem;
+    padding: 8px 14px;
+}
+.navbar__items .navbar__link {
+    margin-right: 4px;
+}
+
+/* Subnav styling */
+.rownd-subnav { border-bottom: 1px solid var(--ifm-toc-border-color); background: var(--ifm-background-surface-color); }
+.rownd-subnav__inner { display:flex; gap:24px; padding: 10px 0; }
+.subnav-link { position:relative; padding: 8px 2px; font-weight: 600; color: var(--ifm-font-color-base); }
+.subnav-link--active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -8px;
+    height: 2px;
+    background: var(--ifm-color-primary);
+    border-radius: 2px;
+}

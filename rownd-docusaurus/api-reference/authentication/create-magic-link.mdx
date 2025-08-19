@@ -1,0 +1,68 @@
+---
+title: "Create a magic link"
+openapi: "POST /hub/auth/magic"
+---
+
+Generate a magic link for user authentication or as a short link.
+
+### Endpoint
+
+- Method: `POST`
+- Path: `/hub/auth/magic`
+- Base URL: `https://api.rownd.io`
+
+### Request
+
+Headers:
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+Body (JSON):
+
+```json
+{
+  "purpose": "auth",
+  "redirect_url": "/somewhere/in/my/app",
+  "expiration": "30d",
+  "link_data": {"utm": "newsletter"},
+  "verification_type": "email",
+  "data": {"email": "user@example.com"}
+}
+```
+
+### Try it
+
+```bash
+curl --request POST \
+  --url https://api.rownd.io/hub/auth/magic \
+  --header 'X-Rownd-App-Key: <your-app-key>' \
+  --header 'X-Rownd-App-Secret: <your-app-secret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "purpose": "auth",
+    "redirect_url": "/somewhere/in/my/app",
+    "expiration": "30d",
+    "link_data": {"utm": "newsletter"},
+    "verification_type": "email",
+    "data": {"email": "user@example.com"}
+  }'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "link": "https://rownd.link/abc123",
+  "link_meta": {
+    "purpose": "auth",
+    "redirect_url": "/somewhere/in/my/app"
+  }
+}
+```
+
+<Info>
+Links created with purpose `auth` should only be sent to a single user. Use `shorten` for broadcast links.
+</Info>

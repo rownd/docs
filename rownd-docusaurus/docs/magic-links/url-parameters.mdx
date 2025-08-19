@@ -1,0 +1,30 @@
+---
+title: "URL parameters"
+sidebarTitle: "URL parameters"
+---
+
+URL parameters are a powerful tool for customizing the behavior of magic links. By appending parameters to the magic link URL, you can control how the link behaves when accessed, such as redirecting users to specific app screens, triggering custom actions, or passing additional data to your app.
+
+After you create a magic link, any query parameters you append to the link URL will be passed through and attached to the redirect URL when the link is accessed. This is a handy tool for tracking marketing campaigns using UTM codes or passing user-specific data to your product.
+
+## Using URL parameters
+
+To use URL parameters with magic links, simply append them to the magic link URL. For example, if you have a magic link like `https://rownd.link/YOUR_UNIQUE_MAGIC_LINK`, you can add parameters like `?utm_source=facebook` to track the source of the link click.
+
+Here's an example of how you can use URL parameters with magic links:
+
+```bash
+https://rownd.link/YOUR_UNIQUE_MAGIC_LINK?utm_source=facebook&utm_campaign=summer_sale
+```
+
+In this example, we're adding two URL parameters to the magic link: `utm_source=facebook` and `utm_campaign=summer_sale`. When a user accesses the link, these parameters will be passed through and attached to the redirect URL.
+
+Assuming the redirect URL is `https://yourapp.com/welcome`, the final URL that the user will be redirected to will look like this:
+
+```bash
+https://yourapp.com/welcome?utm_source=facebook&utm_campaign=summer_sale
+```
+
+<Note>
+    For security reasons, any query parameters present in the redirect URL during magic link creation cannot be overridden by query parameters added to the magic link URL. If you have a use case where you need to override query parameters in the redirect URL, please [let us know](mailto:support@rownd.io?subject=%5BMagic%20Links%5D%20Ability%20to%20override%20query%20parameters).
+</Note>
