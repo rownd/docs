@@ -5,11 +5,7 @@ openapi: "POST /hub/auth/magic"
 
 Generate a magic link for user authentication or as a short link.
 
-### Endpoint
-
-- Method: `POST`
-- Path: `/hub/auth/magic`
-- Base URL: `https://api.rownd.io`
+<Endpoint method="POST" path="/hub/auth/magic" baseUrls={['https://api.rownd.io']} />
 
 ### Request
 
@@ -33,7 +29,7 @@ Body (JSON):
 
 ### Try it
 
-```bash
+```bash title="cURL"
 curl --request POST \
   --url https://api.rownd.io/hub/auth/magic \
   --header 'X-Rownd-App-Key: <your-app-key>' \
@@ -53,7 +49,7 @@ curl --request POST \
 
 200 - application/json
 
-```json
+```json title="200 OK"
 {
   "link": "https://rownd.link/abc123",
   "link_meta": {

@@ -2,3 +2,34 @@
 title: "Create a group member"
 openapi: "POST /me/groups/{group}/members"
 ---
+
+Create a member in a group (user-scoped).
+
+<Endpoint method="POST" path="/me/groups/{group}/members" baseUrls={['https://api.rownd.io']} />
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Request body
+
+```json
+{
+  "user": "usr_123"
+}
+```
+
+```bash title="cURL"
+curl --request POST \
+  --url "https://api.rownd.io/me/groups/{group}/members" \
+  --header "Authorization: Bearer <user-token>" \
+  --header "Content-Type: application/json" \
+  --data '{"user":"usr_123"}'
+```
+
+```json title="200 OK"
+{
+  "id": "mem_abc",
+  "user": "usr_123"
+}
+```

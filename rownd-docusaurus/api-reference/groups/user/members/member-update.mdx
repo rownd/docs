@@ -2,3 +2,34 @@
 title: "Update a group member"
 openapi: "PUT /me/groups/{group}/members/{member}"
 ---
+
+Update a group member (user-scoped).
+
+<Endpoint method="PUT" path="/me/groups/{group}/members/{member}" baseUrls={['https://api.rownd.io']} />
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Request body
+
+```json
+{
+  "role": "admin"
+}
+```
+
+```bash title="cURL"
+curl --request PUT \
+  --url "https://api.rownd.io/me/groups/{group}/members/{member}" \
+  --header "Authorization: Bearer <user-token>" \
+  --header "Content-Type: application/json" \
+  --data '{"role":"admin"}'
+```
+
+```json title="200 OK"
+{
+  "id": "mem_abc",
+  "role": "admin"
+}
+```

@@ -16,6 +16,7 @@ import Tab from '../components/RowndMDX/Tab';
 import Frame from '../components/RowndMDX/Frame';
 import ParamField from '../components/RowndMDX/ParamField';
 import ResponseField from '../components/RowndMDX/ResponseField';
+import Endpoint from '../components/RowndMDX/Endpoint';
 
 export default {
   ...MDXComponents,
@@ -34,6 +35,7 @@ export default {
   Frame,
   ParamField,
   ResponseField,
+  Endpoint,
 } as MDXComponentsObject;
 
 

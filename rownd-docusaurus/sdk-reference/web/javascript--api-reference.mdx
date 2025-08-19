@@ -292,17 +292,17 @@ Get the access token for the signed-in user.
     ```
   </Accordion>
 
-  <Tabs>
-    <Tab title="Mobile" value="mobile">
+  <Tabs values={[{label: 'Mobile', value: 'mobile'}, {label: 'Desktop', value: 'desktop'}]}>
+    <TabItem value="mobile">
       <Frame>
         <img style={{height:'400px'}} src="/images/hub/mobile/profile.png" />
       </Frame>
-    </Tab>
-    <Tab title="Desktop" value="desktop">
+    </TabItem>
+    <TabItem value="desktop">
       <Frame>
         <img style={{height:'400px'}} src="/images/hub/desktop/profile.png" />
       </Frame>
-    </Tab>
+    </TabItem>
   </Tabs>
 </ResponseField>
 
@@ -337,17 +337,17 @@ rownd.requestFields({
   questionText: 'What\'s your name?'
 });
 ```
-<Tabs>
-  <Tab title="Mobile" value="mobile-req">
+<Tabs values={[{label: 'Mobile', value: 'mobile-req'}, {label: 'Desktop', value: 'desktop-req'}]}>
+  <TabItem value="mobile-req">
     <Frame>
       <img style={{height:'400px'}} src="/images/hub/mobile/request-fields.png" />
     </Frame>
-  </Tab>
-  <Tab title="Desktop" value="desktop-req">
+  </TabItem>
+  <TabItem value="desktop-req">
     <Frame>
       <img style={{height:'400px'}} src="/images/hub/desktop/request-fields.png" />
     </Frame>
-  </Tab>
+  </TabItem>
 </Tabs>
 
 ### Parameters
@@ -388,17 +388,17 @@ rownd.requestFields({
       const accountId = rownd.near.createNamedAccount()
       ```
     </Accordion>
-    <Tabs>
-      <Tab title="Mobile" value="mobile-named">
+    <Tabs values={[{label: 'Mobile', value: 'mobile-named'}, {label: 'Desktop', value: 'desktop-named'}]}>
+      <TabItem value="mobile-named">
         <Frame>
           <img style={{height:'400px'}} src="/images/hub/mobile/near-create-named-account.png" />
         </Frame>
-      </Tab>
-      <Tab title="Desktop" value="desktop-named">
+      </TabItem>
+      <TabItem value="desktop-named">
         <Frame>
           <img style={{height:'400px'}} src="/images/hub/desktop/near-create-named-account.png" />
         </Frame>
-      </Tab>
+      </TabItem>
     </Tabs>
   </ResponseField>
 
@@ -409,17 +409,17 @@ rownd.requestFields({
       rownd.near.connectAccount()
       ```
     </Accordion>
-    <Tabs>
-      <Tab title="Mobile" value="mobile-conn">
+    <Tabs values={[{label: 'Mobile', value: 'mobile-conn'}, {label: 'Desktop', value: 'desktop-conn'}]}>
+      <TabItem value="mobile-conn">
         <Frame>
           <img style={{height:'400px'}} src="/images/hub/mobile/near-connect-account.png" />
         </Frame>
-      </Tab>
-      <Tab title="Desktop" value="desktop-conn">
+      </TabItem>
+      <TabItem value="desktop-conn">
         <Frame>
           <img style={{height:'400px'}} src="/images/hub/desktop/near-connect-account.png" />
         </Frame>
-      </Tab>
+      </TabItem>
    </Tabs>
   </ResponseField>
 
@@ -432,17 +432,17 @@ rownd.requestFields({
       ```
     </Accordion>
 
-    <Tabs>
-      <Tab title="Mobile" value="mobile-wallet">
+    <Tabs values={[{label: 'Mobile', value: 'mobile-wallet'}, {label: 'Desktop', value: 'desktop-wallet'}]}>
+      <TabItem value="mobile-wallet">
         <Frame>
           <img style={{height:'400px'}} src="/images/hub/mobile/near-wallet-details.png" />
         </Frame>
-      </Tab>
-      <Tab title="Desktop" value="desktop-wallet">
+      </TabItem>
+      <TabItem value="desktop-wallet">
         <Frame>
           <img style={{height:'400px'}} src="/images/hub/desktop/near-wallet-details.png" />
         </Frame>
-      </Tab>
+      </TabItem>
     </Tabs>
   </ResponseField>
 </ResponseField>

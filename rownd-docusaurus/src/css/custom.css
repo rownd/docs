@@ -61,6 +61,14 @@ h4 { font-size: 1.1rem; }
     margin-right: 4px;
 }
 
+/* Show active section with a small purple bar fixed at the bottom of the header */
+.navbar__items--left .navbar__link {
+  border-bottom: 2px solid transparent;
+}
+.navbar__items--left .navbar__link.navbar__link--active {
+  border-bottom-color: var(--ifm-color-primary);
+}
+
 /* Subnav styling */
 .rownd-subnav { border-bottom: 1px solid var(--ifm-toc-border-color); background: var(--ifm-background-surface-color); }
 .rownd-subnav__inner { display:flex; gap:24px; padding: 10px 0; }
@@ -75,3 +83,50 @@ h4 { font-size: 1.1rem; }
     background: var(--ifm-color-primary);
     border-radius: 2px;
 }
+
+/* API endpoint block */
+.api-endpoint {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-surface-color);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 12px 0 16px;
+}
+.api-endpoint__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.api-endpoint__path {
+  font-size: 0.95rem;
+}
+.api-endpoint__urls {
+  margin-top: 6px;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.85rem;
+}
+.api-endpoint__sep { opacity: 0.6; }
+.api-method {
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+.api-method--get { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+.api-method--post { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
+.api-method--put { background: rgba(234, 179, 8, 0.12); color: #eab308; }
+.api-method--patch { background: rgba(236, 72, 153, 0.12); color: #ec4899; }
+.api-method--delete { background: rgba(244, 63, 94, 0.12); color: #f43f5e; }
+
+/* Add spacing above note/info/warn blocks so they don't crowd preceding elements */
+.theme-admonition.theme-admonition-note,
+.theme-admonition.theme-admonition-info,
+.theme-admonition.theme-admonition-tip,
+.theme-admonition.theme-admonition-warning {
+  margin-top: 16px;
+}
+
+/* Remove breadcrumb home icon (first crumb) site-wide */
+nav.breadcrumbs ul li:first-child { display: none !important; }

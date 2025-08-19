@@ -2,3 +2,21 @@
 title: "Delete a group member"
 openapi: "DELETE /me/groups/{group}/members/{member}"
 ---
+
+Remove a member from a group (user-scoped).
+
+<Endpoint method="DELETE" path="/me/groups/{group}/members/{member}" baseUrls={['https://api.rownd.io']} />
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+```bash title="cURL"
+curl --request DELETE \
+  --url "https://api.rownd.io/me/groups/{group}/members/{member}" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+```text title="204 No Content"
+
+```
