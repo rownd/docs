@@ -205,7 +205,6 @@
             "payments/overview",
             "payments/app-setup",
             "payments/stripe"
-            
           ]
         },
         {
@@ -419,6 +418,13 @@
             "api-reference/groups/user/members/member-update",
             "api-reference/groups/user/members/member-delete",
             "api-reference/groups/user/members/member-list"
+          ]
+        },
+        {
+          "group": "Magic Links",
+          "icon": "link",
+          "pages": [
+            "api-reference/authentication/create-user-magic-link"
           ]
         },
         {
