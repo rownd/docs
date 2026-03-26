@@ -1,0 +1,45 @@
+---
+title: "List groups"
+openapi: "GET /applications/{app}/groups"
+---
+
+Platform API for listing all groups belonging to an app.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/groups`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Query params
+
+- `limit` (optional): Page size (max 100)
+- `after` (optional): Pagination cursor
+- `filter` (optional): Lookup filter
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/groups?limit=25" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "data": [
+    {"id": "grp_123", "name": "Early Access"}
+  ],
+  "paging": {"next": null}
+}
+```

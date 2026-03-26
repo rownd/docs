@@ -1,0 +1,47 @@
+---
+title: "Create a group member"
+openapi: "POST /applications/{app}/groups/{group}/members"
+---
+
+Add a member to a group (app-scoped).
+
+### Endpoint
+
+- Method: `POST`
+- Path: `/applications/{app}/groups/{group}/members`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Request body
+
+```json
+{
+  "user": "usr_123"
+}
+```
+
+### Try it
+
+```bash
+curl --request POST \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}/members" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>" \
+  --header "Content-Type: application/json" \
+  --data '{"user":"usr_123"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "mem_123",
+  "user": "usr_123"
+}
+```

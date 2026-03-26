@@ -1,0 +1,38 @@
+---
+title: "Retrieve a user profile"
+openapi: "GET /me/applications/{app}/data"
+---
+
+Retrieve the current user's profile data for the given application.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/me/applications/{app}/data`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/me/applications/{app}/data" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "user": "usr_123",
+  "data": {
+    "email": "user@example.com",
+    "first_name": "Jane"
+  }
+}
+```

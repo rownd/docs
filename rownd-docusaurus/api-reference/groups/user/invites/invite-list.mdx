@@ -1,0 +1,42 @@
+---
+title: "List group invites"
+openapi: "GET /me/groups/{group}/invites"
+---
+
+List invites for a group (user-scoped).
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/me/groups/{group}/invites`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Query params
+
+- `limit` (optional): Page size (max 100)
+- `after` (optional): Pagination cursor
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/me/groups/{group}/invites?limit=25" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "data": [
+    {"id": "inv_abc", "email": "invitee@example.com", "status": "pending"}
+  ],
+  "paging": {"next": null}
+}
+```

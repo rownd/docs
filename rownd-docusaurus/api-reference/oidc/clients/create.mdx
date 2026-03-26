@@ -1,0 +1,48 @@
+---
+title: "Create an OpenID Connect client"
+openapi: "POST /applications/{app}/oidc-clients"
+---
+
+Create a new OIDC client for your application.
+
+### Endpoint
+
+- Method: `POST`
+- Path: `/applications/{app}/oidc-clients`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Request body
+
+```json
+{
+  "name": "My App",
+  "redirect_uris": ["https://example.com/callback"]
+}
+```
+
+### Try it
+
+```bash
+curl --request POST \
+  --url "https://api.rownd.io/applications/{app}/oidc-clients" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>" \
+  --header "Content-Type: application/json" \
+  --data '{"name":"My App","redirect_uris":["https://example.com/callback"]}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "cli_123",
+  "name": "My App"
+}
+```

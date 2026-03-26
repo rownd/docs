@@ -1,0 +1,137 @@
+---
+title: "Backend SDK Overview"
+sidebarTitle: Overview
+---
+
+## Rownd Backend SDK Features
+Rownd's Backend SDKs provide powerful tools for secure and efficient server-side authentication and user management.
+
+### Robust Token Management
+
+Ensure secure access to your backend resources with comprehensive token management:
+- **Token Verification**: Easily verify user tokens to authenticate requests
+- **Token Refresh**: Automatically handle token expiration and renewal
+- **Custom Claims**: Add and manage custom claims for user tokens
+
+### Understanding Rownd Tokens
+
+Rownd uses JWT (JSON Web Tokens) for authentication. Here's an example token payload:
+
+```json
+json
+{
+"jti": "e5aded8f-4950-4215-9a45-dc3e7x8575e90",
+"aud": [
+"app:app_v8q15ahdmpx3wqnbm6j19grlx",
+"app_variant:cm4swjkos008x5bfc8x48d70xu"
+],
+"sub": "user_o7jyzlzbga2uhly698ba8a1s",
+"iat": 1734467046,
+"exp": 1734470646,
+"iss": "https://api.rownd.io",
+"https://auth.rownd.io/app_user_id": "user_o7jyzlzbga2uhly698ba8a1s",
+"https://auth.rownd.io/is_verified_user": true,
+"https://auth.rownd.io/auth_level": "verified"
+}
+```
+
+Standard JWT claims:
+- **jti**: Unique identifier for this token 
+- **aud**: Array of audiences this token is intended for (includes Rownd app ID and app variant ID if applicable); 
+- **sub**: Subject identifier (Rownd user ID)
+- **iat**: Timestamp when the token was issued
+- **exp**: Timestamp when the token expires
+- **iss**: Token issuer (Rownd API)
+
+Rownd-specific claims:
+- **https://auth.rownd.io/app_user_id**: User's unique identifier in Rownd
+- **https://auth.rownd.io/is_verified_user**: Boolean indicating if the user is verified
+- **https://auth.rownd.io/auth_level**: User's authentication level (e.g., "verified")
+
+
+
+### Seamless Integration
+
+Integrate Rownd's backend capabilities with your existing infrastructure:
+- **Framework Compatibility**: Support for popular server-side frameworks like Node.js, Django, and .NET
+- **API Integration**: Effortlessly call Rownd's backend services
+- **Server-Side Rendering Support**: Compatible with frameworks like Next.js and Remix for efficient SSR
+
+### Advanced User Management
+
+Manage user data and authentication flows with ease:
+- **User Profiles**: Access and update user profiles programmatically
+- **Role-Based Access Control**: Implement fine-grained access control for different user roles
+- **Event Hooks**: Trigger custom logic on authentication events
+
+### Developer-Friendly Tools
+
+Streamline backend development with comprehensive tools and support:
+- **Detailed Documentation**: In-depth guides and API references
+- **Versioning and Compatibility**: Clear upgrade paths and backward compatibility
+- **Technical Support**: Access to expert engineering support
+
+## Steps for getting started:
+1. [Set up your Rownd account](/welcome/getting-started) (only takes a minute).
+2. Create an [app key](/configuration/app-credentials).
+3. Install Rownd using an SDK.
+4. [Configure customizations](/configuration/overview) and sign-in methods from the Rownd platform.
+
+## Rownd Backend SDKs:
+
+<CardGroup>
+    <Card
+        title="Node.js"
+        icon="node"
+        href="/sdk-reference/backend/nodejs"
+    >
+        JavaScript and TypeScript
+    </Card>
+    <Card
+        title="Go"
+        icon="golang"
+        href="/sdk-reference/backend/go"
+    >
+        Python
+    </Card>
+    <Card
+        title="Django"
+        icon="python"
+        href="/sdk-reference/backend/django"
+    >
+        Python
+    </Card>
+    <Card
+        title=".NET"
+        icon="microsoft"
+        href="/sdk-reference/backend/dotnet"
+    >
+        C#
+    </Card>
+    <Card
+        title="Ruby on Rails"
+        icon={<svg
+                className="h-6 w-6 bg-primary dark:bg-primary-light"
+                style={{
+                    "WebkitMaskImage": "url('/images/ruby-on-rails.svg')",
+                    "WebkitMaskRepeat": "no-repeat",
+                    "WebkitMaskPosition": "center center",
+                }}
+            />}
+        href="/sdk-reference/backend/ruby-on-rails"
+    />
+    <Card
+        title="Convex"
+        icon={<svg
+            className="h-6 w-6 bg-primary dark:bg-primary-light"
+            style={{
+                "WebkitMaskImage": "url('/images/convex.svg')",
+                "WebkitMaskRepeat": "no-repeat",
+                "WebkitMaskPosition": "center center",
+            }}
+        />}
+        href="/sdk-reference/backend/convex"
+    >
+        Convex
+    </Card>
+</CardGroup>

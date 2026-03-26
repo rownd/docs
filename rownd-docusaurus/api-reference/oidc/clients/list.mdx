@@ -1,0 +1,44 @@
+---
+title: "List OpenID Connect clients"
+openapi: "GET /applications/{app}/oidc-clients"
+---
+
+Retrieve a paginated list of OIDC clients for an application.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/oidc-clients`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Query params
+
+- `limit` (optional): Page size (max 100)
+- `after` (optional): Cursor for pagination
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/oidc-clients?limit=25" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "data": [
+    {"id": "cli_123", "name": "My App"}
+  ],
+  "paging": {"next": null}
+}
+```

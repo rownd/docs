@@ -1,0 +1,51 @@
+---
+title: "Insert or update user profile data"
+openapi: "PUT /applications/{app}/users/{user}/data"
+---
+
+Insert or update a user's profile data for your application.
+
+### Endpoint
+
+- Method: `PUT`
+- Path: `/applications/{app}/users/{user}/data`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Request body
+
+```json
+{
+  "email": "user@example.com",
+  "first_name": "Jane"
+}
+```
+
+### Try it
+
+```bash
+curl --request PUT \
+  --url "https://api.rownd.io/applications/{app}/users/{user}/data" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>" \
+  --header "Content-Type: application/json" \
+  --data '{"email":"user@example.com","first_name":"Jane"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "user": "usr_123",
+  "data": {
+    "email": "user@example.com",
+    "first_name": "Jane"
+  }
+}
+```

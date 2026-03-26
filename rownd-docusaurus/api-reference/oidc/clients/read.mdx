@@ -1,0 +1,37 @@
+---
+title: "Retrieve an OpenID Connect client"
+openapi: "GET /applications/{app}/oidc-clients/{client}"
+---
+
+Retrieve a specific OIDC client by ID.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/oidc-clients/{client}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/oidc-clients/{client}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "cli_123",
+  "name": "My App"
+}
+```

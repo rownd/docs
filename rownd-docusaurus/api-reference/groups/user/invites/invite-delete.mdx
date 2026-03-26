@@ -1,0 +1,28 @@
+---
+title: "Delete a group invite"
+openapi: "DELETE /me/groups/{group}/invites/{invite}"
+---
+
+Delete a group invite (user-scoped).
+
+### Endpoint
+
+- Method: `DELETE`
+- Path: `/me/groups/{group}/invites/{invite}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Try it
+
+```bash
+curl --request DELETE \
+  --url "https://api.rownd.io/me/groups/{group}/invites/{invite}" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+### Response
+
+204 - No Content

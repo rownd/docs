@@ -1,0 +1,49 @@
+---
+title: "Create a group"
+openapi: "POST /applications/{app}/groups"
+---
+
+Platform API for creating a new group.
+
+### Endpoint
+
+- Method: `POST`
+- Path: `/applications/{app}/groups`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Request body
+
+```json
+{
+  "name": "Early Access",
+  "description": "Beta testers"
+}
+```
+
+### Try it
+
+```bash
+curl --request POST \
+  --url "https://api.rownd.io/applications/{app}/groups" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>" \
+  --header "Content-Type: application/json" \
+  --data '{"name":"Early Access","description":"Beta testers"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "grp_123",
+  "name": "Early Access",
+  "description": "Beta testers"
+}
+```

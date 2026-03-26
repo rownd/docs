@@ -1,0 +1,152 @@
+---
+title: "Rownd Integration with NEAR"
+sidebarTitle: "Overview for NEAR integration"
+description: "Integrate Rownd with NEAR blockchain to provide secure wallet management and user-friendly wallet interactions for your users."
+---
+
+<Info>
+This is a limited feature. Please [contact us](mailto:support@rownd.io?subject=Please%20enable%20NEAR) if you're interested in using it.
+</Info>
+
+The NEAR Protocol is a scalable and user-friendly blockchain platform designed to power the next generation of decentralized applications. With its focus on simplifying the developer and user experience, NEAR is poised to drive mass-adoption of web3 technologies. 
+
+Rownd's integration with NEAR addresses one of the most significant barriers to entry for new web3 users - the onboarding process. By automating wallet generation, securely storing private keys, and enabling seamless wallet management through each person's Rownd profile, users can easily interact with NEAR-based applications. This streamlined approach accelerates user onboarding, reduces friction, and fosters a more inclusive web3 ecosystem, empowering a wider audience to participate in the decentralized revolution.
+
+The integration offers the following features:
+
+- **Automatic wallet creation**<br />
+   When the integration is configured, Rownd will automatically create a NEAR wallet for each user. This eliminates the need for users to manually create a wallet, streamlining the onboarding process and making it more user-friendly.  
+
+   <Tabs>
+      <Tab title="Mobile" value="mobile-prof-wallet">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/mobile/profile-with-wallet.png" />
+        </Frame>
+      </Tab>
+      <Tab title="Desktop" value="desktop-prof-wallet">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/desktop/profile-with-wallet.png" />
+        </Frame>
+      </Tab>
+   </Tabs>
+
+- **On-Demand wallet creation**<br />
+   The integration can be configured so that a NEAR wallet is not created automatically upon user sign-in. In this
+   configuration, you can manually trigger the creation of the NEAR wallet at any point. See our [examples page](/configuration/web3/near-examples).
+
+   <Tabs>
+      <Tab title="Mobile" value="mobile-on-demand">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/mobile/near-wallet-details.png" />
+        </Frame>
+      </Tab>
+      <Tab title="Desktop" value="desktop-on-demand">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/desktop/near-wallet-details.png" />
+        </Frame>
+      </Tab>
+   </Tabs>
+
+- **Secure private key storage**<br />
+   Rownd securely stores the private key associated with each user's NEAR wallet using double encryption. This ensures that the private key remains safe from unauthorized access, providing a high level of security for users' assets.
+
+- **User wallet access**<br />
+   Users can view their NEAR wallet balance and transaction history through the Rownd profile. This provides a convenient way for users to keep track of their wallet without needing to use a separate interface.
+
+   <Tabs>
+      <Tab title="Mobile" value="mobile-access">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/mobile/near-wallet-details.png" />
+        </Frame>
+      </Tab>
+      <Tab title="Desktop" value="desktop-access">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/desktop/near-wallet-details.png" />
+        </Frame>
+      </Tab>
+   </Tabs>
+
+- **Named wallet creation**<br />
+   With Rownd, users have the option to create a named wallet for their NEAR account. This makes it easy for users to remember their wallet addresses and share them with others for transactions.
+
+   <Tabs>
+      <Tab title="Mobile" value="mobile-named">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/mobile/near-create-named-account.png" />
+        </Frame>
+      </Tab>
+      <Tab title="Desktop" value="desktop-named">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/desktop/near-create-named-account.png" />
+        </Frame>
+      </Tab>
+   </Tabs>
+
+- **Easy wallet attachment**<br />
+
+   Users can easily attach a NEAR wallet to their Rownd account, making it simple to manage their blockchain assets alongside their other authentication methods.
+
+   <Tabs>
+      <Tab title="Mobile" value="mobile-attach">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/mobile/near-connect-account.png" />
+        </Frame>
+      </Tab>
+      <Tab title="Desktop" value="desktop-attach">
+        <Frame>
+          <img style={{height:'400px'}} src="/images/hub/desktop/near-connect-account.png" />
+        </Frame>
+      </Tab>
+   </Tabs>
+
+## Configuring NEAR
+
+<Info>
+This is a limited feature. Please [contact us](mailto:support@rownd.io?subject=Please%20enable%20NEAR) if you're interested in using it. 
+</Info>
+
+To set up the Rownd NEAR integration, follow these steps:
+
+1. Create a Rownd NEAR integration in the Rownd platform.
+
+   ![Create NEAR integration](/images/integration_setup1.png)
+
+2. Choose between "Testnet" or "Mainnet" based on your requirements.
+
+   ![Select network ](/images/Near_setup_2.png)
+
+3. Enter your NEAR wallet and private key to create accounts and fund them (optional).
+
+   ![Enter wallet details ](/images/near-setup-3.png)
+
+Now, your Rownd NEAR integration is set up and ready to be used by your users.
+
+## Data Type Updates
+
+After attachhing the NEAR integration to your application, Rownd will add the following fields to your application
+data types. Fields marked "Encrypted" are stored encrypted in the Rownd database and only visible to the users.
+
+<ParamField path="near_implicit_account_id" type="string">
+  The implicit NEAR account ID
+</ParamField>
+<ParamField path="near_implicit_private_key" type="string (Encrypted)">
+  The implicit private key
+</ParamField>
+<ParamField path="near_implicit_seed_phrase" type="string (Encrypted)">
+  The implicit seed phrase
+</ParamField>
+<ParamField path="near_named_account_id" type="string">
+  The named NEAR account ID
+</ParamField>
+<ParamField path="near_named_private_key" type="string (Encrypted)">
+  The named NEAR private key
+</ParamField>
+<ParamField path="near_named_seed_phrase" type="string (Encrypted)">
+  The named NEAR seed phrase
+</ParamField>
+<ParamField path="near_personal_account_id" type="string">
+  The personal NEAR account ID
+</ParamField>
+<ParamField path="near_personal_wallet_id" type="string">
+  The personal NEAR private key
+</ParamField>

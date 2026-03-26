@@ -1,0 +1,84 @@
+---
+title: "Mobile app configuration"
+sidebarTitle: "Overview"
+description: "Configure mobile apps in Rownd with ease."
+---
+
+## On this page
+
+- [Introduction to Mobile App Configuration](#introduction-to-mobile-app-configuration)
+- [What Are Universal Links?](#what-are-universal-links)
+- [Submitting Your App for Review](#submitting-your-app-for-review)
+- [Configure by Platform](#configure-by-platform)
+  - [iOS Configuration](/configuration/mobile/ios)
+  - [Android Configuration](/configuration/mobile/android)
+
+## Introduction to Mobile App Configuration
+
+Rownd makes it easy to add secure, seamless sign-in to your mobile app. Whether you're building with [React Native](/sdk-reference/mobile/react-native), [Flutter](/sdk-reference/mobile/flutter), or [native iOS](/sdk-reference/mobile/ios)/[Android](/sdk-reference/mobile/android), our mobile SDKs allow you to integrate modern authentication experiences without the complexity.
+
+Once the SDK is set up, you can enable features like universal Sign-in Links — which automatically direct users to your app and sign them in without needing a password.
+
+This guide will walk you through how Rownd works with mobile platforms, how to prepare your app for App Store review, and how to configure your mobile SDK for iOS and Android.
+
+
+### What are universal links?
+Universal links are a type of deep link that allows users to open your mobile app directly from a URL. If the app is installed, the link takes the user straight to the app. If not, it redirects them to the appropriate app store (Apple App Store or Google Play).
+
+Rownd uses universal links as part of its Sign-in flow, helping users sign in seamlessly with a single tap — no password required.
+
+- **Simplified user experience** - By directing users to the relevant content or app store, universal links create a more streamlined and intuitive user journey, which can lead to increased user engagement and retention.
+- **Improved conversion rates** - By reducing friction in the user experience and lowering the barriers to entry, universal links can help boost conversion rates for app installations that lead to user sign-ups.
+- **Enhanced security** - Universal links are more secure than legacy custom URL schemes, as they rely on the app's domain and can only be used by the associated app, thus reducing the risk of phishing attacks or unauthorized access.
+
+Universal links reduce friction and improve conversion by making sign-in feel like magic — no extra steps, no lost users.
+
+<Info>
+A [Rownd Mobile SDK](/sdk-reference/mobile) must be installed in your app to use this feature.
+</Info>
+
+### Submitting Your App for Review
+
+When submitting your app to the App Store or Google Play Store, reviewers will need a way to access and test the app. If you're using Rownd for authentication, you can streamline this process by setting up simple test accounts.
+
+**Recommended Setup**
+
+Use a disposable email inbox service like [Mailinator](https://www.mailinator.com) to create one or more test accounts.
+
+**Example:**
+
+- Test email address: my-app-review-1@mailinator.com
+
+- Instruct reviewers to:
+    1. Enter the test email in your app’s sign-in screen  
+    2. Visit the corresponding Mailinator inbox at:  
+   ```
+   https://www.mailinator.com/v4/public/inboxes.jsp?to=my-app-review-1
+   ```
+
+You can create multiple test accounts by incrementing the address (e.g., `my-app-review-2@mailinator.com`, etc.).
+
+> Be sure the inbox name matches the email address  
+> (e.g., `my-app-review-1@mailinator.com` → `my-app-review-1` inbox on Mailinator).
+
+**Optional Enhancements**
+
+- Preload test data into the accounts
+- Use conditional logic in your app to streamline or skip onboarding for known test users
+
+This approach works for both iOS (App Store) and Android (Google Play), and is commonly accepted during the review process.
+
+
+
+### Configure by platform
+
+See our step-by-step configuration guides for [iOS](/configuration/mobile/ios) and [Android](/configuration/mobile/android) for assistance in filling out this section.
+
+<CardGroup cols={2}>
+  <Card title="iOS Configuration" icon="apple" href="/configuration/mobile/ios">
+    Configure mobile for iOS including React Native and Flutter
+  </Card>
+  <Card title="Android Configuration" icon="android" href="/configuration/mobile/android">
+    Configure mobile for Android including React Native and Flutter
+  </Card>
+</CardGroup>

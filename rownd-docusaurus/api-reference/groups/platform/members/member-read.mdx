@@ -1,0 +1,37 @@
+---
+title: "Retrieve a group member"
+openapi: "GET /applications/{app}/groups/{group}/members/{member}"
+---
+
+Retrieve a group member (app-scoped).
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/applications/{app}/groups/{group}/members/{member}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}/members/{member}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "mem_123",
+  "user": "usr_123"
+}
+```

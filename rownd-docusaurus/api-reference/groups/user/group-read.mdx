@@ -1,0 +1,35 @@
+---
+title: "Retrieve a group"
+openapi: "GET /me/groups/{group}"
+---
+
+User-scoped API for retrieving a group by ID.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/me/groups/{group}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/me/groups/{group}" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "grp_abc",
+  "name": "My Group"
+}
+```

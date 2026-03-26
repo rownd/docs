@@ -1,0 +1,35 @@
+---
+title: "Retrieve one field from a user profile"
+openapi: "GET /me/applications/{app}/data/fields/{field}"
+---
+
+Retrieve a single profile field for the current user.
+
+### Endpoint
+
+- Method: `GET`
+- Path: `/me/applications/{app}/data/fields/{field}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Try it
+
+```bash
+curl --request GET \
+  --url "https://api.rownd.io/me/applications/{app}/data/fields/{field}" \
+  --header "Authorization: Bearer <user-token>"
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "field": "email",
+  "value": "user@example.com"
+}
+```

@@ -1,0 +1,144 @@
+---
+title: "Sign in with Google"
+sidebarTitle: "Google"
+description: "Turn on the Google authentication method to allow users to sign in with their
+Google accounts on your website and mobile apps."
+---
+
+Sign in with Google is a widely-used, secure authentication method that allows users to quickly sign in to their accounts on your website and mobile apps using their existing Google accounts. By offering this option, you can simplify the authentication process for your users, eliminating the need for them to create a new account or remember an additional password.
+
+Integrating Sign in with Google streamlines the user experience, as millions of people worldwide already have Google accounts for services like Gmail, Google Drive, and YouTube. By leveraging the familiar Google ecosystem, you can lower the barrier to entry for your platform and potentially increase user engagement.
+
+In terms of security, Google provides robust measures such as two-factor authentication, helping protect users' accounts from unauthorized access. Furthermore, integrating Sign in with Google can help you comply with various privacy regulations and safeguard your users' data.
+
+By incorporating Sign in with Google into your authentication options, you can enhance user convenience, improve security, and foster trust in your platform.
+
+<Tip>
+  **New Feature: Google One Tap**
+  As the name implies, Google One Tap is a streamlined authentication option that allows users to sign in to websites and apps with just one tap on their device if they're already signed-in to a Google account. With One Tap, users can sign in quickly and easily, without having to remember a password, manually enter any credentials, or leave your product. Our customers typically see an instant increase in sign-ups when Google One Tap is enabled.
+</Tip>
+
+## Prerequisites
+
+Before you turn on Google Sign-in, you'll need to do a few things in the Google
+Cloud Platform.
+
+
+#### OAuth Web Client ID
+
+Use
+[these instructions](https://support.google.com/workspacemigrate/answer/9222992?hl=en)
+from Google to create an OAuth web client ID. You'll need this client ID to
+configure Rownd for all deployments regardless of web or mobile app.
+
+The OAuth client ID's **Authorized JavaScript Origins** should contain any sites
+on which you will embed Rownd and support Google Sign-in. If you are only using
+Rownd on your mobile apps, you can leave this list empty
+
+#### OAuth iOS Client ID (optional)
+
+If you are adding Rownd to an iOS app, you'll need to create another OAuth
+client ID. In the Google Cloud Platform you can create one just like before, but
+this time, set the application type to "iOS". You'll be asked to provide your
+app's bundle ID, App Store ID, and team ID.
+
+When you finish creating the client ID, take note of the **iOS URL Scheme**
+value. You will need this later when adding a custom URL scheme to your iOS app.
+
+This value will be the reversed client ID value and look something like this:
+
+```
+com.googleusercontent.apps.224565757208-05divavgck1qgqg9b58piodfhqb55h90
+```
+
+For detailed instructions check out this
+[documentation](https://support.google.com/cloud/answer/6158849?hl=en#zippy=%2Cnative-applications%2Cios)
+
+#### OAuth Android Client ID (optional)
+
+If you are adding Rownd to an Android app, you'll need one more OAuth client ID.
+Use an existing one or create a new one in the Google Cloud Platform just the
+same as before with your web or iOS client ID. When creating, make sure to
+select the "Android" application type. Provide your app's package name and SHA-1
+fingerprint.
+
+For detailed instructions check out this
+[documentation](https://support.google.com/cloud/answer/6158849?hl=en#zippy=%2Cnative-applications%2Candroid)
+
+### Enabling Google Sign-in
+
+Once you have completed the prerequisites, you can configure Rownd to enable
+Google Sign-in.
+
+1. Navigate to the [Rownd Platform](https://app.rownd.io), and select your
+desired application is from the application switcher.
+2. Select the **Sign-in methods** option on the left to adjust your flow.
+
+   ![Finding authentication methods is easy; just select "Sign-in methods" from the nav pane.](/images/sign-in-methods-1.png)
+
+3. Scroll down to view the authentication methods, and click **Enable** next to
+**Google**.
+
+4. On the configuration screen, enter the following information:
+
+   - **Google OAuth Client ID** \- Enter your OAuth web client ID that you created as the first prerequisite step
+
+   - **Google OAuth Client Secret -** Enter the client secret associated with your OAuth web client ID
+
+   - **Google iOS OAuth Client ID** \- Enter your OAuth iOS client ID that you created as a prerequisite
+
+   - **Google OAuth Scopes** \- (Optional) Enter additional OAuth scopes that you would like to request from the user during authentication. By default Rownd will request `email` and `profile`. Most of the time, you don't need to provide a value in this field.
+
+<Info>
+If you are using Rownd on an Android app, you do not need to configure your
+Android Client ID in the Rownd platform. Google uses the package name and SHA-1
+fingerprint that you provided when creating the OAuth client ID to authenticate
+your app.
+</Info>
+
+## Enabling Google One Tap
+Google One Tap is a streamlined authentication system that allows users to sign in to websites and apps with just one tap on their device. With One Tap, users can sign in quickly and easily, without having to remember a password or manually enter any credentials. One Tap is designed to simplify the sign-in process and improve the user experience, while also providing strong security features such as two-factor authentication and anti-phishing protections.
+
+### Set up:
+1. Pre-requisite: Ensure Google is configured as described above. 
+2. Click the Google One Tap checkbox
+3. If desired, adjust the **Prompt after** field to indicate how long the user should be on the page before being prompted to sign in. This may require some experimentation, since prompting too quickly might be bothersome, while delaying too long might cause the prompt to seem random or out of place. The default of seven seconds works well for many use cases, but your particular website or app may require different settings. 
+4. Presss **Update**, then press **Save** in the top left corner.
+
+![Configuring Google One Tap is easy.](/images/google-one-tap.png)
+<Info>
+Google One Tap has a cooldown period that is enforced by Google. If the end-user clicks the close button, the dialog will not appear for between 7 and 60 minutes.  When testing this feature, be aware that if intentionally close the Google One Tap dialog, the popup will not appear again until the cooldown period ends. 
+</Info>
+
+
+#### One last thing for iOS Apps
+
+When Google finishes signing in a user, it calls back into your app on a custom
+URL scheme. You'll need to define this inside your XCode project settings.
+
+1. Click on your project in Xcode, and then select your app under **TARGETS**
+
+2. Next, go to the **Info** tab and scroll down to the bottom of the view where
+   you see **URL Types**
+
+3. Expand **URL Types** and click the **+** icon to add a new value
+
+4. Set the **URL Schemes** value to the URL Scheme (reversed iOS Client ID)
+   value that you noted when creating the OAuth iOS client ID earlier. Again,
+   this value will look something like:
+   `com.googleusercontent.apps.422565757208-05dqvvigck1qgqg9b58piodfhqb55h90`
+
+That's it!
+
+
+<Warning>
+Your iOS app with the above changes needs to be published to the App Store _before_ enabling Sign in with Google in the Rownd platform. If you want to enable Sign in with Google on Android and web before your app update has been reviewed by Apple, remove the **iOS Client ID** from the Rownd platform configuration. When your app update goes live, restore the **iOS Client ID** in the Rownd platform.
+</Warning>
+
+
+### Finishing up
+
+At this point, you're all done! Make sure you save the Google configuration
+inside of the Rownd Platform. When you are ready to turn it on, click the toggle
+to enable Google Sign-in. Your users will then see a new option in the Rownd
+sign-in dialog to continue with Google.

@@ -1,0 +1,30 @@
+---
+title: "Delete a user profile"
+openapi: "DELETE /applications/{app}/users/{user}/data"
+---
+
+Delete a user's profile data for your application.
+
+### Endpoint
+
+- Method: `DELETE`
+- Path: `/applications/{app}/users/{user}/data`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request DELETE \
+  --url "https://api.rownd.io/applications/{app}/users/{user}/data" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+204 - No Content

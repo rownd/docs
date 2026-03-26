@@ -1,0 +1,40 @@
+---
+title: Firebase Authentication
+---
+The Firebase Authentication integration helps you migrate your user authentication flow from Firebase to Rownd. It also provides the means to use Rownd and Firebase Firestore together.
+
+Before you begin, check out the Google Cloud [prerequisites](/configuration/integrations/firebase/google-cloud-platform-requirements)
+to ensure your GCP account and Project are ready to integrate with Rownd.
+
+#### Creating the integration
+
+1. From the **Integrations** tab in the sidebar, click on the **Add
+   Integration** button.
+
+2. Choose the **Firebase - Authentication** connector from the Connector
+   Catalog
+
+3. Enter a name for your new integration.
+    After you've entered a descriptive name, click **Next**
+
+4.  Click the **Begin authentication** button to sign in to your Google Account and grant Rownd access to your Firebase project.
+
+    <Info>
+    Firebase Authentication runs on Google Cloud. Rownd leverages the Google
+    Cloud Platform to receive updates from Firebase as any users are created, modified, or deleted. Rownd will need permission to read Google Cloud Projects, read and write Firebase resources, and create
+    Cloud Functions. For a full list of access that Rownd
+    needs, click
+    [here](/rownd/guides/configuration/integrations/firebase/google-cloud-platform-requirements#access-requirements).
+    </Info>
+
+    Grant Rownd the access to your Google Account, and then click the **Next**
+    button when authentication is complete.
+
+5.  Select the Firebase Project and Application that you'd like to link with Rownd.
+    When finished, click **Create**
+
+    Initialization of the integration may take a few minutes while Rownd creates the required links with your Firebase project. You can track its progress in the **Connections** tab of the Integrations area.
+
+When the connection is ready, you can use the three-dots menu on the far right of the row to attach the connection to your app.
+
+Once these steps are completed, you should be able to use Rownd to sign in as an existing Firebase user, receiving the same ID that you had previously.

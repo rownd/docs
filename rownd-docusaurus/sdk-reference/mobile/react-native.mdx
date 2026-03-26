@@ -1,0 +1,82 @@
+---
+title: "React Native"
+description: "Rownd bindings for React Native"
+icon: "react"
+---
+
+### Prerequisites
+
+You must be using React Native v0.64 or higher.
+
+### Installation
+
+First, install the Rownd SDK for React Native.
+
+```bash
+npm install @rownd/react-native
+```
+
+### Expo
+
+You can find specific Expo installation instructions [here](/sdk-reference/mobile/expo).
+
+#### Android
+
+1.  Ensure the Sdk versions match or are above provided versions. File:
+    _android/build.gradle_
+
+```jsx
+ext {
+  ...
+  minSdkVersion = 26
+  compileSdkVersion = 32
+  targetSdkVersion = 31
+  ...
+}
+```
+
+2. Install the Rownd library and dependencies.
+
+```bash
+cd android && ./gradlew build
+```
+
+3. Check and update your ProGuard config using [the rules from our Android SDK](https://github.com/rownd/android/blob/main/README.md#proguard-config).
+
+4. Only required for Google Sign-in: Add a Rownd plugin initializer to your MainActivity file. File: *android/app/src/main/java/.../MainActivity.java
+
+```java
+import android.os.Bundle;
+import com.reactnativerowndplugin.RowndPluginPackage;
+
+public class MainActivity extends ReactActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    RowndPluginPackage.preInit(this);
+  }
+}
+```
+
+#### iOS
+
+1.  Ensure iOS version is at least 14\. File: _ios/Podfile_
+
+```jsx
+platform: ios, "14.0";
+```
+
+2. Install the Rownd pod and it's dependencies
+
+```bash
+cd ios && pod install
+```
+
+#### Enable deep linking
+
+Rownd supports automatically signing-in users when they initially install your
+app or when they click a sign-in link when the app is already installed.
+
+Instructions for: [iOS](/configuration/mobile/ios) and [Android](/configuration/mobile/android)
+
+<Snippet file="mobile/react-native/react-native.mdx" />

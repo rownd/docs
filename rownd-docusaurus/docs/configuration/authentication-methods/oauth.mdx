@@ -1,0 +1,42 @@
+---
+title: 'OpenID Connect (OIDC) and OAuth2'
+sidebarTitle: 'OpenID / OAuth2'
+description: 'Leverage existing OAuth-compliant identity providers'
+---
+
+While Rownd provides a superior authentication experience for most users, there may be occasions where end-users need to authenticate with a third-party system. 
+
+This can be especially important when dealing with corporate SSO requirements. CISO policy may require that all users sign in through an in-house identity provider or an enterprise cloud provider like Microsoft or Google. (If you're looking for Google authentication, we highly recommend using our [built-in Google authentication method.](./google))
+
+Follow the steps below to configure Rownd to interoperate with your target OpenID or OAuth2 server.
+
+If you require a SAML authentication flow, please [get in touch](mailto:support@rownd.io).
+
+## Supported flows
+
+Rownd supports the following authentication flows:
+- Authorization code flow
+- Authorization code flow with proof key for code exchange (PKCE)
+- Authorization code flow with JWT-secured authorization requests
+
+## Configuring an OpenID or OAuth2 client
+
+Before getting started, be sure you obtain a valid client ID and--if required--client secret or private key from your OAuth provider.
+
+1. From the [Rownd platform](https://app.rownd.io), navigate to the **Sign-in methods** sidebar tab.
+2. In the *Additional sign-in methods* section, select **Enable additional methods**.
+3. From the *Add additional sign-in methods* dialog, locate the **Custom** option and select **Add**.
+4. Enter a name for the authentication method (e.g., My SSO provider) and optionally upload light and dark mode icons that will represent this authentication method.
+5. Select the type of authentication flow: OpenID or OAuth2.
+6. *(Required for OpenID)* Provide the issuer's base URL which hosts the `/.well-known/openid-configuration` endpoint (e.g., `https://auth.mycorp.com`).
+7. Provide the default scopes that should be included in every authentication request. You can conditionally include additional scopes at authentication time.
+8. Click **Next** to continue to the next step.
+9. Enter your **Client ID**
+10. If applicable, select the type of *client authentication* your provider requires and then paste the authentication secret in the provided input.
+11. *(OAuth2 only)* Provide applicable values for the various authorization server endpoints (e.g., authorization endpoint, token endpoint, JWK endpoint, etc).
+12. Press **Enable** at the bottom of the dialog to add the sign-in method to your available authentication options. The dialog will close.
+13. Press **Save** at the top-right of the window to persist your changes.
+
+## Need something else?
+
+If you require assistance setting up a custom authentication provider or need an option not currently covered, please [contact us](mailto:support@rownd.io).

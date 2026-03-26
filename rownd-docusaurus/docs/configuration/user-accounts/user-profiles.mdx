@@ -1,0 +1,140 @@
+---
+title: "User Profiles"
+description: "Understand the anatomy of a Rownd user profile, including user data, attributes, and metadata."
+---
+
+## Anatomy of a Rownd User Profile
+
+A Rownd user profile is a comprehensive collection of user data, attributes, and metadata that allows you to manage and understand your users effectively. This document provides an overview of the key components of a Rownd user profile.
+
+![Understanding the user profile](/images/user-JSON-visual.svg)
+
+### User data
+
+User data includes fields matching your app's profile data schema. This typically includes fields like:
+
+- **User ID**: A unique identifier for the user.
+- **Email**: The user's email address.
+- **Phone Number**: The user's phone number.
+- **Name**: The user's full name.
+
+Rownd facilitates a strongly-defined user profile schema to ensure consistency and compatibility across your app. You can add as many custom fields as needed to capture additional user information. Each field specifies a data type, such as string, number, boolean, array, object, document, image, and so on.
+
+By default, a user can update any of their profile data (other than their user ID) through Rownd's provided UI components or APIs. You can change a field's visibility or editability settings to restrict user access to specific data.
+
+<Note type="tip">
+Rownd profiles can store file objects like images and documnets so that you don't need additional systems for user avatars and other small artifacts.
+</Note>
+
+### Attributes
+
+Attributes are custom data points that you can define and attach to a user profile. These are technically visible to the user, but they are only editable with your application credentials. Rownd's pre-built UI components won't display this data to the user, but savvy users could still view by looking at API responses in their browser (for example).
+
+Attribute names follow the format `namespace:key` and store an array of string values like `["value1", "value2"]`.
+
+You can store any attribute you want; however, note the following namespaces are reserved by Rownd, so you won't be able to create custom attributes in these namespaces. See the section on pre-defined attributes below for a list of writable reserved attributes.
+- `rownd:`
+- `system:`
+
+#### Pre-defined attributes
+The following table lists all of the pre-defined attributes that Rownd uses. You can modify these attributes through Rownd's REST API or through the Rownd Platform. Invalid values within these attributes are typically ignored.
+
+| Attribute Name | Description | Example value |
+| -------------- | ----------- | ------------- |
+| `rownd:app_variants` | A list of sub-brands the user has interacted with. | `["id1234", "id5678"]` |
+
+#### Custom Attributes
+You might decide to include your own custom attributes within a user's profile. Here are some common use cases:
+
+- **Custom fields**: Any additional information you want to store about the user, such as preferences, subscription status, or loyalty points.
+- **Tags**: Labels that help categorize and segment users for targeted actions or communications.
+
+Examples:
+```json
+{
+    "attributes": {
+        "myapp:loyalty_points": ["100"],
+        "myapp:tags": ["premium", "vip"]
+    }
+}
+```
+
+### Metadata
+
+Metadata provides additional context about the user's interactions and status within your application. This includes:
+
+- **Sign-in Methods**: Information about how the user signed in (e.g., email, social login).
+- **Last Sign-in Time**: The last time the user signed into your application.
+- **Sub-brands**: A map of sub-brands the user has interacted with, including the sign-in method used and the last sign-in time for each sub-brand.
+
+Most metadata is read-only and is managed by Rownd on your behalf. You can access this information through the Rownd API or the Rownd Platform.
+
+### Example user profile structure
+
+Here is an example structure of a Rownd user profile. The `data` attribute will differ based on your app's profile schema.
+
+```json
+{
+    "data": {
+        "user_id": "user_a3vc29gjsaf0h",
+        "email": "juliet@example.com",
+        "phone_number": "+1234567890",
+        "first_name": "Juliet",
+        "last_name": "Rose",
+        "profile_picture": "https://storage.rownd.io/profile.jpg",
+    },
+    "attributes": {
+        "rownd:app_variants": ["id1234", "id5678"],
+        "myapp:loyalty_points": ["100"],
+    },
+    "groups": [{
+        "group": {
+            "id": "group_dvbfjkxkvetrr0d45oa7xaoo",
+            "name": "My app's group",
+            "member_count": 0,
+            "app_id": "290167281732813315",
+            "admission_policy": "invite_only",
+            "created_at": "2024-07-09T15:35:31.553Z",
+            "updated_at": "2024-07-09T15:35:31.524Z",
+        },
+        "member": {
+            "user_id": "71f6ceeb-ee0a-4437-9b44-e6229defbab8",
+            "roles": [
+                "admin",
+                "owner"
+            ],
+            "id": "member_n73ophaa4ksb5dab5bnj4kfv",
+            "state": "active",
+            "invited_by": "user_1234",
+            "added_by": "user_1234",
+            "group_id": "group_dvbfjkxkvetrr0d45oa7xaoo"
+        }
+    }],
+    "metadata": {
+        "modified": "2025-01-27T16:44:05.191Z",
+        "first_sign_in": "2023-09-01T15:41:05.725Z",
+        "first_sign_in_method": "email",
+        "last_sign_in": "2025-01-27T16:44:05.160Z",
+        "last_sign_in_method": "email",
+        "last_active": "2025-01-27T16:44:05.160Z",
+        "last_token_refresh": "2023-01-25T18:09:42.248Z",
+        "app_variants": {
+            "base": {
+                "last_sign_in": "2025-01-27T16:44:05.160Z",
+                "last_sign_in_method": "email"
+            }
+        },
+        "verified_date": "2024-06-05T16:43:45.510Z",
+        "auth_level": "verified"
+    },
+    "state": "enabled"
+}
+```
+
+### Managing User Profiles
+
+To manage user profiles, you can use the Rownd platform's user management features. This includes viewing and editing user profiles, managing sub-brands, and viewing user activity and metadata.
+
+For more detailed information on managing user profiles, refer to the [API reference](/api-reference/user-profiles/app/insert-update).
+
+By understanding the anatomy of a Rownd user profile, you can better manage your users and provide a personalized experience across your applications.

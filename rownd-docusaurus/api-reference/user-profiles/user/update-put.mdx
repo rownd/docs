@@ -1,0 +1,49 @@
+---
+title: Update user profile data
+openapi: "PUT /me/applications/{app}/data"
+---
+
+Replace the current user's profile data.
+
+### Endpoint
+
+- Method: `PUT`
+- Path: `/me/applications/{app}/data`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Request body
+
+```json
+{
+  "first_name": "Jane",
+  "last_name": "Doe"
+}
+```
+
+### Try it
+
+```bash
+curl --request PUT \
+  --url "https://api.rownd.io/me/applications/{app}/data" \
+  --header "Authorization: Bearer <user-token>" \
+  --header "Content-Type: application/json" \
+  --data '{"first_name":"Jane","last_name":"Doe"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "user": "usr_123",
+  "data": {
+    "first_name": "Jane",
+    "last_name": "Doe"
+  }
+}
+```

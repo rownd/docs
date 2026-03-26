@@ -1,0 +1,30 @@
+---
+title: "Delete a group member"
+openapi: "DELETE /applications/{app}/groups/{group}/members/{member}"
+---
+
+Remove a member from a group (app-scoped).
+
+### Endpoint
+
+- Method: `DELETE`
+- Path: `/applications/{app}/groups/{group}/members/{member}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request DELETE \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}/members/{member}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+204 - No Content

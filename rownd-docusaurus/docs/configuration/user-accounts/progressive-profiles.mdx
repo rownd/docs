@@ -1,0 +1,59 @@
+---
+title: "Progressive profiles"
+---
+
+Progressive profiles gradually capture new or returning users as they advance through your app experience. Instead of immediately requesting an email, Rownd's progressive profiles allow you to seamlessly transition simple visitors into verified users through thoughtful prompts.
+
+By enabling guest users and associated automations, you can allow users to explore your product until they are ready to complete the full sign-up process without losing any of their app progress.
+
+#### Progressive profile milestones
+
+As users progress through your product's expereince, the goal is for them to eventually become a verified user. Below are the various levels of user interaction with your app and what each means. 
+
+- **Visitor**. A visitor is simply a user that has just arrived. They have no Rownd ID or captured session at this time. 
+
+- **Guest / Anonymous user**. When a visitor takes an action or spends a certain amount of time in your product (this is customizable) they are considered a Guest (or anonymous user). At this point the user has a Rownd ID associated with their browser or app session.
+
+  The benefit of guest users is that their progress will be saved as long as they are accessing your app from the same device or session when they return; think about it like a saved cart on an ecommerce site. The **risk** of guest users is the potential of losing progress if they return on a difference device or browser or after a significant amount of time.
+
+  Using Passkeys, it is possible to preserve a guest's anonymity while allowing them to sign in repeatedly or from other devices.
+
+  <Info>You can enable guest users as a sign-in method from the sign-in methods page.</Info>
+
+  <Info>We recommend prompting guest users to add a sign-in method as quickly as makes sense for your use case in order to prevent them from losing any account data. You can do this by assigning automated prompts at specific moments in your app.</Info>
+
+- **Unverified user**. Unverified users have provided a piece of verifiable information but have not yet verified it. For example, a user has provided an email address in your app, but has not claimed or verified as their own yet. At this point the user no longer runs the risk of losing account data. If they are signed out or access your app on another device, they can sign in simply by verifying their email address via the normal sign-in process.
+
+  <Info>To enable Unverified users, navigate to the **Sign-in methods** tab and scroll down to **Sign in preferences.** Here, you can enable unverified users via the toggle. After enabling, new users that provide an email address can sign in without verifying their information on their first visit. On return visits, they will be asked to verify their account.</Info>
+
+  <div style={{
+    "height": "0px",
+    "paddingBottom": "64.7482%",
+    "position": "relative"
+  }}>
+    <iframe src="https://www.loom.com/embed/49bb744da1a54744b4dccc5dd55d6b2c" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style={{
+      "height": "100%",
+      "left": "0px",
+      "position": "absolute",
+      "top": "0px",
+      "width": "100%"
+    }}></iframe>
+  </div>
+
+- **Verified user**. A verified user has verified their account by either verifying their email or phone number, signing in with Google or Apple, or connecting a passkey to a session. Verified users are now fully authenticated and should be able to access their account information after being signed out.
+
+
+#### Automations for capturing users at the right moment 
+
+The following automations are available to help you capture users at the right moment in your app experience:
+
+1. Sign in prompt 
+2. Passkey prompt (coming soon!)
+3. Google one tap prompt (coming soon!)
+2. Capture user (coming soon!)
+3. Prompt for additional information (coming soon!)
+
+
+#### Deleting users 
+
+According to Rownd's pricing model, you are billed based on the number of active users on your app, specifically those with associated Rownd IDs. In the case of users who remain as "Guest" or "anonymous" without any further progression, you have the option to configure your app to automatically delete their accounts after a specified period of time.

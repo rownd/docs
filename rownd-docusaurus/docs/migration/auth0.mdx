@@ -1,0 +1,180 @@
+---
+title: "Migrating from Auth0"
+sidebarTitle: "Auth0"
+---
+Migrating from Auth0 to Rownd is fast and easy. In most cases, you'll probably be able to remove a lot of unnecessary code and configuration from your product in exchange for Rownd's turnkey solution. Let's get started!
+
+## Overview
+In this guide, we'll help you plan your migration from Auth0 to Rownd so that you can think through the process and avoid any pitfalls. We'll also provide some code snippets to help you get started.
+
+Here's what you'll work through as part of this migration:
+1. Creating a Rownd account and setting up your test and production apps.
+2. Updating your code to leverage Rownd instead of Auth0.
+3. Migrating your existing users to Rownd.
+
+<Note>We've prepared a [sample repository](https://github.com/rownd/migration-auth0#auth0-migration-to-rownd) that demonstrates the migration process from a code perspective.</Note>
+
+## Set up Rownd
+<Snippet file="migration/setup-rownd-steps.mdx" provider="auth0" />
+
+5. [Create an Auth0 integration](/configuration/integrations/auth0) and attach it to your app. This will allow Rownd to migrate your existing users automatically.
+
+## Update back-end code
+You'll need to update your backend APIs to accept Rownd-signed JWTs instead of Auth0 JWTs. Use the Rownd SDK corresponding to the framework or language of your backend API server. Check out a full list of our [backend SDKs](https://docs.rownd.io/sdk-reference/backend/overview).
+
+Our SDKs provide functions to validate Rownd tokens, fetch user data, and in some cases middleware that you can plug directly into your request handlers to authenticate usurs automatically. Here's an example of using the Node.js SDK's Express middleware:
+
+```typescript
+import { createInstance } from '@rownd/node';
+const rownd = createInstance({
+  app_key: 'YOUR_APP_KEY',
+  app_secret: 'YOUR_APP_SECRET',
+});
+const { authenticate } = rownd.express;
+
+app.get('/api/*', authenticate({ fetchUserInfo: true }));
+
+app.get('/api/profile', (req, res) => {
+    res.send({
+        profile: req.user
+    });
+});
+```
+
+Notice the use of the `authenticate` middleware function from `rownd.express` which validates a JWT in the `Authorization` header and fetches profile data from Rownd, making it available on the request object for other request handlers. You can also build a middlware yourself or use one-off instances of `rownd.validateToken(token);` and `rownd.fetchUserInfo(token);`. 
+
+## Update front-end code
+Next, you'll need to replace Auth0 with Rownd in your frontend. The exact steps will vary depending on the frontend framework you're using and the authentication features of Auth0 that you are utilizing. We'll use React as an example to demonstrate the steps below.
+
+1. Install the `@rownd/react` dependency with your preferred package manager
+2. Add the `RowndProvider` context provider.
+
+In your app's entrypoint file, add the `RowndProvider` context provider. You should already have an `Auth0Provider` somewhere in your app, which can help you find where you need to add this.
+
+<Note>
+To keep existing users signed in during the migration, leave the existing `Auth0Provider` in place for now. Find out more about [keeping users signed in](#keep-existing-users-signed-in) during the migration.
+</Note>
+
+<CodeGroup>
+    ```tsx RowndProvider
+    import { RowndProvider } from '@rownd/react';
+
+    const root = createRoot(document.getElementById('root'));
+    root.render(
+        <Auth0Provider
+            {...providerConfig}
+        >
+            <RowndProvider appKey="YOUR_APP_KEY">
+                <App />
+            </RowndProvider>
+        </Auth0Provider>,
+    );
+    ```
+</CodeGroup>
+
+3. Replace Auth0 hook with Rownd
+
+Auth0 provides a React hook named `useAuth0()` that you'll need to replace with Rownd. Rownd exposes similar properties and functions through the `useRownd()` hook. It should be pretty straightforward to swap out the Auth0 hook to use Rownd's, and to adapt your code to use the Rownd properties.
+
+<CodeGroup>
+    ```typescript useRownd() hook
+    // const { isAuthenticated, user } = useAuth0();
+    const { is_authenticated, user } = useRownd();
+    if (is_authenticated) {
+        return user.data.email;
+    }
+    ```
+</CodeGroup>
+
+**Notable Differences**
+
+**_Enforcing authentication for protected components_**
+
+If you have components protected with Auth0's `withAuthenticationRequired` component, you'll need to add the some equivalent Rownd code to enforce authentication. Use the `useRownd()` hook to enforce authentication upon rendering of certain components
+
+<CodeGroup>
+```typescript Example
+const { is_initializing, is_authenticated, requestSignIn } = useRownd();
+if (!is_initializing && !is_authenticated) {
+    requestSignIn({ prevent_closing: true });
+}
+```
+</CodeGroup>
+
+**_Audiences and APIs_**
+
+Rownd backend SDKs automatically validate the audience claim in Rownd-issued JWTs. Unlike Auth0, you do not need to explicitly set the audience and API configuration parameters in the SDK itself. You can remove any code present in your React app that configures or depends on audiences. If you want to set additional audience values, you can do so in the Rownd Platform under Application Settings.
+
+**_OAuth redirects_**
+
+The Rownd React SDK and Javascript snippet itself handle all redirects associated with authentication flows. If you have frontend code that handles callbacks or redirects from Auth0, you can safely remove these. They are no longer needed with Rownd.
+
+## Keep existing users signed-in
+Migrating your authentication to Rownd will help convert more users as they move through your funnel; however, what about the users you already have? They'll quickly become frustrated if they get signed out as a result of the migration.
+
+To keep existing users signed in, you can pass their old Auth0 access token to Rownd for validation. Rownd will then issue a new token to the user so they'll be able to continue using your product without interruption. Once the new token is issued, the auth0 token can be permanently discarded.
+
+Here's a full example using the Rownd React SDK. We'll break down the details below:
+
+<CodeGroup>
+    ```typescript Example
+    const { is_initializing, is_authenticated, getAccessToken } = useRownd();
+    const auth0 = useAuth0();
+    useEffect(() => {
+        if (is_authenticated) {
+            return;
+        }
+        if (!is_initializing && !auth0.isLoading && auth0.isAuthenticated) {
+            auth0.getAccessTokenSilently().then((auth0Token) => {
+                getAccessToken({ token: auth0Token })
+            });
+        }
+    }, [getAccessToken, is_authenticated, is_initializing, auth0])
+    ```
+</CodeGroup>
+
+1. In your front-end code, at the top-level component, check if the user is already signed in to Rownd. If they are, you're done!
+<Accordion title="Check if authenticated with Rownd" defaultOpen="true">
+    <CodeGroup>
+        ```typescript
+        if (is_authenticated) {
+            return;
+        }
+        ```
+    </CodeGroup>
+</Accordion>
+
+2. If they aren't, check if they're currently authenticated via Auth0. If they are, retrieve their ID token.
+
+<Accordion title="Get Auth0 access token" defaultOpen="true">
+    <CodeGroup>
+        ```typescript
+        if (!is_initializing && !auth0.isLoading && auth0.isAuthenticated) {
+            auth0.getAccessTokenSilently().then((auth0Token) => {
+                getAccessToken({ token: auth0Token })
+            });
+        }
+        ```
+    </CodeGroup>
+</Accordion>
+
+3. Pass the token to Rownd for validation. If the token is valid, Rownd will issue a new token to the user.
+
+<Accordion title="Exchange for Rownd access token" defaultOpen="true">
+    <CodeGroup>
+        ```typescript
+        getAccessToken({ token: auth0Token })
+        ```
+    </CodeGroup>
+</Accordion>
+
+4. `is_authenticated` should now be `true` and the user can continue using your product normally.
+
+## Sync user profiles (optional)
+Rownd supports multiple ways to sync your user data from Auth0. If you created and attached the [Auth0 integration](/configuration/integrations/auth0) to your app, Rownd will begin migrating users "just in time," meaning that as users sign in, their data will automatically be imported into Rownd (matched on email address, phone number, etc).
+
+However, pre-loading user data into Rownd will speed up the initial authentication handshake. You can use the Auth0 connector's "sync" option to do a bulk import of all users from your Auth0 app to Rownd. Any users that sign-in after the sync begins will be auto-migrated using the "just in time" method.
+
+<Snippet file="migration/testing.mdx" />
+
+<Snippet file="migration/completion.mdx" />

@@ -1,0 +1,726 @@
+---
+title: "Rownd Subscriptions Integration Guide"
+sidebarTitle: "Integration Guide"
+---
+
+This guide provides a complete overview of integrating Rownd Subscriptions into your React application.
+
+## Table of Contents
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [API Methods](#api-methods)
+- [Response Structures](#response-structures)
+- [Implementation Examples](#implementation-examples)
+- [Best Practices](#best-practices)
+- [Quick-Start Implementation Prompt](#quick-start-implementation-prompt)
+- [Understanding the API Methods and IDs](#understanding-the-api-methods-and-ids)
+  - [Finding and Using Subscription IDs](#finding-and-using-subscription-ids)
+  - [API Methods in Detail](#api-methods-in-detail)
+  - [Common Patterns and Gotchas](#common-patterns-and-gotchas)
+
+
+## Overview
+
+Rownd Subscriptions provides a simple API to manage subscription plans and user subscriptions in your application. The API is accessible through the global `window.rownd` object.
+
+## Prerequisites
+
+1. Rownd SDK must be installed and configured in your application
+2. User must be authenticated to access subscription features
+3. Subscription plans must be configured in your Rownd dashboard
+
+## API Methods
+
+### 1. Get Available Subscription Plans
+
+```javascript
+await window.rownd.subscriptions.available()
+```
+
+**Description:** Fetches all available subscription plans for the current application.
+
+**Returns:** Promise that resolves to an object containing available subscription plans.
+
+### 2. Subscribe to a Plan
+
+```javascript
+await window.rownd.subscriptions.subscribe(subscriptionId, planId)
+```
+
+**Parameters:**
+- `subscriptionId` (string): The subscription ID from the available plans response
+- `planId` (string): The specific plan/price ID to subscribe to (format: `prod_XXX__price_YYY`)
+
+**Returns:** Promise that resolves when subscription is successful (status 200).
+
+### 3. List User's Subscriptions
+
+```javascript
+await window.rownd.subscriptions.list()
+```
+
+**Description:** Fetches all active subscriptions for the authenticated user.
+
+**Returns:** Promise that resolves to an object containing the user's subscriptions.
+
+## Response Structures
+
+### Available Plans Response
+
+```javascript
+{
+  results: [
+    {
+      created_at: "2025-06-03T01:01:15.708Z",
+      id: "sub_r7i3j3hf7nliv0somxl99d08",  // This is the subscriptionId
+      presentation: {
+        options: [
+          {
+            active: true,
+            billing_scheme: "per_unit",
+            created: 1748912473,
+            currency: "usd",
+            description: "Starter plan",
+            hub_visible: true,
+            id: "prod_SQaOuPZleHnMXY__price_1RVjE5FKMLRRRtblfOWelt8y", // This is the planId
+            livemode: true,
+            name: "Starter",
+            nickname: "Free trial",
+            object: "price",
+            product: {
+              id: 'prod_SQaOuPZleHnMXY',
+              object: 'product',
+              active: true,
+              // ... additional product details
+            },
+            recurring: {
+              interval: 'month',
+              interval_count: 1,
+              trial_period_days: null,
+              usage_type: 'licensed'
+            },
+            unit_amount: 0,  // Price in cents
+            unit_amount_decimal: "0"
+          },
+          {
+            // ... additional plan options
+          }
+        ]
+      },
+      provider: "stripe",
+      provider_connection_id: "cmbftbsvv01cffg3rg3qwhsdl",
+      updated_at: "2025-06-03T01:26:37.563Z"
+    }
+  ],
+  total_results: 1
+}
+```
+
+### User Subscriptions Response
+
+```javascript
+{
+  results: [
+    {
+      app_subscription_id: "sub_r7i3j3hf7nliv0somxl99d08",
+      billing_cycle_anchor: 1749155826,
+      cancel_at_period_end: false,
+      created: 1749155826,
+      created_at: "2025-06-05T20:37:06.000Z",
+      currency: "usd",
+      customer: "cus_SRdicauykfzG8Z",
+      id: "stripe|sub_1RWkX8FKMLRRRtbl01wU54sW",
+      livemode: true,
+      plan: {
+        id: 'price_1RVjE5FKMLRRRtblfOWelt8y',
+        object: 'plan',
+        active: true,
+        amount: 0,
+        amount_decimal: '0',
+        // ... additional plan details
+      },
+      status: "active",  // Can be: active, trialing, canceled, etc.
+      updated_at: "2025-06-05T20:37:13.966Z"
+    }
+  ],
+  total_results: 1
+}
+```
+
+## Implementation Examples
+
+### Example 1: Fetching and Displaying Available Plans
+
+```javascript
+import { useState, useEffect } from 'react'
+
+function SubscriptionPlans() {
+  const [plans, setPlans] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const fetchAvailablePlans = async () => {
+    setLoading(true)
+    try {
+      const response = await window.rownd.subscriptions.available()
+      if (response.results && response.results.length > 0) {
+        // Extract plans from the first result's presentation options
+        setPlans(response.results[0].presentation.options || [])
+      }
+    } catch (error) {
+      console.error('Error fetching plans:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchAvailablePlans()
+  }, [])
+
+  const formatPrice = (amount, currency) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency.toUpperCase()
+    }).format(amount / 100)  // Convert cents to dollars
+  }
+
+  return (
+    <div>
+      {loading ? (
+        <p>Loading plans...</p>
+      ) : (
+        <div>
+          {plans.map((plan) => (
+            <div key={plan.id}>
+              <h3>{plan.name}</h3>
+              <p>{plan.description}</p>
+              <p>{formatPrice(plan.unit_amount, plan.currency)}/{plan.recurring.interval}</p>
+              {plan.recurring.trial_period_days && (
+                <p>{plan.recurring.trial_period_days} day free trial</p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+### Example 2: Subscribing to a Plan
+
+```javascript
+const handleSubscribe = async (subscriptionId, planId) => {
+  try {
+    const response = await window.rownd.subscriptions.subscribe(subscriptionId, planId)
+    
+    if (response.status === 200 || response.ok) {
+      console.log('Successfully subscribed!')
+      // Handle success (e.g., show success message, refresh subscriptions)
+    }
+  } catch (error) {
+    console.error('Subscription failed:', error)
+    // Handle error (e.g., show error message)
+  }
+}
+
+// Usage example:
+// subscriptionId comes from available() response: response.results[0].id
+// planId comes from the specific plan: plan.id
+handleSubscribe("sub_r7i3j3hf7nliv0somxl99d08", "prod_SQaOuPZleHnMXY__price_1RVjE5FKMLRRRtblfOWelt8y")
+```
+
+### Example 3: Displaying User's Subscriptions
+
+```javascript
+import { useState, useEffect } from 'react'
+
+function MySubscriptions() {
+  const [subscriptions, setSubscriptions] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const fetchMySubscriptions = async () => {
+    setLoading(true)
+    try {
+      const response = await window.rownd.subscriptions.list()
+      if (response.results) {
+        setSubscriptions(response.results)
+      }
+    } catch (error) {
+      console.error('Error fetching subscriptions:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchMySubscriptions()
+  }, [])
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+
+  return (
+    <div>
+      {loading ? (
+        <p>Loading subscriptions...</p>
+      ) : subscriptions.length === 0 ? (
+        <p>No active subscriptions</p>
+      ) : (
+        <div>
+          {subscriptions.map((sub) => (
+            <div key={sub.id}>
+              <h3>{sub.plan?.name || 'Subscription'}</h3>
+              <p>Status: {sub.status}</p>
+              <p>Started: {formatDate(sub.created_at)}</p>
+              <p>Next billing: {formatDate(new Date(sub.billing_cycle_anchor * 1000))}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Best Practices
+
+### 1. Error Handling
+Always wrap API calls in try-catch blocks to handle potential errors gracefully:
+
+```javascript
+try {
+  const response = await window.rownd.subscriptions.available()
+  // Handle success
+} catch (error) {
+  console.error('Error:', error)
+  // Show user-friendly error message
+}
+```
+
+### 2. Loading States
+Provide visual feedback during API calls:
+
+```javascript
+const [loading, setLoading] = useState(false)
+
+const fetchData = async () => {
+  setLoading(true)
+  try {
+    // API call
+  } finally {
+    setLoading(false)
+  }
+}
+```
+
+### 3. Authentication Check
+Ensure user is authenticated before showing subscription features:
+
+```javascript
+import { useRownd } from '@rownd/react'
+
+function SubscriptionFeature() {
+  const { is_authenticated } = useRownd()
+  
+  if (!is_authenticated) {
+    return <p>Please sign in to view subscriptions</p>
+  }
+  
+  // Show subscription content
+}
+```
+
+### 4. Price Formatting
+Always format prices for display (Stripe stores amounts in cents):
+
+```javascript
+const formatPrice = (amount, currency) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency.toUpperCase()
+  }).format(amount / 100)
+}
+```
+
+### 5. Date Formatting
+Convert Unix timestamps to readable dates:
+
+```javascript
+const formatDate = (timestamp) => {
+  return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+```
+
+## Common Use Cases
+
+### 1. Subscription Selection Modal
+Create a modal that displays available plans and allows users to subscribe.
+
+### 2. Subscription Management Page
+Show users their current subscriptions with details like billing dates and status.
+
+### 3. Upgrade/Downgrade Flow
+Allow users to change their subscription plan by showing available options.
+
+### 4. Trial Period Handling
+Display trial information and countdown for plans with trial periods.
+
+### 5. Celebration Modal for Successful Subscriptions
+Create a delightful upgrade experience to celebrate when users successfully subscribe to a plan.
+
+#### Implementation Example:
+
+```javascript
+import { useState } from 'react'
+
+function SubscriptionWithCelebration() {
+  const [showSuccess, setShowSuccess] = useState(false)
+  const [fadeOut, setFadeOut] = useState(false)
+  const [planName, setPlanName] = useState('')
+
+  const handleSubscribe = async (subscriptionId, planId, planName) => {
+    try {
+      const response = await window.rownd.subscriptions.subscribe(subscriptionId, planId)
+      
+      if (response) {
+        // Show celebration
+        setPlanName(planName)
+        setShowSuccess(true)
+        setFadeOut(false)
+        
+        // Start fade out after 4 seconds
+        setTimeout(() => setFadeOut(true), 4000)
+        
+        // Remove celebration after fade completes
+        setTimeout(() => {
+          setShowSuccess(false)
+          setFadeOut(false)
+        }, 4800)
+      }
+    } catch (error) {
+      console.error('Subscription failed:', error)
+    }
+  }
+
+  if (showSuccess) {
+    return (
+      <div className={`celebration-overlay ${fadeOut ? 'fade-out' : ''}`}>
+        <div className="celebration-content">
+          <h1>Congrats on upgrading to {planName}!</h1>
+          <div className="celebration-animation">
+            {/* Your celebration animation here */}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // ... rest of your component
+}
+```
+
+#### CSS for Celebration Animation:
+
+```css
+.celebration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(102, 51, 153, 0.8); /* Purple overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.celebration-overlay.fade-out {
+  animation: fadeOut 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.celebration-content h1 {
+  color: white;
+  font-size: 48px;
+  font-weight: 700;
+  animation: slideDownFadeIn 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Circular wipe animation example */
+.celebration-animation {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  animation: scaleInRotate 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+
+.celebration-animation::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.4) 30deg,
+    transparent 90deg
+  );
+  animation: circularWipe 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes scaleInRotate {
+  from {
+    opacity: 0;
+    transform: scale(0.3) rotate(-180deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes circularWipe {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+```
+
+#### Best Practices for Celebration Modals:
+
+1. **Timing**: Show celebration for 4-5 seconds total
+2. **Smooth Transitions**: Use cubic-bezier easing for natural motion
+3. **Fade Out**: Always fade out before removing to avoid jarring transitions
+4. **Accessibility**: Ensure celebration doesn't interfere with screen readers
+5. **Performance**: Use CSS animations instead of JavaScript for better performance
+6. **Customization**: Match celebration colors to your brand
+
+## Troubleshooting
+
+### Issue: "Cannot read properties of undefined"
+**Solution:** Ensure `window.rownd` is available before making API calls. The Rownd SDK must be fully initialized.
+
+### Issue: Subscription fails silently
+**Solution:** Check the response object and console for error details. Ensure the user has valid payment methods if required.
+
+### Issue: Empty subscription list
+**Solution:** Verify that subscription plans are properly configured in your Rownd dashboard and that the user is authenticated.
+
+## Additional Notes
+
+- All subscription amounts are in cents (multiply by 100 when saving, divide by 100 when displaying)
+- The `subscriptionId` is different from the `planId` - use the correct one for each API call
+- Subscription status can be: active, trialing, canceled, past_due, etc.
+- Always handle the case where a user has no active subscriptions 
+
+## Quick-Start Implementation Prompt
+
+> **Copy and paste this prompt into Cursor to implement Rownd Subscriptions in your app:**
+
+```prompt
+I need to implement Rownd Subscriptions in my React application. Please help me create the following components and functionality:
+
+1. Create a SubscriptionPlans component that:
+   - Uses the Rownd SDK to fetch available plans
+   - Displays plans in a grid with pricing, descriptions, and trial periods
+   - Handles loading states and errors
+   - Uses proper price formatting (cents to dollars)
+
+2. Create a SubscribeButton component that:
+   - Takes subscriptionId and planId as props
+   - Handles the subscription process using window.rownd.subscriptions.subscribe()
+   - Shows loading state during subscription
+   - Displays success/error messages
+   - Includes a celebration animation on successful subscription
+
+3. Create a MySubscriptions component that:
+   - Lists the user's active subscriptions
+   - Shows subscription status, start date, and next billing date
+   - Handles the case of no active subscriptions
+   - Includes proper date formatting
+
+4. Add proper error handling and loading states throughout
+   - Use try/catch blocks for all API calls
+   - Show loading spinners during API calls
+   - Display user-friendly error messages
+
+5. Implement authentication checks:
+   - Use useRownd() hook to check authentication status
+   - Show appropriate messages for unauthenticated users
+
+Please use the following API methods:
+- window.rownd.subscriptions.available()
+- window.rownd.subscriptions.subscribe(subscriptionId, planId)
+- window.rownd.subscriptions.list()
+
+Include proper TypeScript types, error handling, and loading states. Follow the best practices from the Rownd documentation for subscription management.
+```
+
+> **Note:** This prompt is designed to work with Cursor's AI capabilities to generate a complete implementation based on the Rownd Subscriptions documentation. The generated code will include proper error handling, loading states, and TypeScript types.
+
+## Understanding the API Methods and IDs
+
+### Finding and Using Subscription IDs
+
+When working with Rownd Subscriptions, you'll need to understand two important IDs:
+
+1. **subscriptionId**: This is the ID of the subscription configuration in your Rownd dashboard. You can find this by:
+   - Calling `window.rownd.subscriptions.available()`
+   - Looking at the `id` field in the response (e.g., `"sub_r7i3j3hf7nliv0somxl99d08"`)
+   - This ID represents the subscription configuration, not a user's subscription
+
+2. **planId**: This is the specific plan/price ID within a subscription. You can find this by:
+   - Looking at the `presentation.options[].id` field in the available plans response
+   - Format is typically `prod_XXX__price_YYY`
+   - This ID represents the specific plan a user can subscribe to
+
+### API Methods in Detail
+
+#### 1. Fetching Available Plans
+```javascript
+const response = await window.rownd.subscriptions.available()
+```
+- Returns all subscription plans configured in your Rownd dashboard
+- Response structure:
+  ```javascript
+  {
+    results: [{
+      id: "sub_r7i3j3hf7nliv0somxl99d08",  // This is your subscriptionId
+      presentation: {
+        options: [{
+          id: "prod_XXX__price_YYY",  // This is your planId
+          name: "Starter",
+          description: "Starter plan",
+          unit_amount: 0,  // Price in cents
+          recurring: {
+            interval: 'month',
+            trial_period_days: null
+          }
+        }]
+      }
+    }]
+  }
+  ```
+
+#### 2. Subscribing to a Plan
+```javascript
+await window.rownd.subscriptions.subscribe(subscriptionId, planId)
+```
+- Parameters:
+  - `subscriptionId`: From the available() response (e.g., `"sub_r7i3j3hf7nliv0somxl99d08"`)
+  - `planId`: From the plan options (e.g., `"prod_XXX__price_YYY"`)
+- Returns: Promise that resolves on successful subscription
+- Status codes:
+  - 200: Success
+  - 400: Invalid parameters
+  - 401: Unauthenticated
+  - 402: Payment required
+  - 403: Forbidden
+
+#### 3. Listing User's Subscriptions
+```javascript
+const response = await window.rownd.subscriptions.list()
+```
+- Returns all active subscriptions for the authenticated user
+- Response structure:
+  ```javascript
+  {
+    results: [{
+      id: "stripe|sub_1RWkX8FKMLRRRtbl01wU54sW",
+      status: "active",  // active, trialing, canceled, etc.
+      created_at: "2025-06-05T20:37:06.000Z",
+      billing_cycle_anchor: 1749155826,
+      plan: {
+        id: 'price_1RVjE5FKMLRRRtblfOWelt8y',
+        amount: 0,
+        // ... additional plan details
+      }
+    }]
+  }
+  ```
+
+### Common Patterns and Gotchas
+
+1. **Finding the Right IDs**:
+   ```javascript
+   // Example of extracting IDs from available plans
+   const availablePlans = await window.rownd.subscriptions.available()
+   const subscriptionId = availablePlans.results[0].id
+   const planId = availablePlans.results[0].presentation.options[0].id
+   ```
+
+2. **Handling Multiple Plans**:
+   ```javascript
+   // Example of mapping through multiple plans
+   const plans = availablePlans.results[0].presentation.options.map(plan => ({
+     id: plan.id,
+     name: plan.name,
+     price: plan.unit_amount / 100,  // Convert cents to dollars
+     interval: plan.recurring.interval
+   }))
+   ```
+
+3. **Checking Subscription Status**:
+   ```javascript
+   const subscriptions = await window.rownd.subscriptions.list()
+   const hasActiveSubscription = subscriptions.results.some(
+     sub => sub.status === 'active' || sub.status === 'trialing'
+   )
+   ```
+
+4. **Error Handling**:
+   ```javascript
+   try {
+     const response = await window.rownd.subscriptions.subscribe(subscriptionId, planId)
+     // Handle success
+   } catch (error) {
+     if (error.status === 402) {
+       // Handle payment required
+     } else if (error.status === 401) {
+       // Handle authentication error
+     }
+     // Handle other errors
+   }
+   ```
+
+Remember:
+- Always handle the case where a user has no active subscriptions
+- Convert price amounts from cents to dollars for display
+- Check authentication status before making API calls
+- Handle loading states during API calls
+- Provide clear error messages to users 

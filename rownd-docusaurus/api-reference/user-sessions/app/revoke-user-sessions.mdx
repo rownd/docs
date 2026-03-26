@@ -1,0 +1,30 @@
+---
+title: "Revoke all user tokens/sessions"
+openapi: "POST /applications/{app}/users/{user}/signout"
+---
+
+Revoke all active access tokens/sessions for a user.
+
+### Endpoint
+
+- Method: `POST`
+- Path: `/applications/{app}/users/{user}/signout`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Try it
+
+```bash
+curl --request POST \
+  --url "https://api.rownd.io/applications/{app}/users/{user}/signout" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>"
+```
+
+### Response
+
+204 - No Content

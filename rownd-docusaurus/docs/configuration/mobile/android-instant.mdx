@@ -1,0 +1,158 @@
+---
+title: "Using Android Instant Apps"
+sidebarTitle: "Instant apps"
+description: "100% conversion from web to native mobile app"
+---
+
+Android Instant Apps allow users to experience your app without installing it from the Play Store — reducing friction and improving conversion. You can use this to deliver a fast, native authentication experience that gets users signed in before ever asking them to install your app.
+
+> ✅ **Best for**: High-intent flows like authentication, referral links, and onboarding.
+
+---
+
+<div style={{ position: "relative", paddingBottom: "61.71428571428571%", height: 0 }}>
+  <iframe
+    src="https://www.loom.com/embed/54bc39e96dad48fc870f2d4aeaa45b5f"
+    frameborder="0"
+    webkitallowfullscreen
+    mozallowfullscreen
+    allowfullscreen
+    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+  ></iframe>
+</div>
+
+## How it works
+
+When users tap a link — from a website, ad, QR code, or elsewhere — they launch a lightweight version of your Android app instantly. No Play Store. No install step. Just instant access.
+
+This allows you to:
+
+- Authenticate users quickly, using Rownd
+- Capture user intent with minimal drop-off
+- Seamlessly transition users to the full app after sign-in
+
+---
+
+## Project structure
+
+To build an Instant App, your Android project must use a **modular** structure.
+
+### 🔹 Base module (`:base`)
+
+The base module includes shared code and resources used across your app, including your instant and installable experiences. This includes:
+
+- Shared layouts and assets
+- Common logic/utilities
+- The Rownd SDK (💡Keep it lean!)
+
+### 🔹 Feature modules
+
+Split your app into **feature modules** for each experience:
+
+| Module type | Purpose | Notes |
+|-------------|---------|-------|
+| `:instant-login` | The minimal experience for Rownd login | Must stay under 15MB total size |
+| `:full-app` | The installable full version of your app | Can include everything |
+
+> ⚠️ **Google Play size limit**: Instant app experiences must be ≤15MB total (including the base module). Strip unused assets, fonts, and libraries.
+
+---
+
+## Getting started
+
+### 1. Enable Instant Apps in your project
+
+Follow [Google’s official guide](https://developer.android.com/topic/google-play-instant) to set up:
+
+- Instant app support in your manifest
+- `base`, `feature`, and `instant` module structure
+- Instant app build variants
+
+### 2. Add Rownd to your instant feature
+
+Include the Rownd SDK in your `:base` module (or `:instant-login` if you want more separation). Follow the [Android SDK integration guide](/sdk-reference/mobile/android) to configure Rownd for sign-in.
+
+#### `settings.gradle`
+
+```groovy
+include ':base', ':instant-login', ':full-app'
+```
+
+**base/build.gradle.kts**
+
+```kotlin
+dependencies {
+    implementation("io.rownd:android:<latest-version>")
+    // other shared deps
+}
+```
+
+```kotlin
+class MainApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        Rownd.configure(
+            this,
+            "REPLACE_WITH_YOUR_APP_KEY"
+        )
+    }
+}
+```
+
+#### `instant-login/build.gradle.kts`
+
+```kotlin
+dependencies {
+    implementation(project(":base"))
+    implementation("io.rownd:android:<latest-version>")
+    // other instant app deps
+}
+```
+
+```kotlin
+class InstantLoginActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Your instant app logic here
+        setContent {
+            InstantLoginScreen(onSignIn = {
+                Rownd.requestSignIn()
+            }) // Your instant app UI
+        }
+    }
+}
+```
+
+### 3. Link to your instant experience
+
+You can generate smart links or deep links to launch your instant app directly from:
+- Your website
+- QR codes
+- Marketing emails and campaigns
+
+Rownd can generate these links automatically, or you can create them manually using App Links.
+
+---
+
+### Example use case
+
+A referral campaign sends users a personalized link. Instead of going to the Play Store, the user:
+1.	Launches your Instant App directly
+2.	Authenticates via Rownd (email, passkey, social, etc.)
+3.	Is optionally prompted to install the full app
+4.	Their session persists into the full app after install
+
+---
+
+### Benefits
+- Higher conversion: Fewer steps = more users signing in
+- Lower bounce rate: No detour to the Play Store
+- Seamless onboarding: Get users started before asking them to install
+
+---
+
+Need help?
+
+If you’re planning to implement Instant Apps with Rownd, reach out to us — we’d love to help you get started or provide feedback on your module structure.

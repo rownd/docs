@@ -1,0 +1,47 @@
+---
+title: "Update a group member"
+openapi: "PUT /applications/{app}/groups/{group}/members/{member}"
+---
+
+Update a group member (app-scoped).
+
+### Endpoint
+
+- Method: `PUT`
+- Path: `/applications/{app}/groups/{group}/members/{member}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Request body
+
+```json
+{
+  "role": "admin"
+}
+```
+
+### Try it
+
+```bash
+curl --request PUT \
+  --url "https://api.rownd.io/applications/{app}/groups/{group}/members/{member}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>" \
+  --header "Content-Type: application/json" \
+  --data '{"role":"admin"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "mem_123",
+  "role": "admin"
+}
+```

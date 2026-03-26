@@ -1,0 +1,48 @@
+---
+title: "Update an OpenID Connect client"
+openapi: "PUT /applications/{app}/oidc-clients/{client}"
+---
+
+Update an existing OIDC client.
+
+### Endpoint
+
+- Method: `PUT`
+- Path: `/applications/{app}/oidc-clients/{client}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `X-Rownd-App-Key: <your-app-key>`
+- `X-Rownd-App-Secret: <your-app-secret>`
+
+### Request body
+
+```json
+{
+  "name": "My App",
+  "redirect_uris": ["https://example.com/callback"]
+}
+```
+
+### Try it
+
+```bash
+curl --request PUT \
+  --url "https://api.rownd.io/applications/{app}/oidc-clients/{client}" \
+  --header "X-Rownd-App-Key: <your-app-key>" \
+  --header "X-Rownd-App-Secret: <your-app-secret>" \
+  --header "Content-Type: application/json" \
+  --data '{"name":"My App","redirect_uris":["https://example.com/callback"]}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "cli_123",
+  "name": "My App"
+}
+```

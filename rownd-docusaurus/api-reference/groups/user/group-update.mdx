@@ -1,0 +1,45 @@
+---
+title: "Update a group"
+openapi: "PUT /me/groups/{group}"
+---
+
+User-scoped API for updating a group.
+
+### Endpoint
+
+- Method: `PUT`
+- Path: `/me/groups/{group}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Request body
+
+```json
+{
+  "name": "Updated Group"
+}
+```
+
+### Try it
+
+```bash
+curl --request PUT \
+  --url "https://api.rownd.io/me/groups/{group}" \
+  --header "Authorization: Bearer <user-token>" \
+  --header "Content-Type: application/json" \
+  --data '{"name":"Updated Group"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "id": "grp_abc",
+  "name": "Updated Group"
+}
+```

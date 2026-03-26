@@ -1,0 +1,45 @@
+---
+title: "Update one field in a user profile"
+openapi: "PUT /me/applications/{app}/data/fields/{field}"
+---
+
+Update a single profile field for the current user.
+
+### Endpoint
+
+- Method: `PUT`
+- Path: `/me/applications/{app}/data/fields/{field}`
+- Base URL: `https://api.rownd.io`
+
+### Headers
+
+- `Authorization: Bearer <user-token>`
+
+### Request body
+
+```json
+{
+  "value": "user@example.com"
+}
+```
+
+### Try it
+
+```bash
+curl --request PUT \
+  --url "https://api.rownd.io/me/applications/{app}/data/fields/{field}" \
+  --header "Authorization: Bearer <user-token>" \
+  --header "Content-Type: application/json" \
+  --data '{"value":"user@example.com"}'
+```
+
+### Response
+
+200 - application/json
+
+```json
+{
+  "field": "email",
+  "value": "user@example.com"
+}
+```

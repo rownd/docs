@@ -1,0 +1,347 @@
+---
+title: "Using iOS App Clips"
+sidebarTitle: "App Clips"
+description: "100% conversion from web to native mobile app"
+---
+
+You can use Rownd's iOS SDK with its built-in understanding of App Groups to get users from web, to App Clip, to mobile app without losing users during conversion. Simply have users sign in from the App Clip. After they download the full app, they will already be signed in.
+
+<div style={{ position: "relative", paddingBottom: "61.71428571428571%", height: 0 }}>
+  <iframe
+    src="https://www.loom.com/embed/7046327b3d774eb78ad71d1bedef09bd"
+    frameborder="0"
+    webkitallowfullscreen
+    mozallowfullscreen
+    allowfullscreen
+    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+  ></iframe>
+</div>
+
+This seamless authentication flow solves one of the biggest friction points in mobile user acquisition - requiring users to create new accounts or re-authenticate when transitioning between experiences. With Rownd:
+
+- Users can authenticate on your website
+- Continue their journey in an App Clip with the same authenticated session
+- Install the full app and find themselves already signed in and ready to go
+
+This creates a frictionless conversion funnel that significantly improves user retention and engagement by eliminating authentication barriers between platforms.
+
+You can reference an example using App Clips with Rownd in the official [Rownd iOS SDK GitHub repo](https://github.com/rownd/ios/tree/main/example/LandmarksAppClip).
+
+## How it works
+
+Rownd leverages Apple's App Groups technology to securely share authentication state between your App Clip and full application. This document provides clear, step-by-step guidance for integrating and configuring Rownd authentication within your App Clips and ensuring continuity to your main iOS application.
+
+The following steps assume you have already set up your App Clip; if you haven't done this yet, please skip to the [setting up app clips](#%F0%9F%93%B1-setting-up-app-clips) section below before proceeding with the Rownd integration.
+
+---
+
+## 📦 Step 1: Add Rownd SDK dependencies
+
+Before configuring Rownd in your app and App Clip, you need to add the Rownd SDK as a dependency to both targets:
+
+### Using Swift Package Manager (Recommended)
+
+1. In Xcode, select **File → Add Packages...**
+2. Enter the Rownd iOS SDK repository URL: `https://github.com/rownd/ios`
+3. Select "Up to Next Major Version" for dependency rule
+4. **Important:** Make sure to select BOTH your main app target AND your App Clip target:
+   - Your main app target (e.g., `YourApp`)
+   - Your App Clip target (e.g., `YourApp Clip`)
+
+### Using CocoaPods
+
+Alternatively, if your project uses CocoaPods, add Rownd to your Pod file:
+
+```ruby
+# Your main app target
+target 'YourApp' do
+  pod 'Rownd'
+end
+
+# Your App Clip target
+target 'YourApp Clip' do
+  pod 'Rownd'
+end
+```
+
+Then run `pod install` in your terminal to install the dependencies.
+
+For more detailed information on installing and configuring the Rownd iOS SDK, refer to the [Rownd iOS SDK Documentation](https://docs.rownd.io/sdk-reference/mobile/ios).
+
+---
+
+## 🔧 Step 2: Create separate AppDelegates
+
+Ensure both your **main app** and **App Clip** targets have separate, clearly linked `AppDelegate.swift` files.
+
+### Example: `AppDelegate.swift`
+
+Both your App Clip and Main App should initialize Rownd like this:
+
+```swift
+import UIKit
+import Rownd
+
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        Task {
+            Rownd.config.appGroupPrefix = "com.example" // Replace with your app group prefix
+            await Rownd.configure(
+                launchOptions: launchOptions,
+                appKey: "REPLACE_WITH_YOUR_ROWND_APP_KEY"
+            )
+        }
+        return true
+    }
+}
+```
+
+### Common mistake: When using SwiftUI, be sure to link your `AppDelegate` in your main app's `App` struct:
+
+Ensure the following line explicitly links your AppDelegate:
+
+```swift
+import SwiftUI
+
+@main
+struct YourApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+```
+
+---
+
+## 🔗 Step 3: Configure App Groups
+
+Both your main app and App Clip must share the **exact same App Group identifier** for Rownd authentication continuity:
+
+### MUST USE the Rownd preset App Group identifier format:
+```
+group.<prefix>.io.rownd.sdk
+```
+
+Example:
+```
+group.com.your-app.io.rownd.sdk
+```
+
+Explicitly set this App Group in both:
+- **Main App → Signing & Capabilities → App Groups**
+- **App Clip → Signing & Capabilities → App Groups**
+
+---
+
+## 📦 Step 4: Configure Rownd Dashboard
+
+Rownd explicitly relies on your **bundle identifiers**. You must explicitly list both your App Clip and Main App bundle identifiers in the Rownd Dashboard:
+
+**Example:**
+- Main app: `com.yourapp.ios-demo`
+- App Clip: `com.yourapp.ios-demo.Clip`
+
+Explicitly add both bundle IDs under your Rownd Dashboard **App Settings → Bundle IDs**.
+
+---
+
+## 📋 Step 5: Set required capabilities and entitlements
+
+Explicitly ensure the following capabilities and entitlements are correctly configured:
+
+- ✅ **App Groups** (same identifier as above)
+- ✅ **Associated Domains** (for universal linking)
+  ```
+  applinks:your-domain.com
+  ```
+- ✅ **Parent Application Identifiers** (for App Clip → Main App linking)
+
+Manually set the [Parent Application Identifiers](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.parent-application-identifiers) if missing:
+
+### Example (`.entitlements` file XML):
+```xml
+<key>com.apple.developer.parent-application-identifiers</key>
+<array>
+    <string>com.yourapp.ios-demo</string>
+</array>
+```
+
+---
+
+## 🛠️ Step 6: Debugging & Common Issues
+
+### Issue: `x-rownd-app-key header is required`
+
+Indicates the Rownd SDK is not properly initialized. Confirm:
+
+- Explicit AppDelegate linking (Step 2).
+- Proper App Groups set up (Step 3).
+- Correct app keys and bundle IDs in Rownd Dashboard (Step 4).
+
+### Issue: Rownd Hub not loading
+
+- Ensure ATS (`App Transport Security`) settings temporarily allow arbitrary loads (testing only):
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+```
+
+---
+
+## 🚀 Final Checklist
+
+✅ **Separate AppDelegates explicitly linked**  
+✅ **App Groups correctly shared**  
+✅ **Bundle IDs registered explicitly on Rownd dashboard**  
+✅ **Capabilities and Entitlements correctly set**  
+
+This structured configuration ensures seamless Rownd authentication across your main app and App Clips.
+
+---
+
+## ✨ Best practices for App Clips with Rownd
+
+### 1. Use Smart Links for auto sign-in
+
+For a truly seamless experience, you can automatically sign in users using Smart Links that direct users to your App Clip. When transitioning an authenticated user from your website, redirect them using an authenticated Smart Link. Or, use Smart Links in directed communications to users to ensure they're signed in when they open your App Clip (and ultimately, your full app).
+
+### 2. Use explicit sign-up buttons
+
+Rather than forcing authentication immediately upon launch, provide a clear call-to-action that allows users to sign up when they're ready:
+
+```swift
+Button("Sign up") {
+    Rownd.requestSignIn()
+}
+.buttonStyle(.borderedProminent)
+.padding()
+```
+
+This approach respects user agency and creates a better first-time experience.
+
+### 3. Maintain UI consistency between your App Clip and main app
+
+Make your App Clip feel like a natural extension of your main app. Use the same:
+- Color schemes and branding
+- UI components and patterns
+- Typography and visual language
+- Terminology and navigation patterns
+
+This creates a seamless transition when users move from the App Clip to your full app, reinforcing that they're already familiar with your product.
+
+### 4. Focus on a single, core task
+
+App Clips should concentrate on delivering one specific feature quickly:
+- Identify the most valuable single action for new users
+- Remove all UI elements not directly supporting this core action
+- Keep the App Clip under 10MB (smaller is better for faster loading)
+- Design the authentication flow to support this core task with minimal friction
+
+### 5. Design strategic, full app installation prompts
+
+Time your prompts for installing the full app strategically:
+- Wait until after users complete their core task
+- Highlight additional features available in the full app
+- Emphasize that they'll remain signed in when transitioning
+- Use Apple's App Clip API to show the installation card:
+
+```swift
+// UIKit: After user completes primary task
+guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene  else { return }
+
+let config = SKOverlay.AppClipConfiguration(position: .bottom)
+let overlay = SKOverlay(configuration: config)
+overlay.present(in: scene)
+```
+
+<Note>
+For SwiftUI, you can also use the [`.appStoreOverlay` modifier](https://developer.apple.com/documentation/swiftui/view/appstoreoverlay(ispresented:configuration:)) to present the App Clip card:
+</Note>
+
+---
+
+## 📱 Setting up App Clips
+
+Before integrating Rownd authentication with your App Clip, you'll need to properly set up the App Clip itself. This process requires configuration across multiple platforms:
+
+### Xcode Configuration
+- Create an App Clip target in your existing iOS app project
+- Configure the App Clip's `Info.plist` with required entries
+- Set up App Clip experience metadata
+
+### Parent-child relationship configuration
+
+A critical aspect of App Clips is establishing the proper parent-child relationship between your main app and App Clip:
+
+#### For the App Clip (child):
+Add the parent application identifier entitlement to your App Clip's `entitlements` file:
+```xml
+<key>com.apple.developer.parent-application-identifiers</key>
+<array>
+    <string>$(AppIdentifierPrefix)com.yourcompany.yourapp</string>
+</array>
+```
+
+#### For the main app (parent):
+Add the associated App Clip identifier entitlement to your main app's `entitlements` file:
+```xml
+<key>com.apple.developer.associated-appclip-app-identifiers</key>
+<array>
+    <string>$(AppIdentifierPrefix)com.yourcompany.yourapp.Clip</string>
+</array>
+```
+
+This bidirectional relationship is essential for:
+- Proper App Store presentation
+- Authentication state transfer
+- App Clip to full app conversion tracking
+
+### App Clip Codes & Launch Experience
+
+App Clip Codes provide an intuitive way for users to discover and launch your App Clip in the physical world:
+
+- **App Clip Codes**: Custom-designed scannable codes that can be placed on physical materials
+- **NFC tags**: For contactless launch of your App Clip
+- **QR codes**: For camera-based scanning and launch
+- **Safari App Banner**: Present an App Clip card when users visit your website
+- **Maps integration**: Allow discovery through Apple Maps (if applicable)
+
+The launch experience is critically important - when a user activates an App Clip:
+1. A lightweight App Clip card appears with basic app information
+2. User taps "Open" to launch without installation
+3. App Clip loads with contextual data from the invocation method
+4. Rownd authentication can happen seamlessly at this point
+
+### Apple Developer Portal Configuration
+- Configure App ID for your App Clip
+- Set up appropriate provisioning profiles
+- Enable necessary entitlements
+
+### App Store Connect Configuration
+- Set up App Clip card metadata
+- Configure invocation methods (QR codes, NFC tags, links)
+- Submit for review alongside your main app
+
+Setting up App Clips properly requires significant effort and attention to detail across all these platforms. We recommend thoroughly reviewing Apple's official documentation before proceeding with the Rownd integration steps outlined in this guide.
+
+For complete details on setting up App Clips, refer to:
+- [Apple's App Clip documentation](https://developer.apple.com/documentation/appclip)
+- [Associated App Clip App Identifiers documentation](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.associated-appclip-app-identifiers)
+- [App Clip Codes documentation](https://developer.apple.com/documentation/app_clips/creating_app_clip_codes)
+
+---
+
+## 📖 References
+
+- [Rownd SDK iOS documentation](https://docs.rownd.io/sdk-reference/mobile/ios#usage-within-app-extensions)
+- [Apple App Clip documentation](https://developer.apple.com/documentation/appclip)
+- [Associated App Clip App Identifiers documentation](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.associated-appclip-app-identifiers)
+- [Creating App Clip Codes documentation](https://developer.apple.com/documentation/app_clips/creating_app_clip_codes)
